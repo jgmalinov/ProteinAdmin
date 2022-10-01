@@ -1,39 +1,40 @@
-.App {
-  text-align: center;
+.fa-solid.fa-pizza-slice {
+  font-size: 80px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+#slice1 {
+  transform-origin: bottom left;
+  transform: translate(0%, -100%) rotate(360deg) skew(6.5deg, 6.5deg);
+  
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#slice2 {
+  transform-origin: 0% 100%;
+  transform: translate(0%, -100%) rotate(60deg) skew(6.5deg, 6.5deg);
+  
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-float infinite 3s ease-in-out;
-  }
+#slice3 {
+  transform-origin: 0% 100%;
+  transform: translate(0%, -100%) rotate(120deg) skew(6.5deg, 6.5deg);
+  
 }
 
-.App-header {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+#slice4 {
+  transform-origin: 0% 100%;
+  transform: translate(0%, -100%) rotate(180deg) skew(6.5deg, 6.5deg);
+  
 }
 
-.App-link {
-  color: rgb(112, 76, 182);
+#slice5 {
+  transform-origin: 0% 100%;
+  transform: translate(0%, -100%) rotate(240deg) skew(6.5deg, 6.5deg);
+  
 }
 
-@keyframes App-logo-float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
+#slice6 {
+  transform-origin: 0% 100%;
+  transform: translate(0%, -100%) rotate(300deg) skew(6.5deg, 6.5deg);
 }
