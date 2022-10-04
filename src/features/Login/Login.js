@@ -1,6 +1,6 @@
 export function Login(args) {
     return (
-        <div id="login">
+        <div id="viewBody">
             <section id="loginSection">
                 <h1>Protein Admin</h1>
                 <form id="loginForm">

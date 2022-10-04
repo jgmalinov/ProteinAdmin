@@ -1,4 +1,4 @@
-#login {
+#viewBody {
   display: grid;
   width: 100%;
   height: 100vh;
@@ -27,6 +27,26 @@
   border: 2px solid black;
   width: 60%;
   height: 80%;
+}
+
+#registerForm {
+  grid-area: a;
+  align-self: center;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+}
+
+
+.mainInput {
+  width: 50%;
+}
+
+#registerForm fieldset {
+  width: 50%;
 }
 
 
