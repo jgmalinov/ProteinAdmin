@@ -8,6 +8,7 @@ export function Register(args) {
 
     async function handleSubmit(e) {
         e.preventDefault();
+        dispatch(updateErrors([]));
         const protocol = process.env.REACT_APP_BACKEND_PROTOCOL;
         const host =  process.env.REACT_APP_BACKEND_HOST;
         const port = process.env.REACT_APP_BACKEND_PORT;
@@ -55,7 +56,7 @@ export function Register(args) {
                 <h1>Registration Form</h1>
                 <input className="mainInput" placeholder="email" type="email" name="email" id="email" onChange={handleChange}></input>
                 <input className="mainInput" placeholder="password" type="password" name="password" id="password" onChange={handleChange}></input>
-                <input className="mainInput" placeholder="confirm password" type="password" name="password2" id="password2" onChange={handleChange}></input>
+                <input className="mainInput" placeholder="confirm password" type="password" name="confirmPassword" id="confirmPassword" onChange={handleChange}></input>
                 <input className="mainInput" placeholder="name" type="text" id="name" name="name" onChange={handleChange}></input>
                 <input className="mainInput" placeholder="date of birth" type="date" id="DOB" name="DOB" onChange={handleChange}></input>
                 
