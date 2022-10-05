@@ -3,9 +3,9 @@
   width: 100%;
   height: 100vh;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 2fr 1.5fr 1fr;
+  grid-template-rows: 0.3fr 1.5fr 1fr;
   grid-template-areas: 
-  "a a a"
+  "c c c"
   "a a a"
   "b b b";
   
@@ -27,6 +27,11 @@
   border: 2px solid black;
   width: 60%;
   height: 80%;
+}
+
+#errors {
+  grid-area: c;
+  justify-self: center;
 }
 
 #registerForm {

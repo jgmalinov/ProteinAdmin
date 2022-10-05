@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { act } from "react-dom/test-utils";
 
 const RegisterSlice = createSlice({
     name: 'RegistrationForm',
@@ -11,8 +12,10 @@ const RegisterSlice = createSlice({
             height: '',
             heightSystem: 'cm',
             weight: '',
-            weightSystem: 'kg'
-        }
+            weightSystem: 'kg',
+            activityLevel: 'BMR',
+        },
+        errors: []
     },
     reducers: {
         updateRegistrationForm: (state, action) => {
@@ -34,11 +37,14 @@ const RegisterSlice = createSlice({
                     state.RegistrationForm[key] = ''
                 };
             }
+        },
+        updateErrors(state, action) {
+            state.errors = action.payload;
         }
     }
 });
 
-
+export const selectErrors = (state) => state.RegisterSlice.errors;
 export const selectRegistrationForm = (state) => state.RegisterSlice.RegistrationForm;
-export const { updateRegistrationForm, clearRegistrationForm } = RegisterSlice.actions;
+export const { updateRegistrationForm, clearRegistrationForm, updateErrors } = RegisterSlice.actions;
 export default RegisterSlice.reducer;
