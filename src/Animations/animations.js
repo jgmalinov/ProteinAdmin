@@ -15,10 +15,10 @@ export function pizzaEatingAnimation() {
             {duration: duration, iterations: 1, delay: delay, easing: "cubic-bezier(0, 0, 0, 6)"}
         );
         const animation = new Animation(keyframes, document.timeline);
-        animation.onfinish = () => {console.log(`Ending at: ${Date.now()}`)};
+        /* animation.onfinish = () => {console.log(`Ending at: ${Date.now()}`)}; */
         function play() {
             animation.play();
-            console.log(`Playing at: ${Date.now()}`);
+            /* console.log(`Playing at: ${Date.now()}`); */
         }
         playFunctions.push({play});
         angle += 60;
