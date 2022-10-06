@@ -15,7 +15,8 @@ const RegisterSlice = createSlice({
             weightSystem: 'kg',
             activityLevel: 'BMR',
         },
-        errors: []
+        errors: [],
+        successfulRegistration: false
     },
     reducers: {
         updateRegistrationForm: (state, action) => {
@@ -38,13 +39,17 @@ const RegisterSlice = createSlice({
                 };
             }
         },
-        updateErrors(state, action) {
+        updateErrors: (state, action) => {
             state.errors = action.payload;
+        },
+        updateSuccessfulRegistration: (state, action) => {
+            state.successfulRegistration = action.payload;
         }
     }
 });
 
 export const selectErrors = (state) => state.RegisterSlice.errors;
 export const selectRegistrationForm = (state) => state.RegisterSlice.RegistrationForm;
-export const { updateRegistrationForm, clearRegistrationForm, updateErrors } = RegisterSlice.actions;
+export const selectSuccessfulRegistration = (state) => state.RegisterSlice.successfulRegistration;
+export const { updateRegistrationForm, clearRegistrationForm, updateErrors, updateSuccessfulRegistration } = RegisterSlice.actions;
 export default RegisterSlice.reducer;

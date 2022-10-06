@@ -4,7 +4,10 @@ const { pool } = require("./DB/dbConfig");
 const bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
 const session = require('express-session');
-const flash = require('express-flash');
+const passport = require('passport');
+const initialize = require('./PassportConfig');
+
+initialize(passport);
 
 const PORT = process.env.PORT || 4000;
 
@@ -16,7 +19,10 @@ app.use(session({
     secret: process.env.REACT_APP_SESSION_SECRET,
     resave: false,
     saveUninitialized: false
-}))
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, access-control-allow-origin');
@@ -28,6 +34,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/register', async (req, res, next) => {
+    let errorsSent = false;
     let {name, email, password, confirmPassword, weight, weightSystem, height, heightSystem, activityLevel} = req.body;
     console.log(req.body);
 
@@ -53,16 +60,37 @@ app.post('/register', async (req, res, next) => {
             };
             if (errors.errors.length > 0) {
                 res.send(errors);
+                errorsSent = true;
                 return;
             };
         };
     });
+    if (errorsSent) {
+        return;
+    };
+    const saltRounds = 10;
+    bcrypt.hash(password, saltRounds, function(err, hash) {
+        console.log(hash);
+        pool.query(`INSERT INTO users (name, email, password, weight, weightsystem, height, heightsystem, activitylevel)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`, [name, email, hash, weight, weightSystem, height, heightSystem, activityLevel], (err, result) => {
+                        if (err) {
+                            console.log(err.message);
+                        } else {
+                            res.status(200).send({message: 'Successfully registered!'});
+                        }
+                    })
+    });
+});
 
-        const saltRounds = 10;
-        bcrypt.hash(password, 10, function(err, hash) {
-            console.log(hash);
-        });
-})
+app.post('/login', passport.authenticate('local', {failureMessage: true}, (err, res) => {console.log(err, res)}), (req, res, options) => {
+    console.log(options);
+    console.log(req.isAuthenticated());
+    const returnObj = {
+        user: req.user,
+    }
+    res.status(200).send(req.user);
+});
+
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

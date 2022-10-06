@@ -1,7 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
-import { updateRegistrationForm, selectRegistrationForm, updateErrors, selectErrors } from "./RegisterSlice";
+import { updateRegistrationForm, selectRegistrationForm, updateErrors, selectErrors, updateSuccessfulRegistration, selectSuccessfulRegistration } from "./RegisterSlice";
+import { Navigate } from "react-router-dom";
+
 
 export function Register(args) {
+    const justRegistered = useSelector(selectSuccessfulRegistration);
     const registrationForm = useSelector(selectRegistrationForm);
     const errors = useSelector(selectErrors);
     const dispatch = useDispatch();
@@ -14,14 +17,15 @@ export function Register(args) {
         const port = process.env.REACT_APP_BACKEND_PORT;
         const pathname = window.location.pathname;
         const url = protocol + '//' + host + ':' + port + pathname;
-        console.log(url);
-        console.log(registrationForm);
         const response = await fetch(url, {method: 'POST', body: JSON.stringify(registrationForm), headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}});
         const responseJS = response.json();
+        console.log(responseJS);
         responseJS.then((res) => {
-            if (typeof res === 'object' && res.errors.length > 0) {
+            if (res.errors) {
                 dispatch(updateErrors(res.errors));
-            };
+            } else if (res.message && res.message === 'Successfully registered!') {
+                dispatch(updateSuccessfulRegistration(true));
+            }
         });
     };
 
@@ -51,6 +55,7 @@ export function Register(args) {
 
     return (
         <div id="viewBody">
+            {justRegistered ? <Navigate replace to='/login'/> : undefined}
             {renderErrors()}
             <form id="registerForm" onSubmit={handleSubmit}>
                 <h1>Registration Form</h1>
