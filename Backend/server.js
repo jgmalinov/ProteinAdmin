@@ -10,15 +10,14 @@ const initialize = require('./PassportConfig');
 initialize(passport);
 
 const PORT = process.env.PORT || 4000;
-
-app.use(express.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(session({
     secret: process.env.REACT_APP_SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: true,
+    cookie: {maxAge: 1000 * 60 * 60 * 24}
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -82,14 +81,22 @@ app.post('/register', async (req, res, next) => {
     });
 });
 
-app.post('/login', passport.authenticate('local', {failureMessage: true}, (err, res) => {console.log(err, res)}), (req, res, options) => {
-    console.log(options);
-    console.log(req.isAuthenticated());
-    const returnObj = {
-        user: req.user,
-    }
-    res.status(200).send(req.user);
+/* app.post('/login', (req, res, next) => {
+    console.log(req.session)
+    passport.authenticate('local', (err, user, info) => {
+        console.log(info);
+    })(req,res,next);
+}); */
+app.post('/login', (req, res, next) => {
+    console.log(req.session)
+    const postAuthenticationFunc = passport.authenticate('local', {failureMessage:true}, (err, user, info) => {
+        console.log(info);
+        res.send(`${info.message}`);
+    });
+    postAuthenticationFunc(req,res,next);
 });
+
+
 
 
 app.listen(PORT, () => {

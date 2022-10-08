@@ -29,9 +29,10 @@ export function Login(args) {
         const pathname = window.location.pathname;
         const url = protocol + '//' + host + ':' + port + pathname;
        
-        fetch(url, {method: 'POST', body: JSON.stringify(credentials),  headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}})
-        .then((res) => {
-            console.log(res);
+        fetch(url, {method: 'POST', redirect: 'follow', body: JSON.stringify(credentials),  headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}})
+        .then(async (res) => {
+            const resJS = res.text();
+            console.log(resJS);
         })
         .catch((err) => {
             console.log(err);
