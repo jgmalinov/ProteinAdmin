@@ -18,7 +18,7 @@ function initialize(passport) {
                         if (err) {
                             console.log(err)
                         } else if (isMatch) {
-                            return done(null, match);
+                            return done(null, match, {message: 'Success'});
                         } else if (!isMatch) {
                             return done(null, false, {message: 'Password incorrect'})
                         }

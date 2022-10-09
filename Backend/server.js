@@ -6,27 +6,27 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 const passport = require('passport');
 const initialize = require('./PassportConfig');
+const cors = require('cors');
 
 initialize(passport);
 
 const PORT = process.env.PORT || 4000;
+
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(session({
     secret: process.env.REACT_APP_SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
-    cookie: {maxAge: 1000 * 60 * 60 * 24}
+    saveUninitialized: false,
+    /* cookie: {maxAge: 1000 * 60 * 60 * 24} */
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, access-control-allow-origin');
-    next();
-});
 
 app.get('/', (req, res) => {
     res.send("Hello");
@@ -81,24 +81,43 @@ app.post('/register', async (req, res, next) => {
     });
 });
 
-/* app.post('/login', (req, res, next) => {
-    console.log(req.session)
-    passport.authenticate('local', (err, user, info) => {
-        console.log(info);
-    })(req,res,next);
-}); */
+
 app.post('/login', (req, res, next) => {
-    console.log(req.session)
-    const postAuthenticationFunc = passport.authenticate('local', {failureMessage:true}, (err, user, info) => {
-        console.log(info);
-        res.send(`${info.message}`);
+    const postAuthenticationFunc = passport.authenticate('local', {failureMessage:true, successMessage: true}, (err, user, info) => {
+        if (err) {
+            console.log(err);
+        }
+        req.logIn(user, (err) => {
+            if (err) {
+                console.log(err)
+            };
+            res.send(`${info.message}`);
+        });
+        
     });
     postAuthenticationFunc(req,res,next);
 });
 
+app.get('/logout', (req, res) => {
+    console.log('laina')
+    req.logOut((err) => {
+        if (err) {
+            console.log(err)
+        }
+        res.send(`logged out`);    
+    });
+    
+})
 
+app.get('/login/status', (req, res) => {
+    if (req.isAuthenticated()) {
+        res.send('Authenticated');
+    } else {
+        res.send('Not authenticated')
+    };
+});
 
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-})
+});
