@@ -91,7 +91,7 @@ app.post('/login', (req, res, next) => {
             if (err) {
                 console.log(err)
             };
-            res.send(`${info.message}`);
+            res.send({status: `${info.message}`, user: req.user});
         });
         
     });
@@ -111,9 +111,9 @@ app.get('/logout', (req, res) => {
 
 app.get('/login/status', (req, res) => {
     if (req.isAuthenticated()) {
-        res.send('Authenticated');
+        res.send({status: 'Authenticated', user: req.user});
     } else {
-        res.send('Not authenticated')
+        res.send({status: 'Not authenticated'})
     };
 });
 

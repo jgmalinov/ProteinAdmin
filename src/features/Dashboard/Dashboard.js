@@ -21,6 +21,10 @@ export function Dashboard(args) {
         <div>
             {loggedIn ? undefined : <Navigate to='/login' />}
             <h1>Protein Admin For the Win Malin</h1>
+            <div id="stats">
+                <section id="personalInfo"></section>
+                <section id="targets"></section>
+            </div>
             <button onClick={logOut}>Logout</button>
         </div>
     );

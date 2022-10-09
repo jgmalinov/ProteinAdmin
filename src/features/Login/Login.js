@@ -1,5 +1,6 @@
 import { selectSuccessfulRegistration, updateSuccessfulRegistration } from "./RegisterSlice";
 import { setEmail, setPassword, selectCredentials, setLoggedIn, selectLoggedIn } from "./LoginSlice";
+import { setUser, selectUser } from "../Dashboard/DashboardSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -50,10 +51,11 @@ export function Login(args) {
                     headers: {'Content-Type': 'application/json'}, 
                     credentials: "include"})
         .then(async (res) => {
-            const outcome = await res.text();
-            if (outcome === 'Success') {
+            const response = await res.json();
+            if (response.status === 'Success') {
                 dispatch(setLoggedIn(true));
-            } else if (outcome === 'Email is not registered') {
+                dispatch(setUser(response.user));
+            } else if (res.status === 'Email is not registered') {
                 errorMessageBox.innerHTML = 'Email is not registered'
             } else {
                 errorMessageBox.innerHTML = 'Incorrect password'
