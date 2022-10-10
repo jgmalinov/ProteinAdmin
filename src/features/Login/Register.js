@@ -88,6 +88,14 @@ export function Register(args) {
                     <label htmlFor='lbs'>Lbs</label>  
                 </fieldset>
 
+                <label htmlFor="gender">Gender</label>
+                <select name="gender" id="gender" onChange={handleChange}>
+                    <option value="">--Please choose an option--</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+
+                <label htmlFor="activityLevel">Activity level</label>
                 <select name="activityLevel" id='activityLevel' onChange={handleChange}>
                     <option value="">--Please choose an option--</option>
                     <option value="BMR">Basal Metabolic Rate</option>
@@ -98,6 +106,15 @@ export function Register(args) {
                     <option value="Very Active">Very Active: intense exercise 6-7 times/week</option>
                     <option value="Extra Active">Extra Active: very intense daily exercise</option>
                 </select>
+
+                <label htmlFor="goal">Fitness goal</label>
+                <select name="goal" id="goal" onChange={handleChange}>
+                    <option value="">--Please choose an option--</option>
+                    <option value="maintain">Maintain weight</option>
+                    <option value="gain">Gain muscle</option>
+                    <option value="lose">Lose weight</option>
+                </select>
+
                 <button type="submit">Register!</button>
             </form>
         </div>

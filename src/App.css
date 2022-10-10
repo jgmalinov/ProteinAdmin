@@ -45,6 +45,25 @@
   width: 60%;
 }
 
+#dashboard {
+  display: grid;
+  width: 100%;
+  height: 100vh;
+  grid-template: 1fr 2fr 5fr/ 1fr 1fr;
+  grid-template-areas: 
+  "a a"
+  "b b"
+  "c c"
+}
+
+#title {
+  grid-area: a;
+}
+
+#stats{
+  grid-area: b;
+  display: flex;
+}
 
 .mainInput {
   width: 50%;

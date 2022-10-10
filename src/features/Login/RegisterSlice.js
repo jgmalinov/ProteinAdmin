@@ -13,7 +13,9 @@ const RegisterSlice = createSlice({
             heightSystem: 'cm',
             weight: '',
             weightSystem: 'kg',
+            gender: '',
             activityLevel: 'BMR',
+            goal: ''
         },
         errors: [],
         successfulRegistration: false

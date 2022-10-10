@@ -34,11 +34,11 @@ app.get('/', (req, res) => {
 
 app.post('/register', async (req, res, next) => {
     let errorsSent = false;
-    let {name, email, password, confirmPassword, weight, weightSystem, height, heightSystem, activityLevel} = req.body;
+    let {name, email, password, confirmPassword, weight, weightSystem, height, heightSystem, gender, activityLevel, DOB, goal} = req.body;
     console.log(req.body);
 
     let errors = {errors: []};
-    if (!name || !email || !password || !confirmPassword || !weight || !weightSystem || !height || !heightSystem || !activityLevel) {
+    if (!name || !email || !password || !confirmPassword || !weight || !weightSystem || !height || !heightSystem || !activityLevel || !DOB || !goal || !gender) {
         errors.errors.push({message: "Please enter all fields"})
     };
 
@@ -70,8 +70,8 @@ app.post('/register', async (req, res, next) => {
     const saltRounds = 10;
     bcrypt.hash(password, saltRounds, function(err, hash) {
         console.log(hash);
-        pool.query(`INSERT INTO users (name, email, password, weight, weightsystem, height, heightsystem, activitylevel)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`, [name, email, hash, weight, weightSystem, height, heightSystem, activityLevel], (err, result) => {
+        pool.query(`INSERT INTO users (name, email, password, dob, weight, weightsystem, height, heightsystem, gender, activitylevel, goal)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, [name, email, hash, DOB, weight, weightSystem, height, heightSystem, gender, activityLevel, goal], (err, result) => {
                         if (err) {
                             console.log(err.message);
                         } else {
