@@ -14,13 +14,14 @@ export function getAge(dob) {
 };
 
 export function getProtein(weight) {
-    return weight * 1.7;
+    return (weight * 1.7).toFixed(2);
 }
 
 export function getCalories(goal, weight, height, age, gender, activityLevel) {
     const genderAdjustment = gender === 'male' ? 5 : -161;
-    const maintenanceCalories = ((10 * weight) + (6.25 * height) - (5 * age) + genderAdjustment) * activityFactors[activityLevel];
-    const goalCalories = goal === 'gain' ? maintenanceCalories + 300 : maintenanceCalories - 300;
+    const maintenanceCalories = (((10 * weight) + (6.25 * height) - (5 * age) + genderAdjustment) * activityFactors[activityLevel]).toFixed(2);
+    const goalCaloriesNotFixed = goal === 'gain' ? maintenanceCalories + 300 : goal === 'maintain' ? maintenanceCalories : maintenanceCalories - 300;
+    const goalCalories = Number(goalCaloriesNotFixed).toFixed(2);
     console.log(maintenanceCalories, goalCalories);
     return {maintenanceCalories, goalCalories};
 };
