@@ -1,3 +1,67 @@
+import {Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend} from 'chart.js';
+
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+const monthlyLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
+let options, data;
+
+export async function BarChartConfig(timeSeries, ref, email) {
+    const url = process.env.REACT_APP_BACKEND_URL;
+    let response;
+    if (timeSeries === 'default' || timeSeries === 'daily') {
+        response = await fetch(url + `get/chartdata/daily/?user=${email}`, {headers: {'Content-Type': 'application/json'}, credentials: 'include'});
+    };
+    if (timeSeries === 'monthly') {
+        response = await fetch(url + `get/chartdata/monthly/?user=${email}`, {headers: {'Content-Type': 'application/json'}, credentials: 'include'});
+    };
+    const responseJS = await response.json();
+    const chartData = responseJS.data;
+    const labels = chartData[0];
+    const calories = chartData[1];
+    const protein = chartData[2];
+
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top'
+            },
+            title: {
+                display: true,
+                text: `${timeSeries} breakdown`
+            }
+        }
+    };
+
+    const data = {
+        labels,
+        datasets: [
+            {
+                label: 'Calories',
+                data: calories,
+                backgroundColor: 'blue'
+            },
+            {
+                label: 'Protein',
+                data: protein,
+                backgroundColor: 'green'
+            }
+        ]
+    };
+
+    if (timeSeries === 'default') {
+        return {options, data};
+    };
+
+    const chart = ref.current;
+    chart.data.labels = labels;
+    chart.data.datasets[0].data = calories;
+    chart.data.datasets[1].data = protein;
+    chart.update();
+};
+
+
 const activityFactors = {
     Sedentary: 1.2,
     Light: 1.375,

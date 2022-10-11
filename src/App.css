@@ -14,7 +14,7 @@ html {
   "b b b";
   
 }
-
+/* LOGIN Page */
 #loginSection {
   grid-area: a;
   display: flex;
@@ -37,7 +37,7 @@ html {
   grid-area: c;
   justify-self: center;
 }
-
+/* REGISTER Page */
 #registerForm {
   grid-area: a;
   align-self: center;
@@ -48,7 +48,7 @@ html {
   align-items: center;
   width: 60%;
 }
-
+/* DASHBOARD */
 #dashboard {
   display: grid;
   width: 100%;
@@ -59,6 +59,31 @@ html {
   "b b"
   "c c";
   background-color:indianred;
+}
+
+#dashboard header {
+  grid-area: a;
+  display: flex;
+  justify-content: space-between;
+}
+
+#dashboard header h1 {
+  margin-left: 20px;
+}
+
+#stats section {
+  border: 3px solid black;
+}
+
+.fa-solid.fa-bars {
+  display: flex;
+  align-items: center;
+}
+
+.fa-solid.fa-bars::before {
+  font-size: 20px;
+  margin-right: 20px;
+  transform: translate(0%, -50%);
 }
 
 #sidebarDim{

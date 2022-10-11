@@ -117,6 +117,15 @@ app.get('/login/status', (req, res) => {
     };
 });
 
+app.get('/get/chartdata/daily', (req, res) => {
+    const userEmail = req.query.user;
+    const date = new Date();
+    const year = (date.getFullYear()).toString();
+    const month = (date.getMonth() + 1).toString();
+    const day = (date.getDate()).toString();
+    const dateStr = `${year}-${month}-${day}`;
+})
+
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

@@ -2,8 +2,10 @@ import { setLoggedIn, selectLoggedIn } from "../Login/LoginSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { setUser, selectUser, setSidebarOn, selectSidebarOn } from "./DashboardSlice";
-import { getAge, getCalories, getProtein } from "../Utilities";
+import { getAge, getCalories, getProtein, BarChartConfig } from "../Utilities";
 import { Sidebar } from "./Sidebar";
+import { Bar } from 'react-chartjs-2';
+import { useRef } from "react";
 
 export function Dashboard(args) {
     const loggedIn = useSelector(selectLoggedIn);
@@ -11,6 +13,8 @@ export function Dashboard(args) {
     const user = useSelector(selectUser);
     const {name, weight, weightSystem, height, heightSystem, goal, gender, activityLevel} = user
     const age = getAge(user.dob);
+    const barChartRef = useRef();
+    const barChartConfigData = BarChartConfig('default', barChartRef, 'gogotkd24@gmail.com');
     const dispatch = useDispatch();
 
     function displayUserInfo() {
@@ -47,6 +51,11 @@ export function Dashboard(args) {
         sidebarBackground.style.visibility = 'hidden';
         sidebarBackground.style.background = 'rgba(0, 0, 0, 0.1)';
         sideBar.style.width = '0px';
+    };
+
+    function changeChartView(e) {
+        const chart = barChartRef.current;
+        console.log(chart.data);
     }
 
     async function logOut(e) {
@@ -67,7 +76,7 @@ export function Dashboard(args) {
         <div id="dashboard">
             {loggedIn ? undefined : <Navigate to='/login' />}
             <header>
-                <h1 id="title">Protein Admin For the Win Malin</h1>
+                <h1 id="title">Protein Admin</h1>
                 <i className="fa-solid fa-bars" onClick={openSideBar}></i>
             </header>
 
@@ -82,6 +91,13 @@ export function Dashboard(args) {
                     {displayTargets()}
                 </section>
             </div>
+
+            <div id="charts">
+                <button onClick={changeChartView}>Monthly</button>
+                <button onClick={changeChartView}>Daily</button>
+            </div>
         </div>
     );
-}
+};
+
+               /* <Bar options={options} data={data} ref={barChartRef}/> */
