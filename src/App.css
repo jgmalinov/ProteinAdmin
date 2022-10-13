@@ -75,13 +75,18 @@ html {
   border: 3px solid black;
 }
 
-#charts {
+#visualData {
   grid-area: c;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
 
+#charts {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
 }
 
 .fa-solid.fa-bars {
@@ -145,14 +150,15 @@ html {
 #stats{
   grid-area: b;
   display: flex;
+  justify-content: space-around;
 }
 
 #personalInfo {
-  width: 50%;
+  width: 30%;
 }
 
 #targets {
-  width: 50%;
+  width: 30%;
 }
 
 .mainInput {

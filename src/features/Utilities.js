@@ -1,8 +1,10 @@
 import {Chart as ChartJS, CategoryScale, LinearScale, BarController, BarElement, Title, Tooltip, Legend} from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
+import TrendlineLinearPlugin from 'chartjs-plugin-trendline';
 import { Bar, Chart } from 'react-chartjs-2';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, BarController, Title, Tooltip, Legend, annotationPlugin);
+ChartJS.register(CategoryScale, LinearScale, BarElement, BarController, Title, Tooltip, Legend, annotationPlugin, TrendlineLinearPlugin);
+
 const monthlyLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
 let options, data;
@@ -23,7 +25,7 @@ export async function BarChartConfig(timeSeries, ref, email, goalCalories, goalP
     const protein = chartData.protein;
 
     labels = labels.map(label => label.slice(0, 10));
-    const options = {
+    const optionsCalories = {
         responsive: true,
         responsiveAnimationDuration: 1000,
         maintainAspectRatio: false,
@@ -40,23 +42,8 @@ export async function BarChartConfig(timeSeries, ref, email, goalCalories, goalP
                     label1: {
                         type: 'label',
                         xValue: 1,
-                        yValue: goalCalories - 0.05 * goalCalories,
+                        yValue: goalCalories + 0.05 * goalCalories,
                         content: `${goalCalories} kcal threshold`,
-                        backgroundColor: 'rgba(245,245,245, 0.75)',
-                        font: {size: 9}
-                    },
-                    line2: {
-                        type: 'line',
-                        yMin: goalProtein,
-                        yMax: goalProtein,
-                        borderColor: 'green',
-                        borderWidth: 1
-                    },
-                    label2: {
-                        type: 'label',
-                        xValue: 1,
-                        yValue: goalProtein + 0.05 * goalCalories,
-                        content: `${goalProtein} g/protein threshold`,
                         backgroundColor: 'rgba(245,245,245, 0.75)',
                         font: {size: 9}
                     }
@@ -73,51 +60,106 @@ export async function BarChartConfig(timeSeries, ref, email, goalCalories, goalP
         },
     };
 
-    const data = {
+    let optionsProtein = JSON.parse((JSON.stringify(optionsCalories))); 
+    optionsProtein.plugins.annotation.annotations.line1 = {
+        type: 'line',
+        yMin: goalProtein,
+        yMax: goalProtein,
+        borderColor: 'green',
+        borderWidth: 1
+    };
+    optionsProtein.plugins.annotation.annotations.label1 = {
+        type: 'label',
+        xValue: 1,
+        yValue: goalProtein + 0.05 * goalProtein,
+        content: `${goalProtein} g/protein threshold`,
+        backgroundColor: 'rgba(245,245,245, 0.75)',
+        font: {size: 9}
+    }
+
+
+    const dataCalories = {
         labels,
         datasets: [
             {
                 label: 'Calories',
                 data: calories,
-                backgroundColor: 'blue'
+                backgroundColor: 'blue',
+                trendlineLinear: {
+                    colorMin: "black",
+                    colorMax: "black",
+                    lineStyle: "dotted",
+                    width: 2, 
+                },
             },
+        ]
+    };
+
+    const dataProtein = {
+        labels,
+        datasets: [
             {
                 label: 'Protein',
                 data: protein,
-                backgroundColor: 'green'
+                backgroundColor: 'green',
+                trendlineLinear: {
+                    colorMin: "black",
+                    colorMax: "black",
+                    lineStyle: "dotted",
+                    width: 2, 
+                },
             }
         ]
     };
 
-    return {data, options, labels, calories, protein};
+    return {dataCalories, dataProtein, optionsCalories, optionsProtein, labels, calories, protein};
 };
 
 export function createBarChart(timeSeries, barChartData) {
-    let chart;
-    const data = {...barChartData.data};
-    const options = {...barChartData.options};
+    let chart1;
+    let chart2;
+    const dataCalories = {...barChartData.dataCalories};
+    const dataProtein = {...barChartData.dataProtein};
+    const optionsCalories = {...barChartData.optionsCalories};
+    const optionsProtein = {...barChartData.optionsProtein};
     const labels = [...barChartData.labels];
     const protein = [...barChartData.protein];
     const calories = [...barChartData.calories];
     
     if (timeSeries === 'default') {
-        const ctx = document.getElementById('myChart').getContext('2d');
-        const oldChart = ChartJS.getChart('myChart'); 
-        if (oldChart) {
-            oldChart.destroy();
-        }; 
-        chart = new ChartJS(ctx, {
+        const ctxCalories = document.getElementById('CalorieChart').getContext('2d');
+        const ctxProtein = document.getElementById('ProteinChart').getContext('2d');
+        const oldCalorieChart = ChartJS.getChart('CalorieChart');
+        const oldProteinChart = ChartJS.getChart('ProteinChart'); 
+        if (oldCalorieChart) {
+            oldCalorieChart.destroy();
+        };
+        if (oldProteinChart) {
+            oldProteinChart.destroy();
+        };
+        chart1 = new ChartJS(ctxCalories, {
             type: 'bar',
-            data,
-            options
-        })
+            data: dataCalories,
+            options: optionsCalories
+        });
+        chart2 = new ChartJS(ctxProtein, {
+            type: 'bar',
+            data: dataProtein,
+            options: optionsProtein
+        }); 
+
     } else {
-        chart = ChartJS.getChart('myChart');
-        chart.data.labels = labels;
-        chart.options = options;
-        chart.data.datasets[0].data = calories;
-        chart.data.datasets[1].data = protein;
-        chart.update();
+        chart1 = ChartJS.getChart('CalorieChart');
+        chart1.data.labels = labels;
+        chart1.options = optionsCalories;
+        chart1.data.datasets[0].data = calories;
+        chart1.update();
+
+        chart2 = ChartJS.getChart('ProteinChart');
+        chart2.data.labels = labels;
+        chart2.options = optionsProtein;
+        chart2.data.datasets[0].data = protein;
+        chart2.update();
     }
 };
 
@@ -149,3 +191,27 @@ export function getCalories(goal, weight, height, age, gender, activityLevel) {
     const goalCalories = Number(goalCaloriesNotFixed).toFixed(2);
     return {maintenanceCalories, goalCalories};
 };
+
+export function calculateCurrentStatus(labels, calories, protein, timeSeries, goalCalories, goalProtein) {
+    const currentDate = new Date();
+    const day = currentDate.getDate().toString();
+    const year = currentDate.getFullYear().toString();
+    const month = (currentDate.getMonth() + 1).toString();
+    const currentDateStr = `${year}-${month}-${day}`;
+    if (timeSeries === 'default' || timeSeries === 'daily') {
+        const currentDateIndex = labels.indexOf(currentDateStr);
+        console.log(currentDateIndex);
+        calculateTrend(labels.slice(0, currentDateIndex + 1), calories.slice(0, currentDateIndex + 1), protein.slice(0, currentDateIndex + 1));
+    }
+};
+
+function calculateTrend(labels, calories, protein) {
+    const xAxis = [];
+    for (let i=1; i <= labels.length; i++) {
+        xAxis.push(i);
+    };
+    const sumX = xAxis.reduce((a, b) => a + b);
+    const sumYCal = calories.reduce((a, b) => a + b);
+    const sumYProt = protein.reduce((a, b) => a + b);
+    console.log(sumYCal);
+}
