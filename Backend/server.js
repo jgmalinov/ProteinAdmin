@@ -7,6 +7,7 @@ const session = require('express-session');
 const passport = require('passport');
 const initialize = require('./PassportConfig');
 const cors = require('cors');
+const e = require('cors');
 
 initialize(passport);
 
@@ -124,7 +125,68 @@ app.get('/get/chartdata/daily', (req, res) => {
     const month = (date.getMonth() + 1).toString();
     const day = (date.getDate()).toString();
     const dateStr = `${year}-${month}-${day}`;
-})
+
+    pool.query(`SELECT * FROM nutritional_time_series
+                WHERE date::text LIKE $1
+                ORDER BY date ASC`, [`${year}-${month}%`], (err, results) => {
+                    if(err) {
+                        console.log(err);
+                        return
+                    }
+                    const matches = results.rows;
+                    if (matches.length > 0) {
+                        let labels = [], protein = [], calories = [];
+                        for (let i = 0; i < matches.length; i++) {
+                            const match = matches[i];
+                            labels.push(match.date);
+                            calories.push(match.calories);
+                            protein.push(match.protein);
+                        }
+                        const chartData = {labels, calories, protein};
+                        console.log(chartData);
+                        res.send({message: 'success', chartData});
+                    } else {
+                        res.send({message: 'no results'});
+                    }
+                });
+});
+
+app.get('/get/chartdata/monthly', (req, res) => {
+    const userEmail = req.query.user;
+    const date = new Date();
+    const year = (date.getFullYear()).toString();
+    const month = (date.getMonth() + 1).toString();
+    const day = (date.getDate()).toString();
+    const dateStr = `${year}-${month}-${day}`;
+
+    pool.query(`SELECT DATE_TRUNC('month', date) AS month, SUM(protein) as protein, SUM(calories) as calories
+                FROM nutritional_time_series
+                WHERE date::text LIKE $1
+                GROUP BY DATE_TRUNC('month', date);
+    `, [`${year}%`], (err, results) => {
+                    if(err) {
+                        console.log(err);
+                        return
+                    }
+                    const matches = results.rows;
+                    if (matches.length > 0) {
+                        let labels = [], protein = [], calories = [];
+                        const monthMappings = {0: 'January', 1: 'February', 2: 'March', 3: 'April', 4: 'May', 5: 'June', 6: 'July', 7: 'August', 8: 'September', 9: 'October', 10: 'November', 11: 'December'};
+                        for (let i = 0; i < matches.length; i++) {
+                            const match = matches[i];
+                            const date = monthMappings[match.month.getMonth()] + ` ${year}`;
+                            labels.push(date);
+                            calories.push(match.calories);
+                            protein.push(match.protein);
+                        }
+                        const chartData = {labels, calories, protein};
+                        console.log(chartData);
+                        res.send({message: 'success', chartData});
+                    } else {
+                        res.send({message: 'no results'});
+                    }
+                });
+});
 
 
 app.listen(PORT, () => {

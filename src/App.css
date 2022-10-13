@@ -58,7 +58,7 @@ html {
   "a a"
   "b b"
   "c c";
-  background-color:indianred;
+  background-color: white;
 }
 
 #dashboard header {
@@ -73,6 +73,15 @@ html {
 
 #stats section {
   border: 3px solid black;
+}
+
+#charts {
+  grid-area: c;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
 }
 
 .fa-solid.fa-bars {

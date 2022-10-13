@@ -1,21 +1,69 @@
 import { setLoggedIn, selectLoggedIn } from "../Login/LoginSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { setUser, selectUser, setSidebarOn, selectSidebarOn } from "./DashboardSlice";
-import { getAge, getCalories, getProtein, BarChartConfig } from "../Utilities";
+import { setUser, selectUser, setSidebarOn, selectSidebarOn, setTimeSeries, selectTimeSeries } from "./DashboardSlice";
+import { getAge, getCalories, getProtein, BarChartConfig, createBarChart} from "../Utilities";
 import { Sidebar } from "./Sidebar";
 import { Bar } from 'react-chartjs-2';
-import { useRef } from "react";
+import { useEffect } from "react";
 
 export function Dashboard(args) {
+    const dispatch = useDispatch();
+    const user = useSelector(selectUser);
+    const timeSeries = useSelector(selectTimeSeries);
+    const {name, weight, weightSystem, height, heightSystem, goal, gender, activityLevel, email} = user;
+    const age = getAge(user.dob);
+    const calorieData = getCalories(goal, weight, height, age, gender, activityLevel);
+    const proteinData = getProtein(weight);
+    const CaloriesAsNum = Math.round(Number(calorieData.goalCalories));
+    const ProteinAsNum = Math.round(Number(proteinData));
+    const goalCalories = ['daily', 'default'].includes(timeSeries) ? CaloriesAsNum : CaloriesAsNum * 30.437;
+    const goalProtein = ['daily', 'default'].includes(timeSeries) ? ProteinAsNum : ProteinAsNum * 30.437;
     const loggedIn = useSelector(selectLoggedIn);
     const sidebarOn = useSelector(selectSidebarOn);
-    const user = useSelector(selectUser);
-    const {name, weight, weightSystem, height, heightSystem, goal, gender, activityLevel} = user
-    const age = getAge(user.dob);
-    const barChartRef = useRef();
-    const barChartConfigData = BarChartConfig('default', barChartRef, 'gogotkd24@gmail.com');
-    const dispatch = useDispatch();
+
+    useEffect(() => {
+        async function BarChart(timeSeries) {
+            const barChartData = await BarChartConfig(timeSeries, undefined, email, goalCalories, goalProtein);
+            createBarChart(timeSeries, barChartData);
+        }
+        BarChart(timeSeries);
+    })
+        
+
+
+    function renderContent() {
+        return (
+                <div id="dashboard">
+                {loggedIn ? undefined : <Navigate to='/login' />}
+                <header>
+                    <h1 id="title">Protein Admin</h1>
+                    <i className="fa-solid fa-bars" onClick={openSideBar}></i>
+                </header>
+
+                <Sidebar logOut={logOut} closeSideBar={closeSideBar}/>
+
+                <div id="stats">
+                    <section id="personalInfo">
+                    {displayUserInfo()}
+                    </section>
+
+                    <section id="targets">
+                        {displayTargets()}
+                    </section>
+                </div>
+
+                <div id="charts">
+                    <div id="chartContainer" style={{position: 'relative', height: '51vh', width: '75vw'}}>
+                        <canvas id="myChart"></canvas>
+                    </div>
+                    
+                    <button onClick={changeChartView} id='monthly'>Monthly</button>
+                    <button onClick={changeChartView} id='daily'>Daily</button>
+                </div>
+            </div>
+        )
+    }
 
     function displayUserInfo() {
         const userStats = [];
@@ -29,8 +77,8 @@ export function Dashboard(args) {
 
     function displayTargets() {
         const userTargets = [];
-        const calorieTargets = getCalories(goal, weight, height, age, gender, activityLevel);
-        const proteinTarget = getProtein(weight)
+        const calorieTargets = calorieData;
+        const proteinTarget = proteinData;
         userTargets.push(<h2>Goal: {goal}</h2>);
         userTargets.push(<h2>Recommended calorie intake: {calorieTargets.goalCalories} kcal/day</h2>);
         userTargets.push(<h2>Recommended protein intake: {proteinTarget} g/day</h2>);
@@ -54,9 +102,12 @@ export function Dashboard(args) {
     };
 
     function changeChartView(e) {
-        const chart = barChartRef.current;
-        console.log(chart.data);
-    }
+        if (e.target.id === 'monthly') {
+            dispatch(setTimeSeries('monthly'));
+        } else {
+            dispatch(setTimeSeries('daily'));
+        }
+    };
 
     async function logOut(e) {
         const url = process.env.REACT_APP_BACKEND_URL;
@@ -73,31 +124,10 @@ export function Dashboard(args) {
     };
 
     return (
-        <div id="dashboard">
-            {loggedIn ? undefined : <Navigate to='/login' />}
-            <header>
-                <h1 id="title">Protein Admin</h1>
-                <i className="fa-solid fa-bars" onClick={openSideBar}></i>
-            </header>
-
-            <Sidebar logOut={logOut} closeSideBar={closeSideBar}/>
-
-            <div id="stats">
-                <section id="personalInfo">
-                {displayUserInfo()}
-                </section>
-
-                <section id="targets">
-                    {displayTargets()}
-                </section>
-            </div>
-
-            <div id="charts">
-                <button onClick={changeChartView}>Monthly</button>
-                <button onClick={changeChartView}>Daily</button>
-            </div>
+        <div>
+            {user === undefined ? undefined : renderContent()}
         </div>
-    );
+        )
 };
 
-               /* <Bar options={options} data={data} ref={barChartRef}/> */
+/* <Bar options={barChartData.options} data={barChartData.data} /> */
