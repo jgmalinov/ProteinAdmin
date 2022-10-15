@@ -16,6 +16,7 @@
     "dotenv": "^16.0.3",
     "express-flash": "^0.0.2",
     "express-session": "^1.17.3",
+    "mathjs": "^11.3.0",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "pg": "^8.8.0",
@@ -25,6 +26,7 @@
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
+    "regression": "^2.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

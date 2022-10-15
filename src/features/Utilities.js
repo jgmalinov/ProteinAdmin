@@ -2,6 +2,8 @@ import {Chart as ChartJS, CategoryScale, LinearScale, BarController, BarElement,
 import annotationPlugin from 'chartjs-plugin-annotation';
 import TrendlineLinearPlugin from 'chartjs-plugin-trendline';
 import { Bar, Chart } from 'react-chartjs-2';
+import regression from 'regression';
+import {abs, std} from 'mathjs';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, BarController, Title, Tooltip, Legend, annotationPlugin, TrendlineLinearPlugin);
 
@@ -194,20 +196,80 @@ export function getCalories(goal, weight, height, age, gender, activityLevel) {
 
 export function calculateCurrentStatus(labels, calories, protein, timeSeries, goalCalories, goalProtein) {
     const currentDate = new Date().toDateString();
-    if (timeSeries === 'default' || timeSeries === 'daily') {
-        const currentDateIndex = labels.indexOf(currentDate);
-        console.log(currentDateIndex);
-        calculateTrend(labels.slice(0, currentDateIndex + 1), calories.slice(0, currentDateIndex + 1), protein.slice(0, currentDateIndex + 1));
-    }
-};
-
-function calculateTrend(labels, calories, protein) {
+    const sliceRanges = labels.length === 12 ? [{start: 0, end: 3}, {start: 3, end: 6}, {start: 6, end: 9}, {start: 9}] : [{start: 0, end: 8}, {start: 8, end: 16}, {start: 16, end: 24}, {start: 24}] 
+    const segregatedCalories = {first: {calories: calories.slice(sliceRanges[0].start, sliceRanges[0].end), stat: std(calories.slice(sliceRanges[0].start, sliceRanges[0].end))}, second: {calories: calories.slice(sliceRanges[1].start, sliceRanges[1].end), stat: std(calories.slice(sliceRanges[1].start, sliceRanges[1].end))}, third: {calories: calories.slice(sliceRanges[2].start, sliceRanges[2].end), stat: std(calories.slice(sliceRanges[2].start, sliceRanges[2].end))}, fourth: {calories: calories.slice(sliceRanges[3].start), stat: std(calories.slice(sliceRanges[3].start))}};
+    const segregatedProtein = {first: {protein: protein.slice(sliceRanges[0].start, sliceRanges[0].end), stat: std(protein.slice(sliceRanges[0].start, sliceRanges[0].end))}, second: {protein: protein.slice(sliceRanges[1].start, sliceRanges[1].end), stat: std(protein.slice(sliceRanges[1].start, sliceRanges[1].end))}, third: {protein: protein.slice(sliceRanges[2].start, sliceRanges[2].end), stat: std(protein.slice(sliceRanges[2].start, sliceRanges[2].end))}, fourth: {protein: protein.slice(sliceRanges[3].start), stat: std(protein.slice(sliceRanges[3].start))}};
+    const deviationFromGoalCalories = [], deviationFromGoalProtein = [];
+    let stdCaloriesOverall, stdProteinOverall, meanProteinOverall, stdChangeCalories, meanChangeProtein, absTrendCalories, absTrendProtein, caloriesLeftNow, proteinLeftNow; 
+    
+    const currentDateIndex = labels.indexOf(currentDate);
     const xAxis = [];
     for (let i=1; i <= labels.length; i++) {
         xAxis.push(i);
     };
-    const sumX = xAxis.reduce((a, b) => a + b);
-    const sumYCal = calories.reduce((a, b) => a + b);
-    const sumYProt = protein.reduce((a, b) => a + b);
-    console.log(sumYCal);
-}
+    let regressionCaloriesData = [];
+    let regressionProteinData = [];
+    for (let i=0; i < xAxis.length; i++) {
+        regressionCaloriesData.push([xAxis[i], calories[i]]);
+        regressionProteinData.push([xAxis[i], protein[i]]);
+
+        deviationFromGoalCalories.push(abs(calories[i] - goalCalories));
+        deviationFromGoalProtein.push(abs(protein[i] - goalProtein));
+    };
+
+    const regressionCalories = regression.linear(regressionCaloriesData);
+    const slopeCalories = regressionCalories.equation[0];
+    const regressionProtein = regression.linear(regressionProteinData);
+    const slopeProtein = regressionProtein.equation[0];
+
+    stdCaloriesOverall = (deviationFromGoalCalories.reduce((a, b) => a + b) / deviationFromGoalCalories.length).toFixed(2);
+    stdProteinOverall = (deviationFromGoalProtein.reduce((a, b) => a + b) / deviationFromGoalProtein.length).toFixed(2);
+    meanProteinOverall = (protein.reduce((a, b) => a + b)) / protein.length;
+
+    const calorieStats = [], proteinStats = [];
+
+    for (let quarter in segregatedCalories) {
+        let quarterCaloriesDeviations = segregatedCalories[quarter].calories.map((calorie) => abs(calorie - goalCalories));
+        const stdQuarterCalories = (quarterCaloriesDeviations.reduce((a, b) => a + b) / quarterCaloriesDeviations.length).toFixed(2);
+        segregatedCalories[quarter].stat = stdQuarterCalories;
+        calorieStats.push(segregatedCalories[quarter].stat);
+
+        const meanQuarterProtein = ((segregatedProtein[quarter].protein.reduce((a, b) => a + b)) / segregatedProtein[quarter].protein.length).toFixed(2);
+        segregatedProtein[quarter].stat = meanQuarterProtein;
+        proteinStats.push(segregatedProtein[quarter].stat);
+    };
+
+
+    absTrendCalories = slopeCalories > 0 ? 'positive' : slopeCalories === 0 ? 'none' : 'negative';
+    absTrendProtein = slopeProtein > 0 ? 'positive' : slopeProtein === 0 ? 'none' : 'negative';
+
+    
+    for (let i=0; i < calorieStats.length; i++) {
+        let indexToKeyMapping = {0: 'first', 1: 'second', 2: 'third', 3: 'fourth'}
+        const calorieStat = calorieStats[i];
+        const proteinStat = proteinStats[i];
+        if (i > 0) {
+            const previousCalorieStat = calorieStats[i - 1];
+            const percentageChangeCalorieStat = ((calorieStat / previousCalorieStat) - 1) * 100 * -1;
+            segregatedCalories[indexToKeyMapping[i]].percentageChange = percentageChangeCalorieStat;
+
+            const previousProteinStat = proteinStats[i - 1];
+            const percentageChangeProteinStat = ((proteinStat / previousProteinStat) - 1) * 100;
+            segregatedProtein[indexToKeyMapping[i]].percentageChange = percentageChangeProteinStat;
+        } else {
+            segregatedCalories[indexToKeyMapping[i]].percentageChange = 'baseline';
+            segregatedProtein[indexToKeyMapping[i]].percentageChange = 'baseline';
+        };
+    };
+
+    caloriesLeftNow = goalCalories - calories[currentDateIndex];
+    proteinLeftNow = goalProtein - protein[currentDateIndex];
+    console.log(segregatedCalories, segregatedProtein);
+    console.log(caloriesLeftNow, proteinLeftNow);
+
+    return (segregatedCalories, absTrendCalories, stdCaloriesOverall, caloriesLeftNow,  segregatedProtein, absTrendProtein, meanProteinOverall, proteinLeftNow);
+     
+    
+};
+
+/* mean absolute deviation */
