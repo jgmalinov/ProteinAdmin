@@ -120,15 +120,19 @@ app.get('/login/status', (req, res) => {
 
 app.get('/get/chartdata/daily', (req, res) => {
     const userEmail = req.query.user;
-    const date = new Date();
-    const year = (date.getFullYear()).toString();
+    const currentDate = new Date();
+    const priorDate = new Date();
+    priorDate.setDate(currentDate.getDate() - 30);
+    console.log(priorDate);
+    /* const year = (date.getFullYear()).toString();
     const month = (date.getMonth() + 1).toString();
     const day = (date.getDate()).toString();
-    const dateStr = `${year}-${month}-${day}`;
+    const dateStr = `${year}-${month}-${day}`; */
 
     pool.query(`SELECT * FROM nutritional_time_series
-                WHERE date::text LIKE $1
-                ORDER BY date ASC`, [`${year}-${month}%`], (err, results) => {
+                WHERE date >= $1 
+                AND date <= $2
+                ORDER BY date ASC`, [priorDate, currentDate], (err, results) => {
                     if(err) {
                         console.log(err);
                         return

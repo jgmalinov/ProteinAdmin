@@ -23,8 +23,8 @@ export async function BarChartConfig(timeSeries, ref, email, goalCalories, goalP
     let labels = chartData.labels;
     const calories = chartData.calories;
     const protein = chartData.protein;
-
-    labels = labels.map(label => label.slice(0, 10));
+    labels = labels.map(label => new Date(label).toDateString());
+    /* labels = labels.map(label => label.slice(0, 10)); */
     const optionsCalories = {
         responsive: true,
         responsiveAnimationDuration: 1000,
@@ -193,13 +193,9 @@ export function getCalories(goal, weight, height, age, gender, activityLevel) {
 };
 
 export function calculateCurrentStatus(labels, calories, protein, timeSeries, goalCalories, goalProtein) {
-    const currentDate = new Date();
-    const day = currentDate.getDate().toString();
-    const year = currentDate.getFullYear().toString();
-    const month = (currentDate.getMonth() + 1).toString();
-    const currentDateStr = `${year}-${month}-${day}`;
+    const currentDate = new Date().toDateString();
     if (timeSeries === 'default' || timeSeries === 'daily') {
-        const currentDateIndex = labels.indexOf(currentDateStr);
+        const currentDateIndex = labels.indexOf(currentDate);
         console.log(currentDateIndex);
         calculateTrend(labels.slice(0, currentDateIndex + 1), calories.slice(0, currentDateIndex + 1), protein.slice(0, currentDateIndex + 1));
     }
