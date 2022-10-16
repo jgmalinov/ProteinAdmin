@@ -13,7 +13,7 @@ let options, data;
 
 export async function BarChartConfig(timeSeries, ref, email, goalCalories, goalProtein) {
     const url = process.env.REACT_APP_BACKEND_URL;
-    let response;
+    let response, labels, calories, protein;
     if (timeSeries === 'default' || timeSeries === 'daily') {
         response = await fetch(url + `get/chartdata/daily/?user=${email}`, {headers: {'Content-Type': 'application/json'}, credentials: 'include'});
     };
@@ -22,9 +22,16 @@ export async function BarChartConfig(timeSeries, ref, email, goalCalories, goalP
     };
     const responseJS = await response.json();
     const chartData = responseJS.chartData;
-    let labels = chartData.labels;
-    const calories = chartData.calories;
-    const protein = chartData.protein;
+    if (chartData.labels.length < 30) {
+        labels = chartData.labels.slice(0, chartData.labels.length - 1);
+        calories = (chartData.calories.map((calorie) => calorie === null ? 0 : calorie)).slice(0, chartData.calories.length - 1);
+        protein = (chartData.protein.map((protein) => protein === null ? 0 : protein)).slice(0, chartData.protein.length - 1);
+    } else {
+        labels = chartData.labels.slice(1);
+        calories = (chartData.calories.map((calorie) => calorie === null ? 0 : calorie)).slice(1);
+        protein = (chartData.protein.map((protein) => protein === null ? 0 : protein)).slice(1);   
+    };
+
     labels = labels.map(label => new Date(label).toDateString());
     /* labels = labels.map(label => label.slice(0, 10)); */
     const optionsCalories = {
@@ -196,7 +203,8 @@ export function getCalories(goal, weight, height, age, gender, activityLevel) {
 
 export function calculateCurrentStatus(labels, calories, protein, timeSeries, goalCalories, goalProtein) {
     const currentDate = new Date().toDateString();
-    const sliceRanges = labels.length === 12 ? [{start: 0, end: 3}, {start: 3, end: 6}, {start: 6, end: 9}, {start: 9}] : [{start: 0, end: 8}, {start: 8, end: 16}, {start: 16, end: 24}, {start: 24}] 
+    const sliceRanges = labels.length < 30 ? [{start: 0, end: 3}, {start: 3, end: 6}, {start: 6, end: 9}, {start: 9}] : [{start: 0, end: 8}, {start: 8, end: 16}, {start: 16, end: 24}, {start: 24}] 
+    console.log(calories.slice(sliceRanges[0].start, sliceRanges[0].end));
     const segregatedCalories = {first: {calories: calories.slice(sliceRanges[0].start, sliceRanges[0].end), stat: std(calories.slice(sliceRanges[0].start, sliceRanges[0].end))}, second: {calories: calories.slice(sliceRanges[1].start, sliceRanges[1].end), stat: std(calories.slice(sliceRanges[1].start, sliceRanges[1].end))}, third: {calories: calories.slice(sliceRanges[2].start, sliceRanges[2].end), stat: std(calories.slice(sliceRanges[2].start, sliceRanges[2].end))}, fourth: {calories: calories.slice(sliceRanges[3].start), stat: std(calories.slice(sliceRanges[3].start))}};
     const segregatedProtein = {first: {protein: protein.slice(sliceRanges[0].start, sliceRanges[0].end), stat: std(protein.slice(sliceRanges[0].start, sliceRanges[0].end))}, second: {protein: protein.slice(sliceRanges[1].start, sliceRanges[1].end), stat: std(protein.slice(sliceRanges[1].start, sliceRanges[1].end))}, third: {protein: protein.slice(sliceRanges[2].start, sliceRanges[2].end), stat: std(protein.slice(sliceRanges[2].start, sliceRanges[2].end))}, fourth: {protein: protein.slice(sliceRanges[3].start), stat: std(protein.slice(sliceRanges[3].start))}};
     const deviationFromGoalCalories = [], deviationFromGoalProtein = [];

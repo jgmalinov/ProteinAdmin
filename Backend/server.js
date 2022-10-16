@@ -157,17 +157,17 @@ app.get('/get/chartdata/daily', (req, res) => {
 
 app.get('/get/chartdata/monthly', (req, res) => {
     const userEmail = req.query.user;
-    const date = new Date();
-    const year = (date.getFullYear()).toString();
-    const month = (date.getMonth() + 1).toString();
-    const day = (date.getDate()).toString();
-    const dateStr = `${year}-${month}-${day}`;
+    const currentDate = new Date();
+    const previousDate = new Date();
+    previousDate.setDate(currentDate.getDate() - 365 + currentDate.getDate() + 1);
+    console.log(currentDate, previousDate);
 
-    pool.query(`SELECT DATE_TRUNC('month', date) AS month, SUM(protein) as protein, SUM(calories) as calories
+    pool.query(`SELECT DATE_TRUNC('month', date) as date, SUM(protein) as protein, SUM(calories) as calories
                 FROM nutritional_time_series
-                WHERE date::text LIKE $1
-                GROUP BY DATE_TRUNC('month', date);
-    `, [`${year}%`], (err, results) => {
+                WHERE date BETWEEN $1 AND $2
+                GROUP BY DATE_TRUNC('month', date)
+                ORDER BY DATE_TRUNC('month', date) ASC
+    `, [previousDate, currentDate], (err, results) => {
                     if(err) {
                         console.log(err);
                         return
@@ -175,11 +175,10 @@ app.get('/get/chartdata/monthly', (req, res) => {
                     const matches = results.rows;
                     if (matches.length > 0) {
                         let labels = [], protein = [], calories = [];
-                        const monthMappings = {0: 'January', 1: 'February', 2: 'March', 3: 'April', 4: 'May', 5: 'June', 6: 'July', 7: 'August', 8: 'September', 9: 'October', 10: 'November', 11: 'December'};
+            
                         for (let i = 0; i < matches.length; i++) {
                             const match = matches[i];
-                            const date = monthMappings[match.month.getMonth()] + ` ${year}`;
-                            labels.push(date);
+                            labels.push(match.date);
                             calories.push(match.calories);
                             protein.push(match.protein);
                         }
