@@ -100,7 +100,7 @@ app.post('/login', (req, res, next) => {
 });
 
 app.get('/logout', (req, res) => {
-    console.log('laina')
+    console.log('logged out')
     req.logOut((err) => {
         if (err) {
             console.log(err)
@@ -191,6 +191,45 @@ app.get('/get/chartdata/monthly', (req, res) => {
                 });
 });
 
+app.get('/foodform/:category', (req, res) => {
+    const category  = req.params.category;
+    pool.query(`SELECT subcategories.name FROM categories
+                JOIN subcategories ON categories.id = subcategories.category_id
+                WHERE categories.name = $1`, [category], (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        const rows = result.rows;
+        if (rows.length > 0) {
+            res.send({subcategories: rows});
+        } else {
+            res.send({subcategories: 'none'});
+        }
+    })
+});
+
+app.post('/foodform', (req, res) => {
+    const form = req.body;
+    console.log(form);
+
+    pool.query(`INSERT INTO subcategories (name, category_id)
+                SELECT $1 as subcategoryName, id FROM categories WHERE name=$2
+                AND NOT EXISTS(SELECT name FROM subcategories WHERE name=$3);`, [form.subcategory, form.category, form.subcategory], (err, results) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    console.log(results);
+    });
+
+    pool.query(`INSERT INTO values (calories, protein)
+                VALUES ($1, $2);`, [form.values.calories, form.values.protein], (err, result) => {
+                    if (err) {
+                        console.log(err)
+                    }
+                    console.log(result);
+                });
+
+})
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
