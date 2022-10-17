@@ -5,7 +5,8 @@ const DashboardSlice = createSlice({
     initialState: {
         user: {},
         sidebarOn: false,
-        timeSeries: 'default' 
+        timeSeries: 'default',
+        stats: ''
     },
     reducers: {
         setUser: (state, action) => {
@@ -16,14 +17,18 @@ const DashboardSlice = createSlice({
         },
         setTimeSeries: (state, action) => {
             state.timeSeries = action.payload;
+        },
+        setStats: (state, action) => {
+            state.stats = action.payload;
         }
     }
 });
 
+export const selectStats = (state) => state.DashboardSlice.stats;
 export const selectTimeSeries = (state) => state.DashboardSlice.timeSeries;
 export const selectSidebarOn = (state) => state.DashboardSlice.sidebarOn;
 export const selectUser = (state) => state.DashboardSlice.user;
-export const { setUser, setSidebarOn, setTimeSeries } = DashboardSlice.actions;
+export const { setUser, setSidebarOn, setTimeSeries, setStats} = DashboardSlice.actions;
 export default DashboardSlice.reducer; 
 
 /* options: {

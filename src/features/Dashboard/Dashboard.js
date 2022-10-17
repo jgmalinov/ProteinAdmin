@@ -1,7 +1,7 @@
 import { setLoggedIn, selectLoggedIn } from "../Login/LoginSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { setUser, selectUser, setSidebarOn, selectSidebarOn, setTimeSeries, selectTimeSeries } from "./DashboardSlice";
+import { setUser, selectUser, setSidebarOn, selectSidebarOn, setTimeSeries, selectTimeSeries, setStats, selectStats } from "./DashboardSlice";
 import { getAge, getCalories, getProtein, BarChartConfig, createBarChart, calculateCurrentStatus} from "../Utilities";
 import { Sidebar } from "./Sidebar";
 import { Bar } from 'react-chartjs-2';
@@ -21,11 +21,14 @@ export function Dashboard(args) {
     const goalProtein = ['daily', 'default'].includes(timeSeries) ? ProteinAsNum : ProteinAsNum * 30.437;
     const loggedIn = useSelector(selectLoggedIn);
     const sidebarOn = useSelector(selectSidebarOn);
+    let stats = useSelector(selectStats);
 
     useEffect(() => {
         async function BarChart(timeSeries) {
             const barChartData = await BarChartConfig(timeSeries, undefined, email, goalCalories, goalProtein);
-            calculateCurrentStatus(barChartData.labels, barChartData.calories, barChartData.protein, timeSeries, goalCalories, goalProtein);
+            if (stats.timeSeries !== timeSeries) {
+                dispatch(setStats({timeSeries, ...calculateCurrentStatus(barChartData.labels, barChartData.calories, barChartData.protein, timeSeries, goalCalories, goalProtein)}));
+            }
             createBarChart(timeSeries, barChartData);
         }
         BarChart(timeSeries);
@@ -50,15 +53,34 @@ export function Dashboard(args) {
         const proteinTarget = proteinData;
         userTargets.push(<h2>Goal: {goal.slice(0, 1).toUpperCase() + goal.slice(1)}</h2>);
         userTargets.push(<ul>
-            <li>Recommended calorie intake: {calorieTargets.goalCalories} kcal/day</li>
-            <li>Recommended protein intake: {proteinTarget} g/day</li>
+            <li>Recommended calorie intake: {Math.round(calorieTargets.goalCalories)} kcal/day</li>
+            <li>Recommended protein intake: {Math.round(proteinTarget)} g/day</li>
         </ul>);
-
+        console.log(userTargets);
         return userTargets;
     };
 
-    async function displayCurrentStatus() {
+    function displayCurrentStatus() {
+        const userStats = [];
+        userStats.push(
+            <ul>
+                <h3>Calories</h3>
+                <li>Calorie Intake Trend: {stats.absTrendCalories} ({stats.absTrendCalories === 'negative' ? 'increasingly deviating from target' : 'lesser deviation from target'})</li>
+                <li>Average {stats.timeSeries} calorie intake: {stats.meanCaloriesOverall}kcal</li>
+                <li>Average {stats.timeSeries} deviation from calorie goal: {stats.stdCaloriesOverall}kcal</li>
+                <li>Average quarterly % change in deviation from calorie goal: {stats.stdChangeCalories}% ({stats.stdChangeCalories > 0 ? 'closer to target' : stats.stdChangeCalories < 0 ? 'further from target' : ''})</li>
+                <li>{stats.timeSeries === 'daily' ? `Calories left until today's target met: ${stats.caloriesLeftNow}kcal` : ''}</li>
+                <h3>Protein</h3>
+                <li>Protein Intake Trend: {stats.absTrendProtein} ({stats.absTrendProtein === 'negative' ? 'increasingly falling short of the target' : 'approaching/exceeding the target'})</li>
+                <li>Average {stats.timeSeries} protein intake: {stats.meanProteinOverall}g</li>
+                <li>Average {stats.timeSeries} deviation from protein goal: {stats.stdProteinOverall}g</li>
+                <li>Average quarterly % change in protein intake: {stats.meanChangeProtein}% ({stats.meanChangeProtein > 0 ? 'higher intake' : stats.stdChangeCalories < 0 ? 'reduced intake' : ''})</li>
+                <li>{stats.timeSeries === 'daily' ? `Protein left until today's target met: ${stats.proteinLeftNow}g` : ''}</li>
 
+            </ul>
+        );
+        console.log(userStats);
+        return userStats;
     }
 
     function openSideBar(e) {
@@ -112,7 +134,7 @@ export function Dashboard(args) {
 
                 <div id="stats">
                     <section id="personalInfo">
-                    {displayUserInfo()}
+                        {displayUserInfo()}
                     </section>
 
                     <section id="targets">
@@ -120,7 +142,7 @@ export function Dashboard(args) {
                     </section>
 
                     <section id="currentStatus">
-
+                        {displayCurrentStatus()}
                     </section>
                 </div>
 

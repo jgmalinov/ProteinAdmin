@@ -208,7 +208,7 @@ export function calculateCurrentStatus(labels, calories, protein, timeSeries, go
     const segregatedCalories = {first: {calories: calories.slice(sliceRanges[0].start, sliceRanges[0].end), stat: std(calories.slice(sliceRanges[0].start, sliceRanges[0].end))}, second: {calories: calories.slice(sliceRanges[1].start, sliceRanges[1].end), stat: std(calories.slice(sliceRanges[1].start, sliceRanges[1].end))}, third: {calories: calories.slice(sliceRanges[2].start, sliceRanges[2].end), stat: std(calories.slice(sliceRanges[2].start, sliceRanges[2].end))}, fourth: {calories: calories.slice(sliceRanges[3].start), stat: std(calories.slice(sliceRanges[3].start))}};
     const segregatedProtein = {first: {protein: protein.slice(sliceRanges[0].start, sliceRanges[0].end), stat: std(protein.slice(sliceRanges[0].start, sliceRanges[0].end))}, second: {protein: protein.slice(sliceRanges[1].start, sliceRanges[1].end), stat: std(protein.slice(sliceRanges[1].start, sliceRanges[1].end))}, third: {protein: protein.slice(sliceRanges[2].start, sliceRanges[2].end), stat: std(protein.slice(sliceRanges[2].start, sliceRanges[2].end))}, fourth: {protein: protein.slice(sliceRanges[3].start), stat: std(protein.slice(sliceRanges[3].start))}};
     const deviationFromGoalCalories = [], deviationFromGoalProtein = [];
-    let stdCaloriesOverall, stdProteinOverall, meanProteinOverall, stdChangeCalories, meanChangeProtein, absTrendCalories, absTrendProtein, caloriesLeftNow, proteinLeftNow; 
+    let stdCaloriesOverall, stdProteinOverall, meanCaloriesOverall, meanProteinOverall, stdChangeCalories, meanChangeProtein, absTrendCalories, absTrendProtein, caloriesLeftNow, proteinLeftNow; 
     
     const currentDateIndex = labels.indexOf(currentDate);
     const xAxis = [];
@@ -218,11 +218,13 @@ export function calculateCurrentStatus(labels, calories, protein, timeSeries, go
     let regressionCaloriesData = [];
     let regressionProteinData = [];
     for (let i=0; i < xAxis.length; i++) {
-        regressionCaloriesData.push([xAxis[i], calories[i]]);
-        regressionProteinData.push([xAxis[i], protein[i]]);
-
         deviationFromGoalCalories.push(abs(calories[i] - goalCalories));
         deviationFromGoalProtein.push(abs(protein[i] - goalProtein));
+
+        regressionCaloriesData.push([xAxis[i], deviationFromGoalCalories[i]]);
+        regressionProteinData.push([xAxis[i], protein[i]]);
+
+
     };
 
     const regressionCalories = regression.linear(regressionCaloriesData);
@@ -231,8 +233,9 @@ export function calculateCurrentStatus(labels, calories, protein, timeSeries, go
     const slopeProtein = regressionProtein.equation[0];
 
     stdCaloriesOverall = (deviationFromGoalCalories.reduce((a, b) => a + b) / deviationFromGoalCalories.length).toFixed(2);
+    meanCaloriesOverall = (calories.reduce((a, b) => a + b) / calories.length).toFixed(2);
     stdProteinOverall = (deviationFromGoalProtein.reduce((a, b) => a + b) / deviationFromGoalProtein.length).toFixed(2);
-    meanProteinOverall = (protein.reduce((a, b) => a + b)) / protein.length;
+    meanProteinOverall = ((protein.reduce((a, b) => a + b)) / protein.length).toFixed(2);
 
     const calorieStats = [], proteinStats = [];
 
@@ -248,7 +251,7 @@ export function calculateCurrentStatus(labels, calories, protein, timeSeries, go
     };
 
 
-    absTrendCalories = slopeCalories > 0 ? 'positive' : slopeCalories === 0 ? 'none' : 'negative';
+    absTrendCalories = slopeCalories < 0 ? 'positive' : slopeCalories === 0 ? 'none' : 'negative';
     absTrendProtein = slopeProtein > 0 ? 'positive' : slopeProtein === 0 ? 'none' : 'negative';
 
     
@@ -272,10 +275,13 @@ export function calculateCurrentStatus(labels, calories, protein, timeSeries, go
 
     caloriesLeftNow = goalCalories - calories[currentDateIndex];
     proteinLeftNow = goalProtein - protein[currentDateIndex];
+
+    stdChangeCalories = ((segregatedCalories.second.percentageChange + segregatedCalories.third.percentageChange + segregatedCalories.fourth.percentageChange) / 3).toFixed(2);
+    meanChangeProtein = ((segregatedProtein.second.percentageChange + segregatedProtein.third.percentageChange + segregatedProtein.fourth.percentageChange) / 3).toFixed(2);
     console.log(segregatedCalories, segregatedProtein);
     console.log(caloriesLeftNow, proteinLeftNow);
 
-    return (segregatedCalories, absTrendCalories, stdCaloriesOverall, caloriesLeftNow,  segregatedProtein, absTrendProtein, meanProteinOverall, proteinLeftNow);
+    return {segregatedCalories, absTrendCalories, stdCaloriesOverall, stdChangeCalories, caloriesLeftNow, meanCaloriesOverall, stdProteinOverall,  segregatedProtein, absTrendProtein, meanProteinOverall, meanChangeProtein, proteinLeftNow};
      
     
 };
