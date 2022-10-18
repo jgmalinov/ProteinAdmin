@@ -174,6 +174,50 @@ html {
   grid-area: b;
 }
 
+#foodFormContainer {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+#foodFormContainer div {
+  width: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: dotted black 2px;
+}
+
+#foodFormContainer i {
+  font-size: 30px;
+  margin-right: 10px;
+}
+
+#foodFormContainer a {
+  text-decoration: none;
+}
+
+#foodForm {
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#foodForm select, #foodForm input {
+  width: 250px;
+  height: 25px;
+  padding: 2px;
+  border-width: 1px;
+  border-color: black;
+  box-sizing: content-box;
+  margin-bottom: 5px;
+}
+
 .fa-solid.fa-pizza-slice {
   font-size: 80px;
   position: absolute;

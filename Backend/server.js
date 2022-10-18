@@ -248,7 +248,20 @@ app.post('/foodform', (req, res) => {
     })
 });
 
-
+app.get('/table', (req, res) => {
+    pool.query(`SELECT categories.id as id, categories.name as category, subcategories.name as subcategory, variations.type as description, variations.brand as brand, values.calories as calories, values.protein as protein 
+                FROM categories
+                JOIN subcategories ON categories.id=subcategories.category_id
+                JOIN variations ON subcategories.id=variations.subcategory_id
+                JOIN values ON variations.value_id=values.id
+                ORDER by id`, (err, result) => {
+                    if (err) {
+                        console.log(err)
+                    }
+                    const table = result.rows;
+                    res.send({table});
+                })
+})
     
 
     

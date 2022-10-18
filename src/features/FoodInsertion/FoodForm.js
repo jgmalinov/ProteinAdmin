@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { setCategory, setSubcategory, setVariation, setValues, setSubcategoryData, selectFoodForm, selectSubcategoryData } from "./FoodSlice";
 
 export function FoodForm(args) {
@@ -72,33 +73,43 @@ export function FoodForm(args) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <select name="category" id="foodCategory" onChange={handleChange}>
-                <option value='none'>--Select food category--</option>
-                <option value='meat'>Meat</option>
-                <option value='dairy'>Dairy</option>
-                <option value='wheats'>Wheats</option>
-                <option value='legumes'>Legumes</option>
-                <option value='nuts'>Nuts</option>
-                <option value='fruit'>Fruit</option>
-                <option value='vegetables'>Vegetables</option>
-                <option value='misc'>Dishes/Misc</option>
-            </select>
+        <div id="foodFormContainer">
+            <Link to='/dashboard'>
+                <div>
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <h3>Back to Dashboard</h3>
+                </div>
+            </Link>
 
-            <select name="subcategory" id="foodSubcategory1" onChange={handleChange}>
+            <form onSubmit={handleSubmit} id='foodForm'>
+                <h2>Nutritional data insertion form</h2>
+                <select name="category" id="foodCategory" onChange={handleChange}>
+                    <option value='none'>--Select food category--</option>
+                    <option value='meat'>Meat</option>
+                    <option value='dairy'>Dairy</option>
+                    <option value='wheats'>Wheats</option>
+                    <option value='legumes'>Legumes</option>
+                    <option value='nuts'>Nuts</option>
+                    <option value='fruit'>Fruit</option>
+                    <option value='vegetables'>Vegetables</option>
+                    <option value='misc'>Dishes/Misc</option>
+                </select>
+
+                <select name="subcategory" id="foodSubcategory1" onChange={handleChange}>
+                    
+                    {optionsJSX}
+                </select>
+
+                <input placeholder="--Or insert a new one--" type='text' name="subcategory" id="foodSubcategory2" onChange={handleChange}></input>
+
+                <input placeholder="--describe the food briefly (dish name, variations such as baked, roasted, origin etc.--" type='text' name="type" id="variationType" onChange={handleChange}></input>
+                <input placeholder="--brand (optional)--" type='text' name="brand" id="variationBrand" onChange={handleChange}></input>
+
+                <input placeholder="kcal per 100g" name="calories" id="valueKcal" type='number' step='0.1' onChange={handleChange}></input>
+                <input placeholder="protein (grams) per 100g" name="protein" id="valueProt" type='number' step='0.1' onChange={handleChange}></input>
                 
-                {optionsJSX}
-            </select>
-
-            <input placeholder="--Or insert a new one--" type='text' name="subcategory" id="foodSubcategory2" onChange={handleChange}></input>
-
-            <input placeholder="--describe the food briefly (dish name, variations such as baked, roasted, origin etc.--" type='text' name="type" id="variationType" onChange={handleChange}></input>
-            <input placeholder="--brand (optional)--" type='text' name="brand" id="variationBrand" onChange={handleChange}></input>
-
-            <input placeholder="kcal per 100g" name="calories" id="valueKcal" type='number' step='0.1' onChange={handleChange}></input>
-            <input placeholder="protein (grams) per 100g" name="protein" id="valueProt" type='number' step='0.1' onChange={handleChange}></input>
-            
-            <button type="submit">Submit!</button>
-        </form>
+                <button type="submit">Submit!</button>
+            </form>
+        </div>
     )
 }

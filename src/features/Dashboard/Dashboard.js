@@ -6,6 +6,8 @@ import { getAge, getCalories, getProtein, BarChartConfig, createBarChart, calcul
 import { Sidebar } from "./Sidebar";
 import { Bar } from 'react-chartjs-2';
 import { useEffect } from "react";
+import { Logger } from "./Logger";
+
 
 export function Dashboard(args) {
     const dispatch = useDispatch();
@@ -123,14 +125,18 @@ export function Dashboard(args) {
 
     function renderContent() {
         return (
-                <div id="dashboard">
-                {loggedIn ? undefined : <Navigate to='/login' />}
+            <div id="dashboard">
                 <header>
                     <h1 id="title">Protein Admin</h1>
-                    <i className="fa-solid fa-bars" onClick={openSideBar}></i>
+                    <div>
+                        <h3>Daily Logger</h3>
+                        <i className="fa-solid fa-bars" onClick={openSideBar}></i>
+                    </div>
+                    
                 </header>
 
                 <Sidebar logOut={logOut} closeSideBar={closeSideBar}/>
+                <Logger />
 
                 <div id="stats">
                     <section id="personalInfo">
@@ -167,7 +173,7 @@ export function Dashboard(args) {
 
     return (
         <div>
-            {user === undefined ? undefined : renderContent()}
+            {!loggedIn ? <Navigate to='/login' /> : renderContent()}
         </div>
         )
 };
