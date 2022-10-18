@@ -33,7 +33,6 @@ export function FoodForm(args) {
     };
 
     async function handleSubmit(e) {
-        e.preventDefault();
         const url = process.env.REACT_APP_BACKEND_URL;
         const response = await fetch(url + 'foodform', {method: 'POST', headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}, credentials: 'include', body: JSON.stringify(foodForm)});
     }
@@ -96,8 +95,8 @@ export function FoodForm(args) {
             <input placeholder="--describe the food briefly (dish name, variations such as baked, roasted, origin etc.--" type='text' name="type" id="variationType" onChange={handleChange}></input>
             <input placeholder="--brand (optional)--" type='text' name="brand" id="variationBrand" onChange={handleChange}></input>
 
-            <input placeholder="kcal per 100g" name="calories" id="valueKcal" type='number' onChange={handleChange}></input>
-            <input placeholder="protein (grams) per 100g" name="protein" id="valueProt" type='number' onChange={handleChange}></input>
+            <input placeholder="kcal per 100g" name="calories" id="valueKcal" type='number' step='0.1' onChange={handleChange}></input>
+            <input placeholder="protein (grams) per 100g" name="protein" id="valueProt" type='number' step='0.1' onChange={handleChange}></input>
             
             <button type="submit">Submit!</button>
         </form>

@@ -212,24 +212,46 @@ app.post('/foodform', (req, res) => {
     const form = req.body;
     console.log(form);
 
-    pool.query(`INSERT INTO subcategories (name, category_id)
-                SELECT $1 as subcategoryName, id FROM categories WHERE name=$2
-                AND NOT EXISTS(SELECT name FROM subcategories WHERE name=$3);`, [form.subcategory, form.category, form.subcategory], (err, results) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                    console.log(results);
-    });
-
-    pool.query(`INSERT INTO values (calories, protein)
-                VALUES ($1, $2);`, [form.values.calories, form.values.protein], (err, result) => {
+    new Promise((resolve) => {
+        resolve(
+            pool.query(`INSERT INTO subcategories (name, category_id)
+            SELECT $1 as subcategoryName, id FROM categories WHERE name=$2
+            AND NOT EXISTS(SELECT name FROM subcategories WHERE name=$3);`, [form.subcategory, form.category, form.subcategory], (err, results) => {
+                if (err) {
+                    console.log(err);
+                }
+                console.log('successfully added subcategory');
+            })
+        )
+    }).then((res) => {
+        pool.query(`INSERT INTO values (calories, protein)
+                SELECT $1 as calories, $2 as protein WHERE NOT EXISTS(SELECT * FROM values WHERE calories=$3 AND protein=$4);`, [form.values.calories, form.values.protein, form.values.calories, form.values.protein], (err, result) => {
                     if (err) {
                         console.log(err)
                     }
-                    console.log(result);
-                });
+                    console.log('successfully added values');
+        })
+    }).then((res) => {
+        pool.query(`INSERT INTO variations(type, brand, subcategory_id, value_id)
+                SELECT $1 as type, $2 as brand, subcategories.id, values.id 
+                FROM subcategories, values
+                WHERE subcategories.name=$3 AND values.protein=$4 AND values.calories=$5
+                AND NOT EXISTS(SELECT type, brand FROM variations
+                              WHERE type=$6 AND brand=$7)`, [form.variation.type, form.variation.brand, form.subcategory, form.values.protein, form.values.calories, form.variation.type, form.variation.brand],
+                              (err, result) => {
+                                if (err) {
+                                    console.log(err)
+                                }
+                                console.log('successfully added variation');
+                              })
 
-})
+    })
+});
+
+
+    
+
+    
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
