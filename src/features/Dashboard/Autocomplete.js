@@ -9,7 +9,7 @@ export function Autocomplete({ autocompleteOptions }) {
 
     return (
         <div id="autocompleteContainer">
-            <input type="text" list="autocompleteOptions" placeholder="Search"></input>
+            <input type="text" list="autocompleteOptions" placeholder="Search" id="autocompleteSearchBar"></input>
             <datalist id="autocompleteOptions">
                 {setDatalistOptions()}
             </datalist>

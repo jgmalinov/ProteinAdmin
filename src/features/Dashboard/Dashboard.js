@@ -128,15 +128,14 @@ export function Dashboard(args) {
             <div id="dashboard">
                 <header>
                     <h1 id="title">Protein Admin</h1>
-                    <div>
-                        <h3>Daily Logger</h3>
+                    <Logger />
+                    <div id="sideBarIconContainer">
                         <i className="fa-solid fa-bars" onClick={openSideBar}></i>
                     </div>
                     
                 </header>
 
                 <Sidebar logOut={logOut} closeSideBar={closeSideBar}/>
-                <Logger />
 
                 <div id="stats">
                     <section id="personalInfo">

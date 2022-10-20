@@ -65,10 +65,44 @@ html {
   grid-area: a;
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 28px;
 }
 
-#dashboard header h1 {
+#title{
+  display: block;
   margin-left: 20px;
+  margin-top: -10px;
+  width: 33vw;
+}
+
+#sideBarIconContainer{
+  display: flex;
+  justify-content: flex-end;
+  width: 33vw;
+}
+
+#dashboard header nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 33vw;
+  
+}
+
+#dashboard header nav section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+
+#filters {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 #stats section {
@@ -95,9 +129,31 @@ html {
 }
 
 .fa-solid.fa-bars::before {
-  font-size: 20px;
+  font-size: 25px;
   margin-right: 20px;
-  transform: translate(0%, -50%);
+}
+
+.fa-solid.fa-filter {
+  font-size: 20px;
+  margin-right: 8px;
+}
+
+#autocompleteSearchBar {
+  border-radius: 30px;
+  width: 30px;
+  height: 20px;
+  transition: 1s;
+}
+
+#autocompleteSearchBar:hover {
+  width: 250px;
+}
+
+#loggerCategory, #loggerSubcategory {
+  width: 50%;
+  height: 20px;
+  margin-top: 8px;
+  margin-bottom: 20px;
 }
 
 #sidebarDim{
