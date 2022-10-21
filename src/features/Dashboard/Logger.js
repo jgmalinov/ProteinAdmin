@@ -49,7 +49,7 @@ export function Logger(args) {
         const initialOption = document.createElement("option");
 
         initialOption.value = '';
-        initialOption.text = '--';
+        initialOption.text = '--select subcategory--';
         subcategoryNode.appendChild(initialOption);
 
         for (let i = 0; i < subcategories.length; i++) {
@@ -69,19 +69,15 @@ export function Logger(args) {
         dispatch(setAutocomplete(nutritionalTableFiltered.map(row => `${row.subcategory}-${row.description}`)));
     };
 
-    function toggleFilters(e) {
-        const filters = document.getElementById('filters');
-        filters.style.visibility === 'visible' ? filters.style.visibility = 'hidden' : filters.style.visibility = 'visible';  
-    }
+
 
     return (
         <nav>
             <section>
-                <i class="fa-solid fa-filter" onClick={toggleFilters}></i>
                 <Autocomplete autocompleteOptions={autocompleteOptions} />
             </section>
             
-            <form id="filters" style={{'visibility': 'hidden'}}>
+            <form id="filters">
                     <select id="loggerCategory" onChange={setSubcatOptionsAndFirstAutocompFilter}>
                         <option value=''>--select category--</option>
                         {setCategoryOptions()}

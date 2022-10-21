@@ -123,6 +123,21 @@ export function Dashboard(args) {
         }
     };
 
+    function toggleFilters(e) {
+        const filters = document.getElementById('filters');
+        const loggerCategory = document.getElementById('loggerCategory');
+        const loggerSubcategory = document.getElementById('loggerSubcategory');
+        if (filters.style.height === '0px') {
+            filters.style.height = '50px';
+            loggerCategory.style.opacity = '1';
+            loggerSubcategory.style.opacity = '1';
+        } else {
+            filters.style.height = '0px';
+            loggerCategory.style.opacity = '0';
+            loggerSubcategory.style.opacity = '0';
+        }       
+    };
+
     function renderContent() {
         return (
             <div id="dashboard">
@@ -130,6 +145,7 @@ export function Dashboard(args) {
                     <h1 id="title">Protein Admin</h1>
                     <Logger />
                     <div id="sideBarIconContainer">
+                        <i class="fa-solid fa-filter" onClick={toggleFilters}></i>
                         <i className="fa-solid fa-bars" onClick={openSideBar}></i>
                     </div>
                     
