@@ -261,6 +261,20 @@ app.get('/table', (req, res) => {
                     const table = result.rows;
                     res.send({table});
                 })
+});
+
+app.post('/menu', (req, res) => {
+    const meal = req.body;
+    const mealDesc = Object.keys(meal)[0];
+    const date = new Date();
+    pool.query(`INSERT INTO daily_nutrition (date, email, calories, protein, description)
+                VALUES ($1, $2, $3, $4, $5)`, [date, req.user.email, meal[mealDesc].calories, meal[mealDesc].protein, mealDesc], (err, result) => {
+                    if (err) {
+                        console.log(err)
+                        res.send({message: err})
+                    }
+                    res.send({message: 'Success'})
+                })
 })
     
 

@@ -4,6 +4,7 @@ import LoginSlice from '../features/Login/LoginSlice';
 import DashboardSlice from '../features/Dashboard/DashboardSlice';
 import FoodSlice from '../features/FoodInsertion/FoodSlice';
 import LoggerSlice from '../features/Dashboard/LoggerSlice';
+import DailyMenuSlice from '../features/Dashboard/DailyMenuSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     LoginSlice,
     DashboardSlice,
     FoodSlice,
-    LoggerSlice
+    LoggerSlice,
+    DailyMenuSlice
   },
 });

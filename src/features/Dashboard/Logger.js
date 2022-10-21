@@ -74,18 +74,18 @@ export function Logger(args) {
     return (
         <nav>
             <section>
-                <Autocomplete autocompleteOptions={autocompleteOptions} />
+                <Autocomplete autocompleteOptions={autocompleteOptions} nutritionalTable={nutritionalTable} />
             </section>
             
-            <form id="filters">
-                    <select id="loggerCategory" onChange={setSubcatOptionsAndFirstAutocompFilter}>
+            <form id="filters" style={{'height': '0px'}}>
+                    <select id="loggerCategory" style={{'opacity': '0'}} disabled onChange={setSubcatOptionsAndFirstAutocompFilter}>
                         <option value=''>--select category--</option>
                         {setCategoryOptions()}
                     </select>
-                    <select id="loggerSubcategory" onChange={setSecondAutocompFilter}>
+                    <select id="loggerSubcategory" style={{'opacity': '0'}} disabled onChange={setSecondAutocompFilter}>
                         <option value=''>--</option>
                     </select>
-                </form>
+            </form>
             
         </nav>
     );

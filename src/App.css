@@ -106,7 +106,6 @@ html {
   justify-content: space-between;
   width: 100%;
   transition: 0.3s;
-  height: 0px;
   margin: 10px 0px;
 }
 
@@ -159,11 +158,6 @@ html {
   padding: 0px;
   border: none;
   transition: 0.3s;
-}
-
-#autocompleteSearchBar:focus {
-  width: 250px;
-  outline: none;
 }
 
 #loggerCategory, #loggerSubcategory {

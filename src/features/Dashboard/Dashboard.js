@@ -146,6 +146,7 @@ export function Dashboard(args) {
                     <Logger />
                     <div id="sideBarIconContainer">
                         <i class="fa-solid fa-filter" onClick={toggleFilters}></i>
+                        <i class="fa-solid fa-utensils" style={{'fontSize': '25px', 'marginRight': '15px'}}></i>
                         <i className="fa-solid fa-bars" onClick={openSideBar}></i>
                     </div>
                     
