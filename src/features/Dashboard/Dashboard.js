@@ -7,6 +7,7 @@ import { Sidebar } from "./Sidebar";
 import { Bar } from 'react-chartjs-2';
 import { useEffect } from "react";
 import { Logger } from "./Logger";
+import { DailyMenu } from "./DailyMenu";
 
 
 export function Dashboard(args) {
@@ -138,6 +139,16 @@ export function Dashboard(args) {
         }       
     };
 
+    function openDailyMenu(e) {
+        const dailyMenuBackground = document.getElementById('dailyMenuBackground');
+        const dailyMenuTable = document.getElementById('dailyMenuTable');
+
+        dailyMenuBackground.style.visibility = 'visible';
+        dailyMenuBackground.style.background = 'rgba(0, 0, 0, 0.6)';
+
+        dailyMenuTable.style.left = '0%';
+    };
+
     function renderContent() {
         return (
             <div id="dashboard">
@@ -146,13 +157,14 @@ export function Dashboard(args) {
                     <Logger />
                     <div id="sideBarIconContainer">
                         <i class="fa-solid fa-filter" onClick={toggleFilters}></i>
-                        <i class="fa-solid fa-utensils" style={{'fontSize': '25px', 'marginRight': '15px'}}></i>
+                        <i class="fa-solid fa-utensils" style={{'fontSize': '25px', 'marginRight': '15px'}} onClick={openDailyMenu}></i>
                         <i className="fa-solid fa-bars" onClick={openSideBar}></i>
                     </div>
                     
                 </header>
 
                 <Sidebar logOut={logOut} closeSideBar={closeSideBar}/>
+                <DailyMenu />
 
                 <div id="stats">
                     <section id="personalInfo">

@@ -263,6 +263,22 @@ app.get('/table', (req, res) => {
                 })
 });
 
+app.get('/menu', (req, res) => {
+    const email = req.user.email;
+    const date = new Date();
+    pool.query(`SELECT * FROM daily_nutrition
+                WHERE email=$1 AND date=$2`, [email, date], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    } 
+                    if (result.rows.length === 0) {
+                        res.send({message: 'No logged data'})
+                    } else {
+                        res.send({menu: result.rows})
+                    };
+                })
+});
+
 app.post('/menu', (req, res) => {
     const meal = req.body;
     const mealDesc = Object.keys(meal)[0];
