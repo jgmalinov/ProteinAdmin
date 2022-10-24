@@ -287,3 +287,30 @@ export function calculateCurrentStatus(labels, calories, protein, timeSeries, go
 };
 
 /* mean absolute deviation */
+
+export function expandSearchBar(e) {
+    const autocompleteSearchBar = document.getElementById('autocompleteSearchBar');
+    const autocompleteWeightBar = document.getElementById('autocompleteWeightBar');
+    const autocompleteSubmitButton = document.getElementById('autocompleteSubmitButton');
+    const autocompleteCartButton = document.getElementById('autocompleteCartButton');
+    const autocompleteCartContainer = document.getElementById('autocompleteCartContainer');
+    
+
+     if (autocompleteSearchBar.style.width === '0px') {
+        autocompleteSearchBar.style.width = '250px';
+        autocompleteWeightBar.style.width = '53px'; 
+        autocompleteWeightBar.style.border = 'solid 1px black';
+        autocompleteWeightBar.style.borderRadius = '10px';
+        autocompleteSubmitButton.disabled = false;
+        autocompleteCartButton.disabled = false;
+        autocompleteCartContainer.style.width = '28px';
+    
+     } else {
+        autocompleteSearchBar.style.width = '0px';
+        autocompleteWeightBar.style.width = '0px';
+        autocompleteWeightBar.style.border = 'none';
+        autocompleteSubmitButton.disabled = true;
+        autocompleteCartButton.disabled = true;
+        autocompleteCartContainer.style.width = '0px';
+     } 
+};

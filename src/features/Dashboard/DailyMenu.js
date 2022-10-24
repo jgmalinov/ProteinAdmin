@@ -4,18 +4,24 @@ import { setDailyMenu, selectDailyMenu, setDailyMenuUpdated, selectDailyMenuUpda
 export function DailyMenu(args) {
     const dispatch = useDispatch();
     const dailyMenu = useSelector(selectDailyMenu);
-    const dailyMenuUpdated = useSelector(selectDailyMenuUpdated);
-    if (dailyMenu.length === 0 || dailyMenuUpdated) {
+    const updateDailyMenu = useSelector(selectDailyMenuUpdated);
+    if (updateDailyMenu) {
         getDailyMenu();
         dispatch(setDailyMenuUpdated(false));
     };
 
     async function getDailyMenu() {
         const url = process.env.REACT_APP_BACKEND_URL;
+        let dailyMenu;
         const response = await fetch(url + 'menu', {credentials: 'include', headers: {'Content-Type': 'application/json'}});
         const responseJS = await response.json();
-        const DailyMenu = responseJS.menu;
-        dispatch(setDailyMenu(DailyMenu));
+        if (responseJS.hasOwnProperty('message')) {
+            dailyMenu = [];
+        } else {
+            dailyMenu = responseJS.menu;
+        }
+        
+        dispatch(setDailyMenu(dailyMenu));
     };
 
     function getDailyMenuJSX() {

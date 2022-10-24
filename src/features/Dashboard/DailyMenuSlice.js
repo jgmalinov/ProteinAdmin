@@ -5,7 +5,8 @@ const DailyMenuSlice = createSlice({
     name: 'DailyMenu',
     initialState: {
          dailyMenu: [],
-         dailyMenuUpdated: false,
+         dailyMenuUpdated: true,
+         currentBatch: []
     },
 
     reducers: {
@@ -14,11 +15,15 @@ const DailyMenuSlice = createSlice({
         },
         setDailyMenuUpdated: (state, action) => {
             state.dailyMenuUpdated = action.payload;
+        },
+        setCurrentBatch: (state, action) => {
+            state.currentBatch.push(action.payload);
         }
     }
 });
 
 export const selectDailyMenu = (state) => state.DailyMenuSlice.dailyMenu;
 export const selectDailyMenuUpdated = (state) => state.DailyMenuSlice.dailyMenuUpdated;
-export const { setDailyMenu, setDailyMenuUpdated } = DailyMenuSlice.actions;
+export const selectCurrentBatch = (state) => state.DailyMenuSlice.currentBatch;
+export const { setDailyMenu, setDailyMenuUpdated, setCurrentBatch } = DailyMenuSlice.actions;
 export default DailyMenuSlice.reducer;

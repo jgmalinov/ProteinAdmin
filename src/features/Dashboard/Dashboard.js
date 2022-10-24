@@ -2,7 +2,7 @@ import { setLoggedIn, selectLoggedIn } from "../Login/LoginSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { setUser, selectUser, setSidebarOn, selectSidebarOn, setTimeSeries, selectTimeSeries, setStats, selectStats } from "./DashboardSlice";
-import { getAge, getCalories, getProtein, BarChartConfig, createBarChart, calculateCurrentStatus} from "../Utilities";
+import { getAge, getCalories, getProtein, BarChartConfig, createBarChart, calculateCurrentStatus, expandSearchBar} from "../Utilities";
 import { Sidebar } from "./Sidebar";
 import { Bar } from 'react-chartjs-2';
 import { useEffect } from "react";
@@ -131,11 +131,16 @@ export function Dashboard(args) {
         if (filters.style.height === '0px') {
             filters.style.height = '50px';
             loggerCategory.style.opacity = '1';
+            loggerCategory.disabled = false;
             loggerSubcategory.style.opacity = '1';
+            loggerSubcategory.disabled = false;
+
         } else {
             filters.style.height = '0px';
             loggerCategory.style.opacity = '0';
             loggerSubcategory.style.opacity = '0';
+            loggerCategory.disabled = true;
+            loggerSubcategory.disabled = true;
         }       
     };
 
@@ -156,6 +161,7 @@ export function Dashboard(args) {
                     <h1 id="title">Protein Admin</h1>
                     <Logger />
                     <div id="sideBarIconContainer">
+                        <i class="fa-solid fa-plus" onClick={expandSearchBar}></i>
                         <i class="fa-solid fa-filter" onClick={toggleFilters}></i>
                         <i class="fa-solid fa-utensils" style={{'fontSize': '25px', 'marginRight': '15px'}} onClick={openDailyMenu}></i>
                         <i className="fa-solid fa-bars" onClick={openSideBar}></i>

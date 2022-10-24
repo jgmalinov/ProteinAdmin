@@ -137,6 +137,11 @@ html {
   margin-right: 20px;
 }
 
+.fa-solid.fa-plus::before {
+  font-size: 25px;
+  margin-right: 15px;
+}
+
 .fa-solid.fa-filter {
   display: flex;
   font-size: 22px;
@@ -146,19 +151,59 @@ html {
 
 #autocompleteContainer {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   border: solid black 2px;
-  border-radius: 30px;
-  height: 20px;
+  border-radius: 10px;
   transition: 1s;
   padding: 3px 8px;
+  z-index: 30;
 }
 
-#autocompleteSearchBar {
+#searchBarContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: min-content;
+  margin: 6px 3px;
+  padding: 0px 5px;
+  transition: 0.3s;
+}
+
+#currentBatchContainer {
+  background:rgb(255, 255, 255);
+  height: 0px;
+  width: 0px;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+#currentBatchContainer ul {
+  font-size: 12px;
+  list-style-type:georgian;
+}
+
+#autocompleteSearchBar, #autocompleteWeightBar {
   width: 0px;
   padding: 0px;
   border: none;
   transition: 0.3s;
 }
+
+#autocompleteSearchBar:focus {
+  width: 250px;
+}
+
+#autocompleteCartContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0px;
+  overflow: hidden;
+  transition: 0.2s;
+}
+
+
 
 #loggerCategory, #loggerSubcategory {
   border-radius: 30px;
