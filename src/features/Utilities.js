@@ -299,8 +299,8 @@ export function expandSearchBar(e) {
      if (autocompleteSearchBar.style.width === '0px') {
         autocompleteSearchBar.style.width = '250px';
         autocompleteWeightBar.style.width = '53px'; 
-        autocompleteWeightBar.style.border = 'solid 1px black';
-        autocompleteWeightBar.style.borderRadius = '10px';
+        autocompleteWeightBar.style.border = 'solid 1.5px black';
+        autocompleteWeightBar.style.borderRadius = '5px';
         autocompleteSubmitButton.disabled = false;
         autocompleteCartButton.disabled = false;
         autocompleteCartContainer.style.width = '28px';

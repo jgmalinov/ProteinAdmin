@@ -176,10 +176,15 @@ html {
   width: 0px;
   overflow: hidden;
   transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #currentBatchContainer ul {
   font-size: 12px;
+  padding-left: 0px;
   list-style-type:georgian;
 }
 

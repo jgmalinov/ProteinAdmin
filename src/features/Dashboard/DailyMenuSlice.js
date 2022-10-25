@@ -17,7 +17,32 @@ const DailyMenuSlice = createSlice({
             state.dailyMenuUpdated = action.payload;
         },
         setCurrentBatch: (state, action) => {
-            state.currentBatch.push(action.payload);
+            if (typeof action.payload === 'object') {
+                let duplicate = false;
+                const newItemName = Object.keys(action.payload)[0];
+                for (let i=0; i<state.currentBatch.length; i++) {
+                    const currentBatchItemName = Object.keys(state.currentBatch[i])[0];
+                    
+                    if (newItemName === currentBatchItemName) {
+                        const weight = action.payload[newItemName].weight;
+                        state.currentBatch[i][currentBatchItemName].calories += action.payload[newItemName].calories;
+                        state.currentBatch[i][currentBatchItemName].protein += action.payload[newItemName].protein;
+                        state.currentBatch[i][currentBatchItemName].weight += weight;
+                        duplicate = true;
+                        break;
+                    };
+                };
+                if (!duplicate) {
+                    state.currentBatch.push(action.payload);
+                };
+            } else {
+                for (let i=0; i<state.currentBatch.length; i++) {
+                    const currentBatchItemName = Object.keys(state.currentBatch[i])[0];
+                    if (action.payload === currentBatchItemName) {
+                        state.currentBatch.splice(i, 1)
+                    };
+                }
+            };
         }
     }
 });

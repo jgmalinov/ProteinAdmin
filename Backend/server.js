@@ -8,6 +8,7 @@ const passport = require('passport');
 const initialize = require('./PassportConfig');
 const cors = require('cors');
 const e = require('cors');
+const format = require('pg-format');
 
 initialize(passport);
 
@@ -280,17 +281,26 @@ app.get('/menu', (req, res) => {
 });
 
 app.post('/menu', (req, res) => {
-    const meal = req.body;
-    const mealDesc = Object.keys(meal)[0];
+    const batchData = req.body;
     const date = new Date();
-    pool.query(`INSERT INTO daily_nutrition (date, email, calories, protein, description)
-                VALUES ($1, $2, $3, $4, $5)`, [date, req.user.email, meal[mealDesc].calories, meal[mealDesc].protein, mealDesc], (err, result) => {
+    const email = req.user.email;
+    const currentBatch = [];
+    for (let i=0; i < batchData.length; i++) {
+        const mealObj = batchData[i];
+        const description = Object.keys(batchData[i])[0];
+        const currentMeal = [date, email, description, mealObj[description].calories, mealObj[description].protein, mealObj[description].weight];
+        currentBatch.push(currentMeal);
+
+    }
+
+    pool.query(format(`INSERT INTO daily_nutrition (date, email, description, calories, protein, weight)
+                VALUES %L`, currentBatch, (err, result) => {
                     if (err) {
                         console.log(err)
                         res.send({message: err})
                     }
                     res.send({message: 'Success'})
-                })
+                }));
 })
     
 
