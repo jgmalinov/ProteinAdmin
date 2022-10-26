@@ -267,8 +267,9 @@ app.get('/table', (req, res) => {
 app.get('/menu', (req, res) => {
     const email = req.user.email;
     const date = new Date();
-    pool.query(`SELECT * FROM daily_nutrition
-                WHERE email=$1 AND date=$2`, [email, date], (err, result) => {
+    pool.query(`SELECT description, SUM(calories) AS calories, SUM(protein) AS protein, SUM(weight) AS weight FROM daily_nutrition
+                WHERE email=$1 AND date=$2
+                GROUP BY DESCRIPTION`, [email, date], (err, result) => {
                     if (err) {
                         console.log(err);
                     } 
@@ -294,13 +295,24 @@ app.post('/menu', (req, res) => {
     }
 
     pool.query(format(`INSERT INTO daily_nutrition (date, email, description, calories, protein, weight)
-                VALUES %L`, currentBatch, (err, result) => {
+                VALUES %L`, currentBatch), (err, result) => {
                     if (err) {
                         console.log(err)
                         res.send({message: err})
                     }
-                    res.send({message: 'Success'})
-                }));
+                    res.send('Successfully inserted data')
+                });
+});
+
+app.delete('/menu', (req, res) => {
+    const description = req.body.description;
+    pool.query(`DELETE FROM daily_nutrition
+                WHERE description=$1`, [description], (err, result) => {
+                    if (err) {
+                        throw(err)
+                    }
+                    res.send({message: `Successfully deleted data entry`});
+                });
 })
     
 

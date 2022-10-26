@@ -30,12 +30,15 @@ export function DailyMenu(args) {
             const description = dailyMenu[i].description;
             const calories = dailyMenu[i].calories;
             const protein = dailyMenu[i].protein;
+            const weight = dailyMenu[i].weight;
 
             dailyMenuJSX.push(
                 <tr>
-                    <td>{description}</td>
+                    <td className="descriptionColumn">{description}</td>
                     <td>{calories}</td>
                     <td>{protein}</td>
+                    <td>{weight}</td>
+                    <td style={{'border': 'none'}}><i class="fa-solid fa-x" style={{'color': 'red'}} onClick={removeEntryFromDailyMenu}></i></td>
                 </tr>
             )
         };
@@ -59,7 +62,16 @@ export function DailyMenu(args) {
         }
     };
 
+    function getSumWeight() {
+        if (dailyMenu.length > 0) {
+            const weightArray = dailyMenu.map((row) => row.weight);
+            const sumWeight = weightArray.reduce((a, b) => a + b);
+            return sumWeight;
+        }
+    };
+
     function CloseDailyMenu(e) {
+
         const dailyMenuBackground = document.getElementById('dailyMenuBackground');
         const dailyMenuTable = document.getElementById('dailyMenuTable');
 
@@ -69,18 +81,45 @@ export function DailyMenu(args) {
         dailyMenuTable.style.left = '-120%';
     };
 
+    function preventPropagation(e) {
+        if (e.target.id !== 'dailyMenuBackground') {
+            e.stopPropagation();
+        };
+    }
+
+    async function removeEntryFromDailyMenu(e) {
+        const url = process.env.REACT_APP_BACKEND_URL;
+        let foundDescription = false;
+        let description = '';
+        const siblings = e.target.parentElement.parentElement.childNodes;
+        siblings.forEach((sibling) => {
+            if (sibling.className === 'descriptionColumn') {
+                description = sibling.innerHTML;
+            }
+        });
+
+        
+        const response = await fetch(url + 'menu', {method: 'DELETE', credentials: 'include', headers: {'Content-Type':'application/json'}, body: JSON.stringify({description})})
+        const responseJS = await response.json();
+
+        if (responseJS.hasOwnProperty('message') && responseJS.message === 'Successfully deleted data entry') {
+            dispatch(setDailyMenuUpdated(true));
+        }
+    };
+
     return (
         <div id="dailyMenuBackground" onClick={CloseDailyMenu}>
-                <table id="dailyMenuTable">
+                <table id="dailyMenuTable" onClick={preventPropagation}>
                     <thead>
                         <tr>
-                            <th colSpan='3'>Your Daily Menu <i class="fa-solid fa-x" onClick={CloseDailyMenu}></i></th>
+                            <th colSpan='5'>Your Daily Menu <i id="dailyTableClose" class="fa-solid fa-x" onClick={CloseDailyMenu}></i></th>
                             
                         </tr>
                         <tr>
                             <th scope="col">Description</th>
                             <th scope="col">Calories</th>
                             <th scope="col">Protein</th>
+                            <th scope="col">Weight</th>
                         </tr>
                     </thead>
 
@@ -90,20 +129,23 @@ export function DailyMenu(args) {
 
                     <tfoot>
                         <tr>
-                            <th colSpan='3'>Totals</th>
+                            <th colSpan='4'>Totals</th>
                         </tr>
                         <tr>
                             <th scope="col"></th>
                             <th scope="col">Total daily calories</th>
                             <th scope="col">Total daily protein</th>
+                            <th scope="col">Total weight</th>
                         </tr>
                         <tr>
                             <td></td>
-                            <td>{getSumCalories()}</td>
-                            <td>{getSumProtein()}</td>
+                            <td>{getSumCalories()}kcal</td>
+                            <td>{getSumProtein()}g/pt</td>
+                            <td>{getSumWeight()}g</td>
                         </tr>
                     </tfoot>
                 </table>
+                <button type="button">Edit</button>
         </div>
         
     )

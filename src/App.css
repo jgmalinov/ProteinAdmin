@@ -288,11 +288,13 @@ html {
   transition: 0.6s;
   position: relative;
   left: -120%;
+  z-index: 6;
 }
 
-#dailyMenuTable .fa-solid.fa-x {
+#dailyTableClose {
   position: absolute;
-  right: 12px;
+  font-size: 20px;
+  right: 10px;
   top: 10px;
 }
 
