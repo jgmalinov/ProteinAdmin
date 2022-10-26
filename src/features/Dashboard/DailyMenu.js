@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setDailyMenu, selectDailyMenu, setDailyMenuUpdated, selectDailyMenuUpdated } from "./DailyMenuSlice"; 
 
 export function DailyMenu(args) {
+    const url = process.env.REACT_APP_BACKEND_URL;
     const dispatch = useDispatch();
     const dailyMenu = useSelector(selectDailyMenu);
     const updateDailyMenu = useSelector(selectDailyMenuUpdated);
@@ -11,7 +12,6 @@ export function DailyMenu(args) {
     };
 
     async function getDailyMenu() {
-        const url = process.env.REACT_APP_BACKEND_URL;
         let dailyMenu;
         const response = await fetch(url + 'menu', {credentials: 'include', headers: {'Content-Type': 'application/json'}});
         const responseJS = await response.json();
@@ -88,8 +88,6 @@ export function DailyMenu(args) {
     }
 
     async function removeEntryFromDailyMenu(e) {
-        const url = process.env.REACT_APP_BACKEND_URL;
-        let foundDescription = false;
         let description = '';
         const siblings = e.target.parentElement.parentElement.childNodes;
         siblings.forEach((sibling) => {
@@ -107,6 +105,29 @@ export function DailyMenu(args) {
         }
     };
 
+    async function commitToDB(e) {
+        const tableFooter = document.querySelector('#dailyMenuTable>tfoot');
+        const message = document.createElement('h4');
+        if (dailyMenu.length === 0) {
+            message.innerHTML = 'No entries to commit!';
+            tableFooter.appendChild(message);
+            setTimeout(() => {
+                const messageToRemove = tableFooter.lastChild;
+                tableFooter.removeChild(messageToRemove);
+            }, 5000);
+        } else {
+            let calories = 0, protein = 0;
+            dailyMenu.forEach((entry) => {
+                calories += entry.calories;
+                protein += entry.protein;
+            });
+            const response = await fetch(url + 'timeseries', {method: 'POST', credentials: 'include', headers: {'Content-Type':'application/json'}, body: JSON.stringify({calories, protein})});
+            const responseJS = await response.json();
+            responseJS.hasOwnProperty('message') ? message.innerHTML = responseJS.message : message.innerHTML = 'Something went wrong :(';
+            tableFooter.appendChild(message);
+        }
+    }
+
     return (
         <div id="dailyMenuBackground" onClick={CloseDailyMenu}>
                 <table id="dailyMenuTable" onClick={preventPropagation}>
@@ -123,7 +144,7 @@ export function DailyMenu(args) {
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody id="menuRows">
                         {getDailyMenuJSX()}
                     </tbody>
 
@@ -143,9 +164,10 @@ export function DailyMenu(args) {
                             <td>{getSumProtein()}g/pt</td>
                             <td>{getSumWeight()}g</td>
                         </tr>
-                    </tfoot>
+                        <button type="button" onClick={commitToDB}>Commit</button>
+                    </tfoot>                   
                 </table>
-                <button type="button">Edit</button>
+               
         </div>
         
     )

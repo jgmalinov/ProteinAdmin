@@ -17,7 +17,7 @@ const DailyMenuSlice = createSlice({
             state.dailyMenuUpdated = action.payload;
         },
         setCurrentBatch: (state, action) => {
-            if (typeof action.payload === 'object') {
+            if (typeof action.payload === 'object' && !Array.isArray(action.payload)) {
                 let duplicate = false;
                 const newItemName = Object.keys(action.payload)[0];
                 for (let i=0; i<state.currentBatch.length; i++) {
@@ -35,13 +35,15 @@ const DailyMenuSlice = createSlice({
                 if (!duplicate) {
                     state.currentBatch.push(action.payload);
                 };
-            } else {
+            } else if (typeof action.payload === 'string') {
                 for (let i=0; i<state.currentBatch.length; i++) {
                     const currentBatchItemName = Object.keys(state.currentBatch[i])[0];
                     if (action.payload === currentBatchItemName) {
                         state.currentBatch.splice(i, 1)
                     };
                 }
+            } else {
+                state.currentBatch = [];
             };
         }
     }

@@ -267,7 +267,7 @@ app.get('/table', (req, res) => {
 app.get('/menu', (req, res) => {
     const email = req.user.email;
     const date = new Date();
-    pool.query(`SELECT description, SUM(calories) AS calories, SUM(protein) AS protein, SUM(weight) AS weight FROM daily_nutrition
+    pool.query(`SELECT description, SUM(calories) AS calories, SUM(protein) AS protein, SUM(weight) AS weight, BOOL_AND(committed) FROM daily_nutrition
                 WHERE email=$1 AND date=$2
                 GROUP BY DESCRIPTION`, [email, date], (err, result) => {
                     if (err) {
@@ -313,6 +313,22 @@ app.delete('/menu', (req, res) => {
                     }
                     res.send({message: `Successfully deleted data entry`});
                 });
+});
+
+app.post('/timeseries', (req, res) => {
+    const email = req.user.email;
+    const date = new Date();
+    const calories = req.body.calories;
+    const protein = req.body.protein;
+
+    pool.query(`UPDATE nutritional_time_series
+                SET email = $1, calories = calories + $2, protein = protein + $3
+                WHERE date = $4`, [email, calories, protein, date], (err, result) => {
+                    if (err) {
+                        throw (err)
+                    }
+                    res.send({message: 'Successfully updated entry'});
+                })
 })
     
 

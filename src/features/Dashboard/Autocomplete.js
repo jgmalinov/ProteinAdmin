@@ -42,8 +42,9 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
         const url = process.env.REACT_APP_BACKEND_URL;
         const response = await fetch(url + 'menu', {method: 'POST', credentials: 'include', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(currentBatch)})
                         .then((res) => console.log(res));
-        console.log('hleb');
+    
         dispatch(setDailyMenuUpdated(true));
+        dispatch(setCurrentBatch([]));
     };
 
     function renderCurrentBatch() {
@@ -91,7 +92,7 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
                 <button style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteSubmitButton" disabled><i class="fa-solid fa-magnifying-glass" onDoubleClick={expandSearchBar}></i></button>
                 <div id="autocompleteCartContainer"><button type="button" style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteCartButton" disabled><i class="fa-solid fa-cart-shopping" onClick={expandCurrentBatch}></i></button></div>
             </div>
-            <div id="currentBatchContainer">
+            <div id="currentBatchContainer" style={{'height': '0px'}}>
                 <ul id="autocompleteCart">
                     {renderCurrentBatch()}
                 </ul>
