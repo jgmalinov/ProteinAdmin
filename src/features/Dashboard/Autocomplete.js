@@ -39,6 +39,10 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
     };
 
     async function handleConfirm(e) {
+        if (currentBatch.length === 0) {
+            alert('Please add an entry before confirmation');
+            return;
+        }
         const url = process.env.REACT_APP_BACKEND_URL;
         const response = await fetch(url + 'menu', {method: 'POST', credentials: 'include', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(currentBatch)})
                         .then((res) => console.log(res));

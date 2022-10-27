@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setDailyMenu, selectDailyMenu, setDailyMenuUpdated, selectDailyMenuUpdated } from "./DailyMenuSlice"; 
+import { setDailyMenu, selectDailyMenu, setDailyMenuUpdated, selectDailyMenuUpdated } from "./DailyMenuSlice";
+import { removeElement } from "../Utilities";
 
 export function DailyMenu(args) {
     const url = process.env.REACT_APP_BACKEND_URL;
@@ -13,7 +14,7 @@ export function DailyMenu(args) {
 
     async function getDailyMenu() {
         let dailyMenu;
-        const response = await fetch(url + 'menu', {credentials: 'include', headers: {'Content-Type': 'application/json'}});
+        const response = await fetch(url + 'menu', {method: 'GET', credentials: 'include', headers: {'Content-Type': 'application/json'}});
         const responseJS = await response.json();
         if (responseJS.hasOwnProperty('message')) {
             dailyMenu = [];
@@ -26,21 +27,33 @@ export function DailyMenu(args) {
 
     function getDailyMenuJSX() {
         const dailyMenuJSX = [];
-        for (let i=0; i < dailyMenu.length; i++) {
-            const description = dailyMenu[i].description;
-            const calories = dailyMenu[i].calories;
-            const protein = dailyMenu[i].protein;
-            const weight = dailyMenu[i].weight;
+        const dailyMenuOrdered = dailyMenu.filter((entry) => entry.committed === false).concat(dailyMenu.filter((entry) => entry.committed === true));
+        for (let i=0; i < dailyMenuOrdered.length; i++) {
+            const description = dailyMenuOrdered[i].description;
+            const calories = dailyMenuOrdered[i].calories;
+            const protein = dailyMenuOrdered[i].protein;
+            const weight = dailyMenuOrdered[i].weight;
+            const committed = dailyMenuOrdered[i].committed;
+            let rowJSX;
 
-            dailyMenuJSX.push(
-                <tr>
-                    <td className="descriptionColumn">{description}</td>
-                    <td>{calories}</td>
-                    <td>{protein}</td>
-                    <td>{weight}</td>
-                    <td style={{'border': 'none'}}><i class="fa-solid fa-x" style={{'color': 'red'}} onClick={removeEntryFromDailyMenu}></i></td>
-                </tr>
-            )
+            if(!committed) {
+                rowJSX = <tr>
+                            <td className="descriptionColumn">{description}</td>
+                            <td>{calories}</td>
+                            <td>{protein}</td>
+                            <td>{weight}</td>
+                            <td style={{'border': 'none'}}><i class="fa-solid fa-x" style={{'color': 'red'}} onClick={removeEntryFromDailyMenu}></i></td>
+                        </tr>
+            } else {
+                rowJSX = <tr style={{'backgroundColor': 'lightgray'}}>
+                            <td className="descriptionColumn">{description}</td>
+                            <td>{calories}</td>
+                            <td>{protein}</td>
+                            <td>{weight}</td>
+                        </tr>               
+            };
+    
+            dailyMenuJSX.push(rowJSX);
         };
 
         return dailyMenuJSX;
@@ -116,15 +129,22 @@ export function DailyMenu(args) {
                 tableFooter.removeChild(messageToRemove);
             }, 5000);
         } else {
-            let calories = 0, protein = 0;
-            dailyMenu.forEach((entry) => {
-                calories += entry.calories;
-                protein += entry.protein;
-            });
+            const calories = dailyMenu.filter((a) => a.committed === false).map((a) => a.calories).reduce((a, b) => a + b);
+            const protein = dailyMenu.filter((a) => a.committed === false).map((a) => a.protein).reduce((a, b) => a + b);
+            
             const response = await fetch(url + 'timeseries', {method: 'POST', credentials: 'include', headers: {'Content-Type':'application/json'}, body: JSON.stringify({calories, protein})});
             const responseJS = await response.json();
             responseJS.hasOwnProperty('message') ? message.innerHTML = responseJS.message : message.innerHTML = 'Something went wrong :(';
             tableFooter.appendChild(message);
+            removeElement(tableFooter);
+
+            if (message.innerHTML !== 'Something went wrong :(') {
+                const response = await fetch(url + 'menu', {method: 'PUT', credentials: 'include', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({})});
+                const responseJS = await response.json();
+                if (responseJS.hasOwnProperty('message')) {
+                    dispatch(setDailyMenuUpdated(true));
+                }
+            }
         }
     }
 
@@ -160,9 +180,9 @@ export function DailyMenu(args) {
                         </tr>
                         <tr>
                             <td></td>
-                            <td>{getSumCalories()}kcal</td>
-                            <td>{getSumProtein()}g/pt</td>
-                            <td>{getSumWeight()}g</td>
+                            <td id="totalCalories">{getSumCalories()}kcal</td>
+                            <td id="totalProtein">{getSumProtein()}g/pt</td>
+                            <td id="totalWeight">{getSumWeight()}g</td>
                         </tr>
                         <button type="button" onClick={commitToDB}>Commit</button>
                     </tfoot>                   

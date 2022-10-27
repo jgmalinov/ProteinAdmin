@@ -267,8 +267,12 @@ app.get('/table', (req, res) => {
 app.get('/menu', (req, res) => {
     const email = req.user.email;
     const date = new Date();
-    pool.query(`SELECT description, SUM(calories) AS calories, SUM(protein) AS protein, SUM(weight) AS weight, BOOL_AND(committed) FROM daily_nutrition
-                WHERE email=$1 AND date=$2
+    pool.query(`SELECT description, SUM(calories) AS calories, SUM(protein) AS protein, SUM(weight) AS weight, BOOL_AND(committed) as committed FROM daily_nutrition
+                WHERE email=$1 AND date=$2 AND committed = true
+                GROUP BY DESCRIPTION
+                UNION 
+                SELECT description, SUM(calories) AS calories, SUM(protein) AS protein, SUM(weight) AS weight, BOOL_AND(committed) as committed FROM daily_nutrition
+                WHERE email=$1 AND date=$2 AND committed = false
                 GROUP BY DESCRIPTION`, [email, date], (err, result) => {
                     if (err) {
                         console.log(err);
@@ -289,12 +293,12 @@ app.post('/menu', (req, res) => {
     for (let i=0; i < batchData.length; i++) {
         const mealObj = batchData[i];
         const description = Object.keys(batchData[i])[0];
-        const currentMeal = [date, email, description, mealObj[description].calories, mealObj[description].protein, mealObj[description].weight];
+        const currentMeal = [date, email, description, mealObj[description].calories, mealObj[description].protein, mealObj[description].weight, false];
         currentBatch.push(currentMeal);
 
     }
 
-    pool.query(format(`INSERT INTO daily_nutrition (date, email, description, calories, protein, weight)
+    pool.query(format(`INSERT INTO daily_nutrition (date, email, description, calories, protein, weight, committed)
                 VALUES %L`, currentBatch), (err, result) => {
                     if (err) {
                         console.log(err)
@@ -314,6 +318,19 @@ app.delete('/menu', (req, res) => {
                     res.send({message: `Successfully deleted data entry`});
                 });
 });
+
+app.put('/menu', (req, res) => {
+    const date = new Date();
+    const email = req.user.email;
+    pool.query(`UPDATE daily_nutrition
+                SET committed=true
+                WHERE date = $1 AND email = $2 AND committed = false`, [date, email], (err, result) => {
+                    if (err) {
+                        throw(err)
+                    };
+                    res.send({message: 'Successfully committed outstanding daily_nutrition entries'});
+                })
+})
 
 app.post('/timeseries', (req, res) => {
     const email = req.user.email;

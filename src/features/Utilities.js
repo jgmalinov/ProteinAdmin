@@ -314,3 +314,9 @@ export function expandSearchBar(e) {
         autocompleteCartContainer.style.width = '0px';
      } 
 };
+
+export function removeElement(parentElement) {
+    setTimeout(() => {
+        parentElement.removeChild(parentElement.lastChild);
+    }, 5000)
+};
