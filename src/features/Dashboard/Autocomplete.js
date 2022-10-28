@@ -1,11 +1,18 @@
 import { row } from "mathjs";
 import { useDispatch, useSelector  } from "react-redux";
-import { setDailyMenuUpdated, setCurrentBatch, selectCurrentBatch } from "./DailyMenuSlice";
-import { expandSearchBar } from "../Utilities";
+import { setDailyMenuUpdated, setCurrentBatch, selectCurrentBatch, setInputMethod, selectInputMethod, setInputMethodChanged, selectDailyMenuUpdated, selectInputMethodChanged } from "./DailyMenuSlice";
+import { expandSearchBar, modifySearchBar } from "../Utilities";
 
 export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
     const dispatch = useDispatch();
     const currentBatch = useSelector(selectCurrentBatch);
+    const inputMethod = useSelector(selectInputMethod);
+    const inputMethodChanged = useSelector(selectInputMethodChanged);
+
+    if(inputMethodChanged) {
+        expandSearchBar(inputMethod);
+        dispatch(setInputMethodChanged(false));
+    }
 
     function setDatalistOptions() {
         const datalistOptions = [];
@@ -65,18 +72,20 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
         };
     };
 
+    function modifySearchBar(e) {
+        expandSearchBar(inputMethod);
+    };
+
     function expandCurrentBatch(e) {
         const currentBatch = document.getElementById('currentBatchContainer');
         const searchBarContainer = document.getElementById('searchBarContainer');
         if (currentBatch.style.height === '0px') {
-            currentBatch.style.height = '80px';
-            currentBatch.style.width = '100%';
+            currentBatch.style.height = '120px';
             searchBarContainer.style.border = '1px solid black';
-            searchBarContainer.style.borderRadius = '7px';
+            searchBarContainer.style.borderRadius = '3px';
             searchBarContainer.style.marginTop = '12px';
         } else {
             currentBatch.style.height = '0px';
-            currentBatch.style.width = '0px';
             searchBarContainer.style.border = 'none';
             searchBarContainer.style.borderRadius = '0px';
             searchBarContainer.style.marginTop = '6px';
@@ -86,26 +95,73 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
     function deleteRow(e) {
         const mealName = e.target.id;
         dispatch(setCurrentBatch(mealName));
-    }
+    };
+
+    function renderInputs() {
+        let inputsJSX;
+        if (inputMethod === 'search') {
+            inputsJSX = (
+                <div id="searchBarContainer">
+                    <input type="text" list="autocompleteOptions" placeholder="Search" id="autocompleteSearchBar" style={{'outline': 'none'}} required></input>
+                    <input type="number" placeholder="grams" id="autocompleteWeightBar" required></input>
+                    <button style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteSubmitButton" disabled><i class="fa-solid fa-magnifying-glass" onDoubleClick={modifySearchBar}></i></button>
+                    <div id="autocompleteCartContainer"><button type="button" style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteCartButton" disabled><i class="fa-solid fa-caret-down" onClick={expandCurrentBatch}></i></button></div>
+                </div>
+            )
+        } else {
+            inputsJSX = (
+                <div id="searchBarContainer">
+                    <input className="batchInputs" type='number' placeholder="calories" required></input>
+                    <input className="batchInputs" type='number' placeholder="protein"  required></input>
+                    <input className="batchInputs" type='number' placeholder="weight"  required></input>
+                    <button style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteSubmitButton" disabled><i class="fa-solid fa-magnifying-glass" onDoubleClick={modifySearchBar}></i></button>
+                    <div id="autocompleteCartContainer"><button type="button" style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteCartButton" disabled><i class="fa-solid fa-caret-down" onClick={expandCurrentBatch}></i></button></div>
+                </div>
+            )
+        };
+        return inputsJSX;
+    };
+
+    function toggleInputMethod(e) {
+        const autocompleteContainer = document.getElementById('autocompleteContainer');
+        const inputMethodButton = document.querySelector('#autocomplete>button');
+         if (inputMethod === 'search') {
+            dispatch(setInputMethod('input'));
+            inputMethodButton.innerHTML = 'Input';
+         } else {
+            dispatch(setInputMethod('search'));
+            inputMethodButton.innerHTML = 'Search';
+         };
+
+         if (autocompleteContainer.style.width !== '7%') {
+            expandSearchBar(inputMethod);
+         }
+        
+        dispatch(setInputMethodChanged(true));
+    };
 
     return (
-        <form id="autocompleteContainer" onSubmit={handleSubmit}>
-            <div id="searchBarContainer">
-                <input type="text" list="autocompleteOptions" placeholder="Search" id="autocompleteSearchBar" style={{'outline': 'none', 'width': '0px'}} required></input>
-                <input type="number" placeholder="grams" id="autocompleteWeightBar" required></input>
-                <button style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteSubmitButton" disabled><i class="fa-solid fa-magnifying-glass" onDoubleClick={expandSearchBar}></i></button>
-                <div id="autocompleteCartContainer"><button type="button" style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteCartButton" disabled><i class="fa-solid fa-cart-shopping" onClick={expandCurrentBatch}></i></button></div>
-            </div>
-            <div id="currentBatchContainer" style={{'height': '0px'}}>
-                <ul id="autocompleteCart">
-                    {renderCurrentBatch()}
-                </ul>
-                <button type="button" style={{'width':'20%', 'margin': '8px 0px 12px 0px'}} onClick={handleConfirm}>Confirm</button>
-            </div>
+        <div id="autocomplete">
+            <button id="inputMethodToggle" onClick={toggleInputMethod}>Search</button>
+            <div id="autocompleteContainer" style={{'width': '7%'}}>
+                <form  onSubmit={handleSubmit} id='autocompleteForm'>
+                    {renderInputs()}
+                </form>
 
-            <datalist id="autocompleteOptions">
-                {setDatalistOptions()}
-            </datalist>
-        </form>
+                <div id="currentBatchContainer" style={{'height': '0px'}}>
+                    <ul id="autocompleteCart">
+                        {renderCurrentBatch()}
+                    </ul>
+                    <button type="button" style={{'width':'20%', 'margin': '8px 0px 12px 0px'}} onClick={handleConfirm}>Confirm</button>
+                </div>
+
+                <datalist id="autocompleteOptions">
+                    {setDatalistOptions()}
+                </datalist>
+            </div>
+        </div>
+
+
+        
     )
 }

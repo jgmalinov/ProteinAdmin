@@ -6,7 +6,9 @@ const DailyMenuSlice = createSlice({
     initialState: {
          dailyMenu: [],
          dailyMenuUpdated: true,
-         currentBatch: []
+         currentBatch: [],
+         inputMethod: 'search',
+         inputMethodChanged: false
     },
 
     reducers: {
@@ -45,6 +47,12 @@ const DailyMenuSlice = createSlice({
             } else {
                 state.currentBatch = [];
             };
+        },
+        setInputMethod: (state, action) => {
+            state.inputMethod = action.payload;
+        },
+        setInputMethodChanged: (state, action) => {
+            state.inputMethodChanged = action.payload;
         }
     }
 });
@@ -52,5 +60,7 @@ const DailyMenuSlice = createSlice({
 export const selectDailyMenu = (state) => state.DailyMenuSlice.dailyMenu;
 export const selectDailyMenuUpdated = (state) => state.DailyMenuSlice.dailyMenuUpdated;
 export const selectCurrentBatch = (state) => state.DailyMenuSlice.currentBatch;
-export const { setDailyMenu, setDailyMenuUpdated, setCurrentBatch } = DailyMenuSlice.actions;
+export const selectInputMethod = (state) => state.DailyMenuSlice.inputMethod;
+export const selectInputMethodChanged = (state) => state.DailyMenuSlice.inputMethodChanged;
+export const { setDailyMenu, setDailyMenuUpdated, setCurrentBatch, setInputMethod, setInputMethodChanged } = DailyMenuSlice.actions;
 export default DailyMenuSlice.reducer;

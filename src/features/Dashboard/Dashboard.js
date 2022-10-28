@@ -2,12 +2,13 @@ import { setLoggedIn, selectLoggedIn } from "../Login/LoginSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { setUser, selectUser, setSidebarOn, selectSidebarOn, setTimeSeries, selectTimeSeries, setStats, selectStats } from "./DashboardSlice";
-import { getAge, getCalories, getProtein, BarChartConfig, createBarChart, calculateCurrentStatus, expandSearchBar} from "../Utilities";
+import { getAge, getCalories, getProtein, BarChartConfig, createBarChart, calculateCurrentStatus} from "../Utilities";
 import { Sidebar } from "./Sidebar";
 import { Bar } from 'react-chartjs-2';
 import { useEffect } from "react";
 import { Logger } from "./Logger";
 import { DailyMenu } from "./DailyMenu";
+import { selectInputMethod, setInputMethod } from "./DailyMenuSlice";
 
 
 export function Dashboard(args) {
@@ -25,6 +26,7 @@ export function Dashboard(args) {
     const loggedIn = useSelector(selectLoggedIn);
     const sidebarOn = useSelector(selectSidebarOn);
     let stats = useSelector(selectStats);
+    const inputMethod = useSelector(selectInputMethod);
 
     useEffect(() => {
         async function BarChart(timeSeries) {
@@ -161,7 +163,6 @@ export function Dashboard(args) {
                     <h1 id="title">Protein Admin</h1>
                     <Logger />
                     <div id="sideBarIconContainer">
-                        <i class="fa-solid fa-plus" onClick={expandSearchBar}></i>
                         <i class="fa-solid fa-filter" onClick={toggleFilters}></i>
                         <i class="fa-solid fa-utensils" style={{'fontSize': '25px', 'marginRight': '15px'}} onClick={openDailyMenu}></i>
                         <i className="fa-solid fa-bars" onClick={openSideBar}></i>

@@ -288,35 +288,63 @@ export function calculateCurrentStatus(labels, calories, protein, timeSeries, go
 
 /* mean absolute deviation */
 
-export function expandSearchBar(e) {
-    const autocompleteSearchBar = document.getElementById('autocompleteSearchBar');
-    const autocompleteWeightBar = document.getElementById('autocompleteWeightBar');
-    const autocompleteSubmitButton = document.getElementById('autocompleteSubmitButton');
-    const autocompleteCartButton = document.getElementById('autocompleteCartButton');
-    const autocompleteCartContainer = document.getElementById('autocompleteCartContainer');
-    
 
-     if (autocompleteSearchBar.style.width === '0px') {
-        autocompleteSearchBar.style.width = '250px';
-        autocompleteWeightBar.style.width = '53px'; 
-        autocompleteWeightBar.style.border = 'solid 1.5px black';
-        autocompleteWeightBar.style.borderRadius = '5px';
-        autocompleteSubmitButton.disabled = false;
-        autocompleteCartButton.disabled = false;
-        autocompleteCartContainer.style.width = '28px';
-    
-     } else {
-        autocompleteSearchBar.style.width = '0px';
-        autocompleteWeightBar.style.width = '0px';
-        autocompleteWeightBar.style.border = 'none';
-        autocompleteSubmitButton.disabled = true;
-        autocompleteCartButton.disabled = true;
-        autocompleteCartContainer.style.width = '0px';
-     } 
-};
 
 export function removeElement(parentElement) {
     setTimeout(() => {
         parentElement.removeChild(parentElement.lastChild);
     }, 5000)
+};
+
+export function expandSearchBar(inputMethod) {
+    const autocompleteContainer = document.getElementById('autocompleteContainer');
+    const searchBarContainer = document.getElementById('searchBarContainer');
+    const autocompleteSubmitButton = document.getElementById('autocompleteSubmitButton');
+    const autocompleteCartButton = document.getElementById('autocompleteCartButton');
+    const autocompleteCartContainer = document.getElementById('autocompleteCartContainer');
+
+    if (autocompleteContainer.style.width === '7%') {
+        autocompleteContainer.style.width = '100%';
+        searchBarContainer.style.width = '100%';
+        autocompleteSubmitButton.disabled = false;
+        autocompleteCartButton.disabled = false;
+        autocompleteCartContainer.style.width = '28px';
+        
+        if (inputMethod === 'search') {
+            const autocompleteSearchBar = document.getElementById('autocompleteSearchBar');
+            const autocompleteWeightBar = document.getElementById('autocompleteWeightBar');
+            autocompleteSearchBar.style.width = '70%';
+            autocompleteWeightBar.style.width = '20%';
+            autocompleteWeightBar.style.border = 'solid 1.5px black';
+            autocompleteWeightBar.style.borderRadius = '5px';
+        } else {
+            const batchInputs = document.getElementsByClassName('batchInputs');
+            for (let i=0; i < batchInputs.length; i++) {
+                batchInputs[i].style.width = '25%'
+                batchInputs[i].style.borderRight = '1px solid black';
+            }
+        };
+    
+    } else {
+        autocompleteContainer.style.width = '7%';
+        searchBarContainer.style.width = 'fit-content';
+        autocompleteSubmitButton.disabled = true;
+        autocompleteCartButton.disabled = true;
+        autocompleteCartContainer.style.width = '0px';
+
+        if (inputMethod === 'search') {
+            const autocompleteSearchBar = document.getElementById('autocompleteSearchBar');
+            const autocompleteWeightBar = document.getElementById('autocompleteWeightBar');
+            autocompleteSearchBar.style.width = '0px';
+            autocompleteWeightBar.style.width = '0px';
+            autocompleteWeightBar.style.border = 'none';
+            autocompleteWeightBar.style.borderRadius = '5px';
+        } else {
+            const batchInputs = document.getElementsByClassName('batchInputs');
+            for (let i=0; i < batchInputs.length; i++) {
+                batchInputs[i].style.width = '0px';
+                batchInputs[i].style.borderRight = 'none';
+            }
+        }
+    };
 };
