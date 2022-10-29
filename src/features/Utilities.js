@@ -298,14 +298,12 @@ export function removeElement(parentElement) {
 
 export function expandSearchBar(inputMethod) {
     const autocompleteContainer = document.getElementById('autocompleteContainer');
-    const searchBarContainer = document.getElementById('searchBarContainer');
     const autocompleteSubmitButton = document.getElementById('autocompleteSubmitButton');
     const autocompleteCartButton = document.getElementById('autocompleteCartButton');
     const autocompleteCartContainer = document.getElementById('autocompleteCartContainer');
 
-    if (autocompleteContainer.style.width === '7%') {
+    if (autocompleteContainer.style.width === '2rem') {
         autocompleteContainer.style.width = '100%';
-        searchBarContainer.style.width = '100%';
         autocompleteSubmitButton.disabled = false;
         autocompleteCartButton.disabled = false;
         autocompleteCartContainer.style.width = '28px';
@@ -326,8 +324,7 @@ export function expandSearchBar(inputMethod) {
         };
     
     } else {
-        autocompleteContainer.style.width = '7%';
-        searchBarContainer.style.width = 'fit-content';
+        autocompleteContainer.style.width = '2rem';
         autocompleteSubmitButton.disabled = true;
         autocompleteCartButton.disabled = true;
         autocompleteCartContainer.style.width = '0px';
@@ -338,7 +335,7 @@ export function expandSearchBar(inputMethod) {
             autocompleteSearchBar.style.width = '0px';
             autocompleteWeightBar.style.width = '0px';
             autocompleteWeightBar.style.border = 'none';
-            autocompleteWeightBar.style.borderRadius = '5px';
+            autocompleteWeightBar.style.borderRadius = '0px';
         } else {
             const batchInputs = document.getElementsByClassName('batchInputs');
             for (let i=0; i < batchInputs.length; i++) {

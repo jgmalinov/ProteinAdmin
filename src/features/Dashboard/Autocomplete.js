@@ -2,6 +2,7 @@ import { row } from "mathjs";
 import { useDispatch, useSelector  } from "react-redux";
 import { setDailyMenuUpdated, setCurrentBatch, selectCurrentBatch, setInputMethod, selectInputMethod, setInputMethodChanged, selectDailyMenuUpdated, selectInputMethodChanged } from "./DailyMenuSlice";
 import { expandSearchBar, modifySearchBar } from "../Utilities";
+import { useEffect } from "react";
 
 export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
     const dispatch = useDispatch();
@@ -9,10 +10,19 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
     const inputMethod = useSelector(selectInputMethod);
     const inputMethodChanged = useSelector(selectInputMethodChanged);
 
-    if(inputMethodChanged) {
-        expandSearchBar(inputMethod);
-        dispatch(setInputMethodChanged(false));
-    }
+
+    useEffect(() => {
+        if(inputMethodChanged) {
+            const autocompleteContainer = document.getElementById('autocompleteContainer')
+            if (autocompleteContainer.style.width === '2rem') {
+                setTimeout(() => {
+                    expandSearchBar(inputMethod);
+                }, 300);
+             }
+            dispatch(setInputMethodChanged(false));
+        }
+    })
+
 
     function setDatalistOptions() {
         const datalistOptions = [];
@@ -133,7 +143,7 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
             inputMethodButton.innerHTML = 'Search';
          };
 
-         if (autocompleteContainer.style.width !== '7%') {
+         if (autocompleteContainer.style.width !== '2rem') {
             expandSearchBar(inputMethod);
          }
         
@@ -143,7 +153,7 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
     return (
         <div id="autocomplete">
             <button id="inputMethodToggle" onClick={toggleInputMethod}>Search</button>
-            <div id="autocompleteContainer" style={{'width': '7%'}}>
+            <div id="autocompleteContainer" style={{'width': '2rem'}}>
                 <form  onSubmit={handleSubmit} id='autocompleteForm'>
                     {renderInputs()}
                 </form>
