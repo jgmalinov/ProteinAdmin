@@ -1,7 +1,7 @@
 import { row } from "mathjs";
 import { useDispatch, useSelector  } from "react-redux";
 import { setDailyMenuUpdated, setCurrentBatch, selectCurrentBatch, setInputMethod, selectInputMethod, setInputMethodChanged, selectDailyMenuUpdated, selectInputMethodChanged } from "./DailyMenuSlice";
-import { expandSearchBar, modifySearchBar } from "../Utilities";
+import { expandSearchBar, modifySearchBar, expandCurrentBatch } from "../Utilities";
 import { useEffect } from "react";
 
 export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
@@ -87,22 +87,6 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
         expandSearchBar(inputMethod);
     };
 
-    function expandCurrentBatch(e) {
-        const currentBatch = document.getElementById('currentBatchContainer');
-        const searchBarContainer = document.getElementById('searchBarContainer');
-        if (currentBatch.style.height === '0px') {
-            currentBatch.style.height = '120px';
-            searchBarContainer.style.border = '1px solid black';
-            searchBarContainer.style.borderRadius = '3px';
-            searchBarContainer.style.marginTop = '12px';
-        } else {
-            currentBatch.style.height = '0px';
-            searchBarContainer.style.border = 'none';
-            searchBarContainer.style.borderRadius = '0px';
-            searchBarContainer.style.marginTop = '6px';
-        }
-    };
-
     function deleteRow(e) {
         const mealName = e.target.id;
         dispatch(setCurrentBatch(mealName));
@@ -142,17 +126,12 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
 
     function toggleInputMethod(e) {
         const autocompleteContainer = document.getElementById('autocompleteContainer');
-        const inputMethodButton = document.querySelector('#autocompleteModifyButton');
-        const currentBatchContainer = document.getElementById('currentBatchContainer');
+
          if (inputMethod === 'search') {
             dispatch(setInputMethod('input'));
          } else {
             dispatch(setInputMethod('search'));
          };
-
-         if (currentBatchContainer.style.height === '120px') {
-            expandCurrentBatch();
-         }
 
          if (autocompleteContainer.style.width !== '2rem') {
             expandSearchBar(inputMethod);

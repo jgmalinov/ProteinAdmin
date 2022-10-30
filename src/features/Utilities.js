@@ -302,6 +302,11 @@ export function expandSearchBar(inputMethod) {
     const autocompleteModifyButton = document.getElementById('autocompleteModifyButton');
     const autocompleteCartButton = document.getElementById('autocompleteCartButton');
     const autocompleteCartContainer = document.getElementById('autocompleteCartContainer');
+    const currentBatchContainer = document.getElementById('currentBatchContainer');
+    
+    if (currentBatchContainer.style.height === '120px') {
+        expandCurrentBatch();
+     }
 
     if (autocompleteContainer.style.width === '2rem') {
         autocompleteContainer.style.width = '100%';
@@ -345,7 +350,21 @@ export function expandSearchBar(inputMethod) {
     };
 };
 
-
+export function expandCurrentBatch(e) {
+    const currentBatch = document.getElementById('currentBatchContainer');
+    const searchBarContainer = document.getElementById('searchBarContainer');
+    if (currentBatch.style.height === '0px') {
+        currentBatch.style.height = '120px';
+        searchBarContainer.style.border = '1px solid black';
+        searchBarContainer.style.borderRadius = '3px';
+        searchBarContainer.style.marginTop = '12px';
+    } else {
+        currentBatch.style.height = '0px';
+        searchBarContainer.style.border = 'none';
+        searchBarContainer.style.borderRadius = '0px';
+        searchBarContainer.style.marginTop = '6px';
+    }
+};
 
  
  
