@@ -8,7 +8,6 @@ import { Bar } from 'react-chartjs-2';
 import { useEffect } from "react";
 import { Logger } from "./Logger";
 import { DailyMenu } from "./DailyMenu";
-import { selectInputMethod, setInputMethod } from "./DailyMenuSlice";
 
 
 export function Dashboard(args) {
@@ -26,7 +25,6 @@ export function Dashboard(args) {
     const loggedIn = useSelector(selectLoggedIn);
     const sidebarOn = useSelector(selectSidebarOn);
     let stats = useSelector(selectStats);
-    const inputMethod = useSelector(selectInputMethod);
 
     useEffect(() => {
         async function BarChart(timeSeries) {

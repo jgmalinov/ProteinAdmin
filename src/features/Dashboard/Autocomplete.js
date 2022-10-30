@@ -35,25 +35,42 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const autocompleteSearchBar = document.getElementById('autocompleteSearchBar'); 
-        const autocompleteWeightBar = document.getElementById('autocompleteWeightBar');
-        const mealName = autocompleteSearchBar.value;
-        const mealWeight = Number(autocompleteWeightBar.value);
-        let mealData = (nutritionalTable.filter((row) => `${row.subcategory}-${row.description}` === mealName));
-        mealData = mealData.map((row) => {
-            const name = `${row.subcategory}-${row.description}`;
-            return {
-                [name]: {
-                    calories: row.calories * (mealWeight / 100),
-                    protein: row.protein * (mealWeight / 100),
-                    weight: mealWeight
+        let mealData;
+        if (inputMethod === 'search') {
+            const autocompleteSearchBar = document.getElementById('autocompleteSearchBar'); 
+            const autocompleteWeightBar = document.getElementById('autocompleteWeightBar');
+            const mealName = autocompleteSearchBar.value;
+            const mealWeight = Number(autocompleteWeightBar.value);
+            mealData = (nutritionalTable.filter((row) => `${row.subcategory}-${row.description}` === mealName));
+            mealData = mealData.map((row) => {
+                const name = `${row.subcategory}-${row.description}`;
+                return {
+                    [name]: {
+                        calories: row.calories * (mealWeight / 100),
+                        protein: row.protein * (mealWeight / 100),
+                        weight: mealWeight
+                    }
                 }
+            })[0];
+            autocompleteSearchBar.value = '';
+            autocompleteWeightBar.value = '';
+        } else {
+            const batchInputs = document.getElementsByClassName('batchInputs');
+            let calories = batchInputs[0].value, protein = batchInputs[1].value, weight=batchInputs[2].value;
+            mealData = {
+                'Manual Input': {
+                    calories: calories * (weight / 100),
+                    protein: protein * (weight / 100),
+                    weight,
+                }
+            };
+            for (let i=0; i<batchInputs.length; i++) {
+                batchInputs[i].value = '';
             }
-        })[0];
-        
+        }
+
         dispatch(setCurrentBatch(mealData));
-        autocompleteSearchBar.value = '';
-        autocompleteWeightBar.value = '';
+
     };
 
     async function handleConfirm(e) {
