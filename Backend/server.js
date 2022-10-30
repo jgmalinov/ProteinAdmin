@@ -9,6 +9,7 @@ const initialize = require('./PassportConfig');
 const cors = require('cors');
 const e = require('cors');
 const format = require('pg-format');
+const { abs } = require('mathjs');
 
 initialize(passport);
 
@@ -37,6 +38,7 @@ app.get('/', (req, res) => {
 app.post('/register', async (req, res, next) => {
     let errorsSent = false;
     let {name, email, password, confirmPassword, weight, weightSystem, height, heightSystem, gender, activityLevel, DOB, goal} = req.body;
+    const {calories, protein} = req.query;
     console.log(req.body);
 
     let errors = {errors: []};
@@ -52,7 +54,7 @@ app.post('/register', async (req, res, next) => {
         errors.errors.push({message: "Passwords do not match"})
     };
     
-    pool.query(`SELECT * FROM users WHERE email = $1`, [email], (err, results) => {
+    await pool.query(`SELECT * FROM users WHERE email = $1`, [email], (err, results) => {
         if (err) {
             throw err;
         } else {
@@ -70,16 +72,33 @@ app.post('/register', async (req, res, next) => {
         return;
     };
     const saltRounds = 10;
-    bcrypt.hash(password, saltRounds, function(err, hash) {
-        console.log(hash);
-        pool.query(`INSERT INTO users (name, email, password, dob, weight, weightsystem, height, heightsystem, gender, activitylevel, goal)
+    bcrypt.hash(password, saltRounds, async function(err, hash) {
+        await pool.query(`INSERT INTO users (name, email, password, dob, weight, weightsystem, height, heightsystem, gender, activitylevel, goal)
                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, [name, email, hash, DOB, weight, weightSystem, height, heightSystem, gender, activityLevel, goal], (err, result) => {
                         if (err) {
-                            console.log(err.message);
+                            throw(err)
                         } else {
                             res.status(200).send({message: 'Successfully registered!'});
                         }
-                    })
+                    });
+        
+        const entriesBatch = [];
+        const currentDate = new Date(), date = new Date();
+        date.setDate(currentDate.getDate() - 31);
+    
+        do {
+            const entry = [date, calories, protein, email];
+            entriesBatch.push(entry);
+            date.setDate(date.getDate() + 1);
+        } while ((abs(currentDate.getTime() - date.getTime()) / 1000) > 86400);
+    
+        pool.query(format(`INSERT INTO nutritional_time_series(date, calories, protein, email)
+                    VALUES %L`, entriesBatch), (err, results) => {
+                        if (err) {
+                            throw(err)
+                        }
+                        console.log(results.rows);
+        })
     });
 });
 
@@ -133,7 +152,8 @@ app.get('/get/chartdata/daily', (req, res) => {
     pool.query(`SELECT * FROM nutritional_time_series
                 WHERE date >= $1 
                 AND date <= $2
-                ORDER BY date ASC`, [priorDate, currentDate], (err, results) => {
+                AND email = $3
+                ORDER BY date ASC`, [priorDate, currentDate, userEmail], (err, results) => {
                     if(err) {
                         console.log(err);
                         return

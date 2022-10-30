@@ -64,7 +64,7 @@ export async function BarChartConfig(timeSeries, ref, email, goalCalories, goalP
             },
             title: {
                 display: true,
-                text: `${timeSeries} breakdown`
+                text: (timeSeries === 'default' || timeSeries === 'daily') ? `Daily Breakdown` : 'Monthly Breakdown'
             },
         },
     };

@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { updateRegistrationForm, selectRegistrationForm, updateErrors, selectErrors, updateSuccessfulRegistration, selectSuccessfulRegistration } from "./RegisterSlice";
 import { Navigate } from "react-router-dom";
+import { getCalories, getProtein, getAge} from "../Utilities";
 
 
 export function Register(args) {
@@ -17,7 +18,13 @@ export function Register(args) {
         const port = process.env.REACT_APP_BACKEND_PORT;
         const pathname = window.location.pathname;
         const url = protocol + '//' + host + ':' + port + pathname;
-        const response = await fetch(url, {method: 'POST', body: JSON.stringify(registrationForm), headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}});
+
+        let {goal, weight, height, DOB, gender, activityLevel} = registrationForm;
+        const age = getAge(DOB);
+        const caloriesTarget = getCalories(goal, Number(weight), Number(height), age, gender, activityLevel).goalCalories;
+        const proteinTarget = getProtein(weight);
+
+        const response = await fetch(url + `/?calories=${caloriesTarget}&protein=${proteinTarget}`, {method: 'POST', body: JSON.stringify(registrationForm), headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}});
         const responseJS = response.json();
         console.log(responseJS);
         responseJS.then((res) => {
@@ -59,44 +66,44 @@ export function Register(args) {
             {renderErrors()}
             <form id="registerForm" onSubmit={handleSubmit}>
                 <h1>Registration Form</h1>
-                <input className="mainInput" placeholder="email" type="email" name="email" id="email" onChange={handleChange}></input>
-                <input className="mainInput" placeholder="password" type="password" name="password" id="password" onChange={handleChange}></input>
-                <input className="mainInput" placeholder="confirm password" type="password" name="confirmPassword" id="confirmPassword" onChange={handleChange}></input>
-                <input className="mainInput" placeholder="name" type="text" id="name" name="name" onChange={handleChange}></input>
-                <input className="mainInput" placeholder="date of birth" type="date" id="DOB" name="DOB" onChange={handleChange}></input>
+                <input className="mainInput" placeholder="email" type="email" name="email" id="email" onChange={handleChange} required></input>
+                <input className="mainInput" placeholder="password" type="password" name="password" id="password" onChange={handleChange} required></input>
+                <input className="mainInput" placeholder="confirm password" type="password" name="confirmPassword" id="confirmPassword" onChange={handleChange} required></input>
+                <input className="mainInput" placeholder="name" type="text" id="name" name="name" onChange={handleChange} required></input>
+                <input className="mainInput" placeholder="date of birth" type="date" id="DOB" name="DOB" onChange={handleChange} required></input>
                 
                 
                 <fieldset>
                     <legend>Height</legend>
-                    <input className="mainInput" placeholder="height" type="number" name="height" id="height" onChange={handleChange}/>
+                    <input className="mainInput" placeholder="height" type="number" name="height" id="height" onChange={handleChange} required/>
 
-                    <input type="radio" id='cm'  name="heightSystem" defaultChecked onChange={handleChange}/>
+                    <input type="radio" id='cm'  name="heightSystem" defaultChecked onChange={handleChange} required/>
                     <label htmlFor='cm'>Metric</label>
 
-                    <input type="radio" id='ft' name="heightSystem" onChange={handleChange}></input>
+                    <input type="radio" id='ft' name="heightSystem" onChange={handleChange} required></input>
                     <label htmlFor='ft'>Imperial</label>
                 </fieldset>
 
                 
                 <fieldset>
                     <legend>Weight</legend>
-                    <input className="mainInput" placeholder="weight" type="number" name="weight" onChange={handleChange}></input>
-                    <input type="radio" id='kg' name="weightSystem" defaultChecked onChange={handleChange}/>
+                    <input className="mainInput" placeholder="weight" type="number" name="weight" onChange={handleChange} required></input>
+                    <input type="radio" id='kg' name="weightSystem" defaultChecked onChange={handleChange} required/>
                     <label htmlFor='kg'>Kg</label>
 
-                    <input type="radio" id='lbs' name="weightSystem" onChange={handleChange}/>
+                    <input type="radio" id='lbs' name="weightSystem" onChange={handleChange} required/>
                     <label htmlFor='lbs'>Lbs</label>  
                 </fieldset>
 
                 <label htmlFor="gender">Gender</label>
-                <select name="gender" id="gender" onChange={handleChange}>
+                <select name="gender" id="gender" onChange={handleChange} required>
                     <option value="">--Please choose an option--</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                 </select>
 
                 <label htmlFor="activityLevel">Activity level</label>
-                <select name="activityLevel" id='activityLevel' onChange={handleChange}>
+                <select name="activityLevel" id='activityLevel' onChange={handleChange} required>
                     <option value="">--Please choose an option--</option>
                     <option value="BMR">Basal Metabolic Rate</option>
                     <option value="Sedentary">Sedentary: little or no exercise</option>
@@ -108,7 +115,7 @@ export function Register(args) {
                 </select>
 
                 <label htmlFor="goal">Fitness goal</label>
-                <select name="goal" id="goal" onChange={handleChange}>
+                <select name="goal" id="goal" onChange={handleChange} required>
                     <option value="">--Please choose an option--</option>
                     <option value="maintain">Maintain weight</option>
                     <option value="gain">Gain muscle</option>
