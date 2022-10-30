@@ -299,14 +299,14 @@ export function removeElement(parentElement) {
 export function expandSearchBar(inputMethod) {
     const autocompleteContainer = document.getElementById('autocompleteContainer');
     const autocompleteSubmitButton = document.getElementById('autocompleteSubmitButton');
+    const autocompleteModifyButton = document.getElementById('autocompleteModifyButton');
     const autocompleteCartButton = document.getElementById('autocompleteCartButton');
     const autocompleteCartContainer = document.getElementById('autocompleteCartContainer');
 
     if (autocompleteContainer.style.width === '2rem') {
         autocompleteContainer.style.width = '100%';
-        autocompleteSubmitButton.disabled = false;
         autocompleteCartButton.disabled = false;
-        autocompleteCartContainer.style.width = '28px';
+        autocompleteCartContainer.style.width = '40px';
         
         if (inputMethod === 'search') {
             const autocompleteSearchBar = document.getElementById('autocompleteSearchBar');
@@ -325,7 +325,6 @@ export function expandSearchBar(inputMethod) {
     
     } else {
         autocompleteContainer.style.width = '2rem';
-        autocompleteSubmitButton.disabled = true;
         autocompleteCartButton.disabled = true;
         autocompleteCartContainer.style.width = '0px';
 
@@ -345,3 +344,10 @@ export function expandSearchBar(inputMethod) {
         }
     };
 };
+
+
+
+ 
+ 
+
+<i class="fa-brands fa-golang"></i>

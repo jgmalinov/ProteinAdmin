@@ -9,6 +9,7 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
     const currentBatch = useSelector(selectCurrentBatch);
     const inputMethod = useSelector(selectInputMethod);
     const inputMethodChanged = useSelector(selectInputMethodChanged);
+    let isSingleClick = true;
 
 
     useEffect(() => {
@@ -114,8 +115,11 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
                 <div id="searchBarContainer">
                     <input type="text" list="autocompleteOptions" placeholder="Search" id="autocompleteSearchBar" style={{'outline': 'none'}} required></input>
                     <input type="number" placeholder="grams" id="autocompleteWeightBar" required></input>
-                    <button style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteSubmitButton" disabled><i class="fa-solid fa-magnifying-glass" onDoubleClick={modifySearchBar}></i></button>
-                    <div id="autocompleteCartContainer"><button type="button" style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteCartButton" disabled><i class="fa-solid fa-caret-down" onClick={expandCurrentBatch}></i></button></div>
+                    <button type="button" style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteModifyButton" onClick={singleClickHandler} onDoubleClick={doubleClickHandler}>{renderIconBasedOnInputMethod()}</button>
+                    <div id="autocompleteCartContainer">
+                        <button type="button" style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteCartButton" disabled><i class="fa-solid fa-caret-down" onClick={expandCurrentBatch}></i></button>
+                        <button type="submit" style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteSubmitButton"><i class="fa-brands fa-golang"></i></button>
+                    </div>
                 </div>
             )
         } else {
@@ -124,8 +128,12 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
                     <input className="batchInputs" type='number' placeholder="calories" required></input>
                     <input className="batchInputs" type='number' placeholder="protein"  required></input>
                     <input className="batchInputs" type='number' placeholder="weight"  required></input>
-                    <button style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteSubmitButton" disabled><i class="fa-solid fa-magnifying-glass" onDoubleClick={modifySearchBar}></i></button>
-                    <div id="autocompleteCartContainer"><button type="button" style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteCartButton" disabled><i class="fa-solid fa-caret-down" onClick={expandCurrentBatch}></i></button></div>
+                    <button type="button" style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteModifyButton" onClick={singleClickHandler} onDoubleClick={doubleClickHandler}>{renderIconBasedOnInputMethod()}</button>
+                    <div id="autocompleteCartContainer">
+                        <button type="button" style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteCartButton" disabled><i class="fa-solid fa-caret-down" onClick={expandCurrentBatch}></i></button>
+                        <button type="submit" style={{'backgroundColor': 'transparent', 'border': 'none'}} id="autocompleteSubmitButton"><i class="fa-brands fa-golang"></i></button>
+                    </div>
+                    
                 </div>
             )
         };
@@ -134,14 +142,17 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
 
     function toggleInputMethod(e) {
         const autocompleteContainer = document.getElementById('autocompleteContainer');
-        const inputMethodButton = document.querySelector('#autocomplete>button');
+        const inputMethodButton = document.querySelector('#autocompleteModifyButton');
+        const currentBatchContainer = document.getElementById('currentBatchContainer');
          if (inputMethod === 'search') {
             dispatch(setInputMethod('input'));
-            inputMethodButton.innerHTML = 'Input';
          } else {
             dispatch(setInputMethod('search'));
-            inputMethodButton.innerHTML = 'Search';
          };
+
+         if (currentBatchContainer.style.height === '120px') {
+            expandCurrentBatch();
+         }
 
          if (autocompleteContainer.style.width !== '2rem') {
             expandSearchBar(inputMethod);
@@ -150,9 +161,27 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
         dispatch(setInputMethodChanged(true));
     };
 
+    function singleClickHandler(e) {
+        isSingleClick = true;
+        setTimeout(() => {
+            if (isSingleClick) {
+                modifySearchBar(e);
+            }
+        }, 200);
+    };
+
+    function doubleClickHandler(e) {
+        isSingleClick = false;
+        toggleInputMethod(e);
+    }
+
+    function renderIconBasedOnInputMethod() {
+        const icon = inputMethod === 'search' ? <i class="fa-solid fa-magnifying-glass" ></i> : <i class="fa-regular fa-keyboard"></i>;
+        return icon;
+    }
+
     return (
         <div id="autocomplete">
-            <button id="inputMethodToggle" onClick={toggleInputMethod}>Search</button>
             <div id="autocompleteContainer" style={{'width': '2rem'}}>
                 <form  onSubmit={handleSubmit} id='autocompleteForm'>
                     {renderInputs()}
