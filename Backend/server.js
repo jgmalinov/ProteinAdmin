@@ -36,7 +36,6 @@ app.get('/', (req, res) => {
 });
 
 app.post('/register', async (req, res, next) => {
-    let errorsSent = false;
     let {name, email, password, confirmPassword, weight, weightSystem, height, heightSystem, gender, activityLevel, DOB, goal} = req.body;
     const {calories, protein} = req.query;
     console.log(req.body);
@@ -54,51 +53,47 @@ app.post('/register', async (req, res, next) => {
         errors.errors.push({message: "Passwords do not match"})
     };
     
-    await pool.query(`SELECT * FROM users WHERE email = $1`, [email], (err, results) => {
+    pool.query(`SELECT * FROM users WHERE email = $1`, [email], (err, results) => {
         if (err) {
             throw err;
-        } else {
-            if (results.rows.length > 0) {
-                errors.errors.push({message: 'User with this email already exists'});
-            };
-            if (errors.errors.length > 0) {
-                res.send(errors);
-                errorsSent = true;
-                return;
-            };
+        }; 
+        if (results.rows.length > 0) {
+            errors.errors.push({message: 'User with this email already exists'});
+            res.send(errors);
+            return;
         };
-    });
-    if (errorsSent) {
-        return;
-    };
-    const saltRounds = 10;
-    bcrypt.hash(password, saltRounds, async function(err, hash) {
-        await pool.query(`INSERT INTO users (name, email, password, dob, weight, weightsystem, height, heightsystem, gender, activitylevel, goal)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, [name, email, hash, DOB, weight, weightSystem, height, heightSystem, gender, activityLevel, goal], (err, result) => {
-                        if (err) {
-                            throw(err)
-                        } else {
+        const saltRounds = 10;
+        bcrypt.hash(password, saltRounds, function(err, hash) {
+            pool.query(`INSERT INTO users (name, email, password, dob, weight, weightsystem, height, heightsystem, gender, activitylevel, goal)
+                        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, [name, email, hash, DOB, weight, weightSystem, height, heightSystem, gender, activityLevel, goal], (err, result) => {
+                            if (err) {
+                                throw(err)
+                            } 
                             res.status(200).send({message: 'Successfully registered!'});
+                            const entriesBatch = [];
+                            const currentDate = new Date(), date = new Date();
+                            date.setDate(currentDate.getDate() - 31);
+                        
+                            do {
+                                const newDate = new Date();
+                                newDate.setDate(date.getDate());
+                                const entry = [newDate, calories, protein, email];
+                                entriesBatch.push(entry);
+                                date.setDate(date.getDate() + 1);
+                            } while ((abs(currentDate.getTime() - date.getTime()) / 1000) > 86400);
+
+                            console.log(entriesBatch);
+
+                            pool.query(format(`INSERT INTO nutritional_time_series(date, calories, protein, email)
+                                        VALUES %L`, entriesBatch), (err, results) => {
+                                            if (err) {
+                                                throw(err)
+                                            }
+                                            console.log(results.rows);
+                            })
                         }
-                    });
-        
-        const entriesBatch = [];
-        const currentDate = new Date(), date = new Date();
-        date.setDate(currentDate.getDate() - 31);
-    
-        do {
-            const entry = [date, calories, protein, email];
-            entriesBatch.push(entry);
-            date.setDate(date.getDate() + 1);
-        } while ((abs(currentDate.getTime() - date.getTime()) / 1000) > 86400);
-    
-        pool.query(format(`INSERT INTO nutritional_time_series(date, calories, protein, email)
-                    VALUES %L`, entriesBatch), (err, results) => {
-                        if (err) {
-                            throw(err)
-                        }
-                        console.log(results.rows);
-        })
+            );
+        });
     });
 });
 
@@ -358,7 +353,9 @@ app.post('/timeseries', (req, res) => {
     const calories = req.body.calories;
     const protein = req.body.protein;
 
-    pool.query(`UPDATE nutritional_time_series
+    pool.query(`INSERT INTO nutritional_time_series()
+                
+                UPDATE nutritional_time_series
                 SET email = $1, calories = calories + $2, protein = protein + $3
                 WHERE date = $4`, [email, calories, protein, date], (err, result) => {
                     if (err) {
