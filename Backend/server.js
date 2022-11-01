@@ -71,18 +71,17 @@ app.post('/register', async (req, res, next) => {
                             } 
                             res.status(200).send({message: 'Successfully registered!'});
                             const entriesBatch = [];
-                            const currentDate = new Date(), date = new Date();
-                            date.setDate(currentDate.getDate() - 31);
+                            const currentDate = new Date()
+                            let days = 31;
+                            
                         
                             do {
                                 const newDate = new Date();
-                                newDate.setDate(date.getDate());
+                                newDate.setDate(currentDate.getDate() - days);
                                 const entry = [newDate, calories, protein, email];
                                 entriesBatch.push(entry);
-                                date.setDate(date.getDate() + 1);
-                            } while ((abs(currentDate.getTime() - date.getTime()) / 1000) > 86400);
-
-                            console.log(entriesBatch);
+                                days -= 1;
+                            } while (days > 0);
 
                             pool.query(format(`INSERT INTO nutritional_time_series(date, calories, protein, email)
                                         VALUES %L`, entriesBatch), (err, results) => {
@@ -353,11 +352,12 @@ app.post('/timeseries', (req, res) => {
     const calories = req.body.calories;
     const protein = req.body.protein;
 
-    pool.query(`INSERT INTO nutritional_time_series()
-                
-                UPDATE nutritional_time_series
-                SET email = $1, calories = calories + $2, protein = protein + $3
-                WHERE date = $4`, [email, calories, protein, date], (err, result) => {
+    pool.query(`INSERT INTO nutritional_time_series(date, calories, protein, email)
+                VALUES
+                ($1, $2, $3, $4)
+                ON CONFLICT ON CONSTRAINT unique_date_email_nts DO UPDATE
+                SET calories = nutritional_time_series.calories + EXCLUDED.calories, protein = nutritional_time_series.protein + EXCLUDED.protein
+                WHERE nutritional_time_series.date = $5 AND nutritional_time_series.email=$6`, [date, calories, protein, email, date, email], (err, result) => {
                     if (err) {
                         throw (err)
                     }

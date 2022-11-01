@@ -172,11 +172,12 @@ export function Dashboard(args) {
                 <DailyMenu />
 
                 <div id="stats">
-                    <section id="personalInfo">
+                
+                    <section class='overviewStats' id="personalInfo">
                         {displayUserInfo()}
                     </section>
 
-                    <section id="targets">
+                    <section class='overviewStats' id="targets">
                         {displayTargets()}
                     </section>
 
@@ -187,10 +188,10 @@ export function Dashboard(args) {
 
                 <div id="visualData">
                     <section id='charts'>
-                        <div id="chartContainerCalories" style={{position: 'relative', height: '55vh', width: '45vw'}}>
+                        <div id="chartContainerCalories" style={{position: 'relative', height: '40vh', width: '40vw'}}>
                             <canvas id="CalorieChart"></canvas>
                         </div>
-                        <div id="chartContainerProtein" style={{position: 'relative', height: '55vh', width: '45vw'}}>
+                        <div id="chartContainerProtein" style={{position: 'relative', height: '40vh', width: '40vw'}}>
                             <canvas id="ProteinChart"></canvas>
                         </div>
                     </section>
