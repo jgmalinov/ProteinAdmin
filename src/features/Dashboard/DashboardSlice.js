@@ -8,10 +8,10 @@ const DashboardSlice = createSlice({
         timeSeries: 'default',
         stats: '',
         caloriesToday: '?',
-        caloriesInfo: 'lite',
         proteinToday: '?',
-        proteinInfo: 'lite',
-        updateDashboard: false
+        updateDashboard: false,
+        calorieCardFlipped: false,
+        proteinCardFlipped: false
     },
     reducers: {
         setUser: (state, action) => {
@@ -29,18 +29,18 @@ const DashboardSlice = createSlice({
         setCaloriesToday: (state, action) => {
             state.caloriesToday = action.payload;
         },
-        setCaloriesInfo: (state, action) => {
-            state.caloriesInfo = action.payload;
-        },
         setProteinToday: (state, action) => {
             state.proteinToday = action.payload;
         },
-        setProteinInfo: (state, action) => {
-            state.proteinInfo = action.payload;
-        },
         setUpdateDashboard: (state, action) => {
             state.updateDashboard = action.payload;
-        }
+        },
+        setCalorieCardFlipped: (state, action) => {
+            state.calorieCardFlipped = action.payload;
+        },
+        setProteinCardFlipped: (state, action) => {
+            state.proteinCardFlipped = action.payload;
+        },
 
     }
 });
@@ -51,10 +51,10 @@ export const selectSidebarOn = (state) => state.DashboardSlice.sidebarOn;
 export const selectUser = (state) => state.DashboardSlice.user;
 export const selectCaloriesToday = (state) => state.DashboardSlice.caloriesToday;
 export const selectProteinToday = (state) => state.DashboardSlice.proteinToday;
-export const selectCaloriesInfo = (state) => state.DashboardSlice.caloriesInfo;
-export const selectProteinInfo = (state) => state.DashboardSlice.proteinInfo;
 export const selectUpdateDashboard = (state) => state.DashboardSlice.updateDashboard;
-export const { setUser, setSidebarOn, setTimeSeries, setStats, setCaloriesToday, setProteinToday, setCaloriesInfo, setProteinInfo, setUpdateDashboard} = DashboardSlice.actions;
+export const selectCalorieCardFlipped = (state) => state.DashboardSlice.calorieCardFlipped;
+export const selectProteinCardFlipped = (state) => state.DashboardSlice.proteinCardFlipped;
+export const { setUser, setSidebarOn, setTimeSeries, setStats, setCaloriesToday, setProteinToday, setCaloriesInfo, setProteinInfo, setUpdateDashboard, setCalorieCardFlipped, setProteinCardFlipped} = DashboardSlice.actions;
 export default DashboardSlice.reducer; 
 
 /* options: {

@@ -380,10 +380,31 @@ html {
 
 #currentStatusCalories, #currentStatusProtein {
   display: flex;
+  position: relative;
   border: 3px solid black;
   border-radius: 10px;
-  background-color: aquamarine;
+  background: rgb(0, 0, 0, 0);
   align-self: flex-start;
+  transition: 0.5s;
+  transform-style: preserve-3d;
+}
+
+.statusLite, .statusDetailed {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.statusDetailed {
+  transform: rotateY(180deg);
+  background-color: aquamarine;
 }
 
 #currentStatusCalories {
@@ -392,6 +413,8 @@ html {
 
 #currentStatusProtein {
   grid-area: d;
+  transition: 0.5s;
+  transform-style: preserve-3d;
 }
 
 #visualData canvas {

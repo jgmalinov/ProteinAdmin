@@ -1,13 +1,14 @@
 import { setLoggedIn, selectLoggedIn } from "../Login/LoginSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { setUser, selectUser, setSidebarOn, selectSidebarOn, setTimeSeries, selectTimeSeries, setStats, selectStats, setCaloriesToday, selectCaloriesToday, setProteinToday, selectProteinToday, setCaloriesInfo, selectCaloriesInfo, setProteinInfo, selectProteinInfo, setUpdateDashboard, selectUpdateDashboard } from "./DashboardSlice";
+import { setUser, selectUser, setSidebarOn, selectSidebarOn, setTimeSeries, selectTimeSeries, setStats, selectStats, setCaloriesToday, selectCaloriesToday, setProteinToday, selectProteinToday, setUpdateDashboard, selectUpdateDashboard, setCalorieCardFlipped, selectCalorieCardFlipped, setProteinCardFlipped, selectProteinCardFlipped } from "./DashboardSlice";
 import { getAge, getCalories, getProtein, BarChartConfig, createBarChart, calculateCurrentStatus} from "../Utilities";
 import { Sidebar } from "./Sidebar";
 import { Bar } from 'react-chartjs-2';
 import { useEffect } from "react";
 import { Logger } from "./Logger";
 import { DailyMenu } from "./DailyMenu";
+import e from "cors";
 
 
 export function Dashboard(args) {
@@ -27,8 +28,6 @@ export function Dashboard(args) {
     const goalCalories = ['daily', 'default'].includes(timeSeries) ? CaloriesAsNum : CaloriesAsNum * 30.437;
     const goalProtein = ['daily', 'default'].includes(timeSeries) ? ProteinAsNum : ProteinAsNum * 30.437;
 
-    const caloriesInfo = useSelector(selectCaloriesInfo);
-    const proteinInfo = useSelector(selectProteinInfo);
     getDailyCaloriesAndProtein();
     
     // simple daily calories and protein data and goal
@@ -36,6 +35,8 @@ export function Dashboard(args) {
     const loggedIn = useSelector(selectLoggedIn);
     const sidebarOn = useSelector(selectSidebarOn);
     let stats = useSelector(selectStats);
+    const calorieCardFlipped = useSelector(selectCalorieCardFlipped);
+    const proteinCardFlipped = useSelector(selectProteinCardFlipped);
     const updateDashboard = useSelector(selectUpdateDashboard);
 
 
@@ -52,16 +53,23 @@ export function Dashboard(args) {
             createBarChart(timeSeries, barChartData);
         }
         BarChart(timeSeries);
-        const currentStatusCalories = document.getElementById('currentStatusCalories');
+        const statusLiteCalories = document.querySelector('#currentStatusCalories>.statusLite');
         const differenceCalories = Number(goalCalories) - Number(caloriesToday);
         if (differenceCalories > 50) {
-            currentStatusCalories.style.backgroundColor = 'rgb(241, 244, 196)';
+            statusLiteCalories.style.backgroundColor = 'rgb(241, 244, 196)';
         } else if (differenceCalories < 50 && differenceCalories > -50) {
-            currentStatusCalories.style.backgroundColor = 'aquamarine';
+            statusLiteCalories.style.backgroundColor = 'aquamarine';
         } else {
-            currentStatusCalories.style.backgroundColor = 'rgb(240, 134, 134)';
-        }
-        const currentStatusProtein = document.getElementById('currentStatusProtein');
+            statusLiteCalories.style.backgroundColor = 'rgb(240, 134, 134)';
+        };
+
+        const statusLiteProtein = document.querySelector('#currentStatusProtein>.statusLite');
+        const differenceProtein = Number(goalProtein) - Number(proteinToday);
+        if (differenceProtein > 0) {
+            statusLiteProtein.style.backgroundColor = 'rgb(240, 134, 134)';
+        } else {
+            statusLiteProtein.style.backgroundColor = 'aquamarine';
+        };
     });
 
     async function getDailyCaloriesAndProtein(caloriesOrProtein) {
@@ -113,14 +121,16 @@ export function Dashboard(args) {
     function displayCalorieStatus() {
         const userStats = [];
         userStats.push(
-            <ul>
-                <h3>Calories</h3>
-                <li>Calorie Intake Trend: {stats.absTrendCalories} ({stats.absTrendCalories === 'negative' ? 'increasingly deviating from target' : 'lesser deviation from target'})</li>
-                <li>Average {stats.timeSeries} calorie intake: {stats.meanCaloriesOverall}kcal</li>
-                <li>Average {stats.timeSeries} deviation from calorie goal: {stats.stdCaloriesOverall}kcal</li>
-                <li>Average quarterly % change in deviation from calorie goal: {stats.stdChangeCalories}% ({stats.stdChangeCalories > 0 ? 'closer to target' : stats.stdChangeCalories < 0 ? 'further from target' : ''})</li>
-                <li>{stats.timeSeries === 'daily' ? `Calories left until today's target met: ${stats.caloriesLeftNow}kcal` : ''}</li>
-            </ul>
+            <div className="statusDetailed">
+                <ul>
+                    <h3>Calories</h3>
+                    <li>Calorie Intake Trend: {stats.absTrendCalories} ({stats.absTrendCalories === 'negative' ? 'increasingly deviating from target' : 'lesser deviation from target'})</li>
+                    <li>Average {stats.timeSeries} calorie intake: {stats.meanCaloriesOverall}kcal</li>
+                    <li>Average {stats.timeSeries} deviation from calorie goal: {stats.stdCaloriesOverall}kcal</li>
+                    <li>Average quarterly % change in deviation from calorie goal: {stats.stdChangeCalories}% ({stats.stdChangeCalories > 0 ? 'closer to target' : stats.stdChangeCalories < 0 ? 'further from target' : ''})</li>
+                    <li>{stats.timeSeries === 'daily' ? `Calories left until today's target met: ${stats.caloriesLeftNow}kcal` : ''}</li>
+                </ul>
+            </div>
         );
         return userStats;
     };
@@ -140,28 +150,43 @@ export function Dashboard(args) {
     function displayProteinStatus() {
         const userStats = [];
         userStats.push(
-            <ul>
-            <h3>Protein</h3>
-            <li>Protein Intake Trend: {stats.absTrendProtein} ({stats.absTrendProtein === 'negative' ? 'increasingly falling short of the target' : 'approaching/exceeding the target'})</li>
-            <li>Average {stats.timeSeries} protein intake: {stats.meanProteinOverall}g</li>
-            <li>Average {stats.timeSeries} deviation from protein goal: {stats.stdProteinOverall}g</li>
-            <li>Average quarterly % change in protein intake: {stats.meanChangeProtein}% ({stats.meanChangeProtein > 0 ? 'higher intake' : stats.stdChangeCalories < 0 ? 'reduced intake' : ''})</li>
-            <li>{stats.timeSeries === 'daily' ? `Protein left until today's target met: ${stats.proteinLeftNow}g` : ''}</li>
-        </ul>
+            <div className="statusDetailed">
+                <ul>
+                    <h3>Protein</h3>
+                    <li>Protein Intake Trend: {stats.absTrendProtein} ({stats.absTrendProtein === 'negative' ? 'increasingly falling short of the target' : 'approaching/exceeding the target'})</li>
+                    <li>Average {stats.timeSeries} protein intake: {stats.meanProteinOverall}g</li>
+                    <li>Average {stats.timeSeries} deviation from protein goal: {stats.stdProteinOverall}g</li>
+                    <li>Average quarterly % change in protein intake: {stats.meanChangeProtein}% ({stats.meanChangeProtein > 0 ? 'higher intake' : stats.stdChangeCalories < 0 ? 'reduced intake' : ''})</li>
+                    <li>{stats.timeSeries === 'daily' ? `Protein left until today's target met: ${stats.proteinLeftNow}g` : ''}</li>
+                </ul>
+            </div>
+
         );
         return userStats;
     };
 
     function toggleCaloriesInfo() {
-        const infoType = caloriesInfo === 'lite' ? 'detailed' : 'lite';
-        dispatch(setCaloriesInfo(infoType));
+        const currentStatusCalories = document.getElementById('currentStatusCalories');
+        if (calorieCardFlipped) {
+            currentStatusCalories.style.transform = 'rotateY(0deg)';
+            dispatch(setCalorieCardFlipped(false));
+        } else {
+            currentStatusCalories.style.transform = 'rotateY(180deg)';
+            dispatch(setCalorieCardFlipped(true));
+        }
     };
 
     
     function toggleProteinInfo() {
-        const infoType = proteinInfo === 'lite' ? 'detailed' : 'lite';
-        dispatch(setProteinInfo(infoType));
-    }
+        const currentStatusProtein = document.getElementById('currentStatusProtein');
+        if (proteinCardFlipped) {
+            currentStatusProtein.style.transform = 'rotateY(0deg)';
+            dispatch(setProteinCardFlipped(false));    
+        } else {
+            currentStatusProtein.style.transform = 'rotateY(180deg)';
+            dispatch(setProteinCardFlipped(true));
+        };
+    };
 
     function openSideBar(e) {
         const sideBar = document.getElementById('sidebar');
@@ -259,11 +284,13 @@ export function Dashboard(args) {
                     </section>
 
                     <section id="currentStatusCalories" onClick={toggleCaloriesInfo}>
-                        {caloriesInfo === 'lite' ? displayCalorieStatusLite() : displayCalorieStatus()}
+                            {displayCalorieStatus()}
+                            {displayCalorieStatusLite()}
                     </section>
 
                     <section id="currentStatusProtein" onClick={toggleProteinInfo}>
-                        {proteinInfo === 'lite' ? displayProteinStatusLite() : displayProteinStatus()}
+                            {displayProteinStatus()}
+                            {displayProteinStatusLite()}
                     </section>
                 </div>
 
