@@ -6,7 +6,12 @@ const DashboardSlice = createSlice({
         user: {},
         sidebarOn: false,
         timeSeries: 'default',
-        stats: ''
+        stats: '',
+        caloriesToday: '?',
+        caloriesInfo: 'lite',
+        proteinToday: '?',
+        proteinInfo: 'lite',
+        updateDashboard: false
     },
     reducers: {
         setUser: (state, action) => {
@@ -20,7 +25,23 @@ const DashboardSlice = createSlice({
         },
         setStats: (state, action) => {
             state.stats = action.payload;
+        },
+        setCaloriesToday: (state, action) => {
+            state.caloriesToday = action.payload;
+        },
+        setCaloriesInfo: (state, action) => {
+            state.caloriesInfo = action.payload;
+        },
+        setProteinToday: (state, action) => {
+            state.proteinToday = action.payload;
+        },
+        setProteinInfo: (state, action) => {
+            state.proteinInfo = action.payload;
+        },
+        setUpdateDashboard: (state, action) => {
+            state.updateDashboard = action.payload;
         }
+
     }
 });
 
@@ -28,7 +49,12 @@ export const selectStats = (state) => state.DashboardSlice.stats;
 export const selectTimeSeries = (state) => state.DashboardSlice.timeSeries;
 export const selectSidebarOn = (state) => state.DashboardSlice.sidebarOn;
 export const selectUser = (state) => state.DashboardSlice.user;
-export const { setUser, setSidebarOn, setTimeSeries, setStats} = DashboardSlice.actions;
+export const selectCaloriesToday = (state) => state.DashboardSlice.caloriesToday;
+export const selectProteinToday = (state) => state.DashboardSlice.proteinToday;
+export const selectCaloriesInfo = (state) => state.DashboardSlice.caloriesInfo;
+export const selectProteinInfo = (state) => state.DashboardSlice.proteinInfo;
+export const selectUpdateDashboard = (state) => state.DashboardSlice.updateDashboard;
+export const { setUser, setSidebarOn, setTimeSeries, setStats, setCaloriesToday, setProteinToday, setCaloriesInfo, setProteinInfo, setUpdateDashboard} = DashboardSlice.actions;
 export default DashboardSlice.reducer; 
 
 /* options: {

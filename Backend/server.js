@@ -163,7 +163,7 @@ app.get('/get/chartdata/daily', (req, res) => {
                         }
                         const chartData = {labels, calories, protein};
                         console.log(chartData);
-                        res.send({message: 'success', chartData});
+                        res.send({message: 'success', chartData, chartType: 'daily'});
                     } else {
                         res.send({message: 'no results'});
                     }
@@ -199,7 +199,7 @@ app.get('/get/chartdata/monthly', (req, res) => {
                         }
                         const chartData = {labels, calories, protein};
                         console.log(chartData);
-                        res.send({message: 'success', chartData});
+                        res.send({message: 'success', chartData, chartType: 'monthly'});
                     } else {
                         res.send({message: 'no results'});
                     }
@@ -344,7 +344,7 @@ app.put('/menu', (req, res) => {
                     };
                     res.send({message: 'Successfully committed outstanding daily_nutrition entries'});
                 })
-})
+});
 
 app.post('/timeseries', (req, res) => {
     const email = req.user.email;
@@ -363,9 +363,26 @@ app.post('/timeseries', (req, res) => {
                     }
                     res.send({message: 'Successfully updated entry'});
                 })
-})
-    
+});
 
+app.get('/daily/data', (req, res) => {
+    const email = req.user.email;
+    const date = new Date();
+    
+    pool.query(`SELECT calories, protein FROM nutritional_time_series
+                WHERE email=$1 AND date=$2`, [email, date], (err, result) => {
+                    if (err) {
+                        throw(err)
+                    }
+                    if (result.rows.length === 0) {
+                        res.send({calories: 0, protein: 0})
+                    } else {
+                        const calories = result.rows[0].calories;
+                        const protein = result.rows[0].protein;
+                        res.send({calories, protein})
+                    }
+                })
+});    
     
 
 app.listen(PORT, () => {

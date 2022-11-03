@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setDailyMenu, selectDailyMenu, setDailyMenuUpdated, selectDailyMenuUpdated } from "./DailyMenuSlice";
+import { setUpdateDashboard } from "./DashboardSlice";
 import { removeElement } from "../Utilities";
 
 export function DailyMenu(args) {
@@ -144,7 +145,8 @@ export function DailyMenu(args) {
                 if (responseJS.hasOwnProperty('message')) {
                     dispatch(setDailyMenuUpdated(true));
                 }
-            }
+            };
+            dispatch(setUpdateDashboard(true));
         }
     }
 

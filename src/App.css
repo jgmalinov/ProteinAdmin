@@ -112,7 +112,7 @@ html {
   grid-area: c;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -341,15 +341,19 @@ html {
   grid-area: b;
   display: grid;
   grid-template-rows: 1fr 1fr;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-areas: 
   "a c"
-  "b c";
+  "b d";
   justify-self: center;
   gap: 20px;
 }
 
-#stats> ul {
+#stats>section {
+  height: 100%;
+}
+
+#stats>section>ul {
   list-style-type: "\1F4AA";
   font-size: 14px;
 }
@@ -361,10 +365,9 @@ html {
   align-items: center;
   border: 3px solid black;
   border-radius: 10px;
-  padding: 10px;
   background-color: rgb(179, 204, 236);
   align-self: flex-start;
-  aspect-ratio: 1 / 1;
+  font-size: 25px;
 }
 
 #personalInfo {
@@ -375,14 +378,20 @@ html {
   grid-area: b;
 }
 
-#currentStatus {
-  grid-area: c;
+#currentStatusCalories, #currentStatusProtein {
   display: flex;
   border: 3px solid black;
   border-radius: 10px;
   background-color: aquamarine;
-  aspect-ratio: 1 / 1;
   align-self: flex-start;
+}
+
+#currentStatusCalories {
+  grid-area: c;
+}
+
+#currentStatusProtein {
+  grid-area: d;
 }
 
 #visualData canvas {

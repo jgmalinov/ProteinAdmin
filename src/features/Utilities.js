@@ -22,7 +22,8 @@ export async function BarChartConfig(timeSeries, ref, email, goalCalories, goalP
     };
     const responseJS = await response.json();
     const chartData = responseJS.chartData;
-    if (chartData.labels.length < 30) {
+    const chartType = responseJS.chartType;
+    if ( chartType === 'monthly') {
         labels = chartData.labels.slice(0, chartData.labels.length - 1);
         calories = (chartData.calories.map((calorie) => calorie === null ? 0 : calorie)).slice(0, chartData.calories.length - 1);
         protein = (chartData.protein.map((protein) => protein === null ? 0 : protein)).slice(0, chartData.protein.length - 1);
