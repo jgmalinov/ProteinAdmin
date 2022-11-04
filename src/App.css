@@ -72,9 +72,12 @@ button:hover {
 #loginSection {
   grid-area: a;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   flex-direction: column;
   align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(240, 242, 214);
 }
 
 #loginForm {
@@ -82,9 +85,51 @@ button:hover {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   border: 2px solid black;
+  border-radius: 5px;
+  width: 400px;
+  height: 400px;
+  background-color: rgb(179, 204, 236);
+  font-family: 'Raleway', sans-serif;
+}
+
+#loginForm i {
+  font-size: 36px;
+  position: relative;
+  bottom: 50px;
+}
+
+.logo {
+  display: flex;
+}
+
+#linkToRegister {
+  background-color: rgb(240, 242, 214);
+  color: black;
+  text-decoration: none;
+  margin: 3px 0px;
+  border-radius: 3px;
+  font-size: 16px;
+  padding: 0px 5px
+}
+
+.secondBicep {
+  transform: scaleX(-1);
+}
+
+#loginForm input {
   width: 60%;
-  height: 80%;
+  margin: 5px 0px;
+  background-color: rgb(242, 244, 213);
+  border-radius: 5px;
+}
+
+#loginForm button {
+  background-color: rgb(242, 244, 213);
+  margin: 3px 0px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 16px;
 }
 
 #errors {

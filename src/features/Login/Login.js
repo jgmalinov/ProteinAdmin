@@ -78,12 +78,19 @@ export function Login(args) {
                 {loggedIn ? <Navigate to={'/dashboard'}/> : undefined}
                 {renderJustRegistered()}
                 <form id="loginForm" onSubmit={handleSubmit}>
+                    <div className='logo'>
+                        <i>&#128170;</i>
+                        <i className='fa-solid fa-utensils'></i>
+                        <div className="secondBicep">
+                            <i>&#128170;</i>
+                        </div>
+                    </div>
                     <div id="errorMessages"></div>
                     <input placeholder="email" id="emailField" onChange={handleChange}></input>
                     <input placeholder="password" id="passwordField" onChange={handleChange}></input>
                     <button type="submit">Login!</button>
                     <button type="submit">Sign in with Google</button>
-                    <Link id="LinkToRegister" to="/register">Don't have an account? Register here!</Link>
+                    <Link id="linkToRegister" to="/register">Don't have an account? Register here!</Link>
                 </form>
             </section>
         </div>
