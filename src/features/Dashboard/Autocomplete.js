@@ -187,7 +187,7 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
                     <ul id="autocompleteCart">
                         {renderCurrentBatch()}
                     </ul>
-                    <button type="button" style={{'width':'20%', 'margin': '8px 0px 12px 0px'}} onClick={handleConfirm}>Confirm</button>
+                    <button type="button" style={{'width':'20%', 'margin': '8px 0px 12px 0px'}} onClick={handleConfirm}>CONFIRM</button>
                 </div>
 
                 <datalist id="autocompleteOptions">
@@ -195,8 +195,5 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
                 </datalist>
             </div>
         </div>
-
-
-        
     )
 }

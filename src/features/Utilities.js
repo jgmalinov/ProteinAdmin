@@ -312,7 +312,7 @@ export function expandSearchBar(inputMethod) {
     if (autocompleteContainer.style.width === '2rem') {
         autocompleteContainer.style.width = '100%';
         autocompleteCartButton.disabled = false;
-        autocompleteCartContainer.style.width = '40px';
+        autocompleteCartContainer.style.width = '85px';
         
         if (inputMethod === 'search') {
             const autocompleteSearchBar = document.getElementById('autocompleteSearchBar');

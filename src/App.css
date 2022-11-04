@@ -14,6 +14,36 @@ html {
   "b b b";
   
 }
+
+i {
+  padding: 4px;
+}
+
+button {
+  background-color: transparent;
+  border-radius: 3px;
+  border: none;
+}
+
+i:hover {
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px gainsboro;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+#currentBatchContainer button, #visualDataUI button {
+  background-color: rgb(179, 204, 236);
+  border: 3px gainsboro;
+}
+
+#currentBatchContainer button:hover, #visualDataUI button:hover {
+  box-shadow: 2px 2px 2px gainsboro;
+}
+
 /* LOGIN Page */
 #loginSection {
   grid-area: a;
@@ -53,16 +83,18 @@ html {
   display: grid;
   width: 100%;
   height: 100vh;
-  grid-template: 1fr 4fr 4fr/ 2fr 1fr 1fr;
+  grid-template: 1fr 3fr 4fr/ 1fr 1fr;
   grid-template-areas: 
-  "a a a"
-  "b c c"
-  "b c c";
+  "a a"
+  "b b"
+  "c c";
   background-color: white;
 }
 
 #dashboard header {
   grid-area: a;
+  width: 95%;
+  justify-self: center;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -110,17 +142,19 @@ html {
 
 #visualData {
   grid-area: c;
+  justify-self: center;
+  width: 95%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  margin-top: 30px;
 }
 
 #charts {
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-
+  justify-content: space-between;
+  width: 100%;
 }
 
 .fa-solid.fa-bars {
@@ -130,7 +164,6 @@ html {
 
 .fa-solid.fa-bars::before {
   font-size: 25px;
-  margin-right: 20px;
 }
 
 .fa-solid.fa-plus::before {
@@ -235,6 +268,7 @@ html {
 
 #autocompleteCartContainer {
   display: flex;
+  text-align: center;
   align-items: center;
   justify-content: center;
   width: 0px;
@@ -337,14 +371,13 @@ html {
 }
 
 #stats{
-  width: 100%;
+  width: 95%;
   grid-area: b;
   display: grid;
-  grid-template-rows: 1fr 1fr;
-  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-areas: 
-  "a c"
-  "b d";
+  "a b c d";
   justify-self: center;
   gap: 20px;
 }
@@ -420,6 +453,11 @@ html {
 #visualData canvas {
   border: 3px solid black;
   border-radius: 10px;
+}
+
+#visualDataUI button {
+  margin: 18px 5px 18px 5px;
+  width: 120px;
 }
 
 .mainInput {

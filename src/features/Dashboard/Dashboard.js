@@ -296,17 +296,17 @@ export function Dashboard(args) {
 
                 <div id="visualData">
                     <section id='charts'>
-                        <div id="chartContainerCalories" style={{position: 'relative', height: '40vh', width: '40vw'}}>
+                        <div id="chartContainerCalories" style={{position: 'relative', height: '40vh', width: '46.78vw'}}>
                             <canvas id="CalorieChart"></canvas>
                         </div>
-                        <div id="chartContainerProtein" style={{position: 'relative', height: '40vh', width: '40vw'}}>
+                        <div id="chartContainerProtein" style={{position: 'relative', height: '40vh', width: '46.78vw'}}>
                             <canvas id="ProteinChart"></canvas>
                         </div>
                     </section>
 
                     <section id="visualDataUI">
-                        <button onClick={changeChartView} id='monthly'>Monthly</button>
-                        <button onClick={changeChartView} id='daily'>Daily</button>
+                        <button onClick={changeChartView} id='monthly'>MONTHLY</button>
+                        <button onClick={changeChartView} id='daily'>DAILY</button>
                     </section>
                 </div>
             </div>
