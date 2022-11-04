@@ -186,7 +186,7 @@ export function DailyMenu(args) {
                             <td id="totalProtein">{getSumProtein()}g/pt</td>
                             <td id="totalWeight">{getSumWeight()}g</td>
                         </tr>
-                        <button type="button" onClick={commitToDB}>Commit</button>
+                        <button type="button" onClick={commitToDB}>COMMIT</button>
                     </tfoot>                   
                 </table>
                

@@ -2,6 +2,10 @@ html {
   height: 100%;
 }
 
+body {
+  font-family: 'Raleway', sans-serif;
+}
+
 #viewBody {
   display: grid;
   width: 100%;
@@ -42,6 +46,15 @@ button:hover {
 
 #currentBatchContainer button:hover, #visualDataUI button:hover {
   box-shadow: 2px 2px 2px gainsboro;
+}
+
+#dailyMenuTable button {
+  background-color: white;
+  border: 1.3px solid gainsboro;
+}
+
+#dailyMenuTable button:hover {
+  box-shadow: 2px 2px 2px black;
 }
 
 /* LOGIN Page */
@@ -132,7 +145,6 @@ button:hover {
 
 #filters {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -248,6 +260,10 @@ button:hover {
   list-style-type:georgian;
 }
 
+#currentBatchContainer li {
+  border-bottom: 1px solid gainsboro;
+}
+
 #autocompleteSearchBar {
   width: 60%;
   padding: 0px;
@@ -279,8 +295,8 @@ button:hover {
 
 
 #loggerCategory, #loggerSubcategory {
-  border-radius: 30px;
-  width: 50%;
+  border-radius: 5px;
+  width: 47.5%;
   height: 45%;
   box-sizing: border-box;
   transition: 0.3s;
@@ -339,16 +355,17 @@ button:hover {
 }
 
 #dailyMenuTable, tr, th, td {
-  border: 1px solid black;
+  border: 1px solid rgb(250, 250, 250);
+  border-radius: 3px;
   text-align: center;
   font-weight: 600;
   height: 15px;
 }
 
 #dailyMenuTable {
-  background-color: blanchedalmond;
-  border: 8px ridge rgb(191, 188, 188);
-  border-radius: 20px;
+  background-color: rgb(170, 185, 210);
+  border: 4px inset rgb(236, 227, 227);
+  border-radius: 10px;
   width: 60%;
   padding: 5px;
   margin-top: 15px;
@@ -357,6 +374,7 @@ button:hover {
   position: relative;
   left: -120%;
   z-index: 6;
+  border-collapse: separate;
 }
 
 #dailyTableClose {

@@ -94,7 +94,7 @@ export async function BarChartConfig(timeSeries, ref, email, goalCalories, goalP
             {
                 label: 'Calories',
                 data: calories,
-                backgroundColor: 'blue',
+                backgroundColor: 'rgb(150, 180, 216)',
                 trendlineLinear: {
                     colorMin: "black",
                     colorMax: "black",
@@ -111,7 +111,7 @@ export async function BarChartConfig(timeSeries, ref, email, goalCalories, goalP
             {
                 label: 'Protein',
                 data: protein,
-                backgroundColor: 'aquamarine',
+                backgroundColor: 'rgb(220, 220, 176)',
                 trendlineLinear: {
                     colorMin: "black",
                     colorMax: "black",
