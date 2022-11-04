@@ -40,8 +40,19 @@ button:hover {
 }
 
 #currentBatchContainer button, #visualDataUI button {
-  background-color: rgb(179, 204, 236);
   border: 3px gainsboro;
+}
+
+#currentBatchContainer button {
+  background-color: rgb(179, 204, 236);
+}
+
+#daily {
+  background-color: rgb(241, 244, 196);
+}
+
+#monthly {
+  background-color: rgb(179, 204, 236);
 }
 
 #currentBatchContainer button:hover, #visualDataUI button:hover {
@@ -96,7 +107,7 @@ button:hover {
   display: grid;
   width: 100%;
   height: 100vh;
-  grid-template: 1fr 3fr 4fr/ 1fr 1fr;
+  grid-template: 1fr 300px 4fr/ 1fr 1fr;
   grid-template-areas: 
   "a a"
   "b b"
@@ -315,15 +326,15 @@ button:hover {
 }
 
 #sidebarBackground {
-  background-color: goldenrod;
+  background-color: rgb(241, 244, 196);
   position: fixed;
   top: 0px;
   right: 0px;
 }
 
 #sidebar {
-  list-style: none;
-  padding: 10vh 0 10vh ;
+  list-style-type: "\1F4AA";
+  padding: 10vh 0 10vh 10px;
   margin: 0px;
   height: 80vh;
   width: 0vw;
@@ -333,15 +344,25 @@ button:hover {
 }
 
 #sidebar li {
-  font-size: 1.2rem;
-  margin: 10px 0px 10px 20px;
+  font-size: 1.5rem;
+  margin: 10px 0px 10px 40px;
   transition: 0.2s;
+}
+
+#sidebar li:hover {
+  background-color: gainsboro;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 #sidebarBackground .fa-solid.fa-x {
   position: absolute;
   right: 20px;
   top: 20px;
+}
+
+#sidebarX {
+  transition: 0.3s;
 }
 
 #dailyMenuBackground {
@@ -381,7 +402,11 @@ button:hover {
   position: absolute;
   font-size: 20px;
   right: 10px;
-  top: 10px;
+  top: 4px;
+}
+
+#dailyTableClose:hover {
+  box-shadow: none;
 }
 
 #title {
@@ -406,19 +431,21 @@ button:hover {
 
 #stats>section>ul {
   list-style-type: "\1F4AA";
-  font-size: 14px;
+  font-size: 20px;
 }
 
 .overviewStats {
   display: flex;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
   border: 3px solid black;
   border-radius: 10px;
   background-color: rgb(179, 204, 236);
   align-self: flex-start;
-  font-size: 25px;
+}
+
+.overviewStats ul {
+  font-size: 20px;
 }
 
 #personalInfo {
@@ -444,13 +471,20 @@ button:hover {
   position: absolute;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   height: 100%;
   width: 100%;
   border-radius: 10px;
+}
+
+.statusLite ul, .statusDetailed ul {
+  list-style-type: "\1F4AA";
+}
+
+.statusLite h2 {
+  margin-bottom: 65px;
 }
 
 .statusDetailed {

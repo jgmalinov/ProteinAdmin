@@ -51,9 +51,9 @@ export async function BarChartConfig(timeSeries, ref, email, goalCalories, goalP
                     },
                     label1: {
                         type: 'label',
-                        xValue: 1,
-                        yValue: goalCalories + 0.05 * goalCalories,
-                        content: `${goalCalories} kcal threshold`,
+                        xValue: 1.6,
+                        yValue: goalCalories + 0.15 * goalCalories,
+                        content: `${Number(goalCalories).toFixed(1)} kcal threshold`,
                         backgroundColor: 'rgba(245,245,245, 0.75)',
                         font: {size: 9}
                     }
@@ -80,9 +80,9 @@ export async function BarChartConfig(timeSeries, ref, email, goalCalories, goalP
     };
     optionsProtein.plugins.annotation.annotations.label1 = {
         type: 'label',
-        xValue: 1,
-        yValue: goalProtein + 0.05 * goalProtein,
-        content: `${goalProtein} g/protein threshold`,
+        xValue: 1.6,
+        yValue: goalProtein + 0.25 * goalProtein,
+        content: `${Number(goalProtein).toFixed(1)} g/protein threshold`,
         backgroundColor: 'rgba(245,245,245, 0.75)',
         font: {size: 9}
     }

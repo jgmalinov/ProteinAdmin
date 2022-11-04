@@ -9,7 +9,7 @@ export function Sidebar({logOut, closeSideBar}) {
                     <li className="sidebarElement">Settings</li>
                     <li className="sidebarElement" onClick={logOut}>Logout</li>
                 </ul>
-                <i class="fa-solid fa-x" onClick={closeSideBar}></i>
+                <i class="fa-solid fa-x" id='sidebarX' onClick={closeSideBar}></i>
             </div>
         </div>
     )

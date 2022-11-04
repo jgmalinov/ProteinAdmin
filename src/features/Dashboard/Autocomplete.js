@@ -93,7 +93,7 @@ export function Autocomplete({ autocompleteOptions, nutritionalTable }) {
             const currentBatchJSX = [];
             for (let i=0; i < currentBatch.length; i++) {
                 const mealName = Object.keys(currentBatch[i])[0];
-                const mealJSX = <li>{mealName} - {currentBatch[i][mealName].calories}kcal - {currentBatch[i][mealName].protein}g/pt  ({currentBatch[i][mealName].weight}g) <i class="fa-solid fa-x" id={mealName} onClick={deleteRow}></i></li>;
+                const mealJSX = <li>{mealName} - {Number(currentBatch[i][mealName].calories).toFixed(1)}kcal - {Number(currentBatch[i][mealName].protein).toFixed(1)}g/pt  ({Number(currentBatch[i][mealName].weight).toFixed(1)}g) <i class="fa-solid fa-x" id={mealName} onClick={deleteRow}></i></li>;
                 currentBatchJSX.push(mealJSX);
             };
             return currentBatchJSX;
