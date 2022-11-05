@@ -61,11 +61,18 @@ export function Register(args) {
     };
 
     return (
-        <div id="viewBody">
+        <div id="viewBodyRegister">
             {justRegistered ? <Navigate replace to='/login'/> : undefined}
             {renderErrors()}
             <form id="registerForm" onSubmit={handleSubmit}>
                 <h1>Registration Form</h1>
+                    <div className='logo'>
+                        <i>&#128170;</i>
+                        <i className='fa-solid fa-utensils'></i>
+                        <div className="secondBicep">
+                            <i>&#128170;</i>
+                        </div>
+                    </div>
                 <input className="mainInput" placeholder="email" type="email" name="email" id="email" onChange={handleChange} required></input>
                 <input className="mainInput" placeholder="password" type="password" name="password" id="password" onChange={handleChange} required></input>
                 <input className="mainInput" placeholder="confirm password" type="password" name="confirmPassword" id="confirmPassword" onChange={handleChange} required></input>
@@ -74,7 +81,6 @@ export function Register(args) {
                 
                 
                 <fieldset>
-                    <legend>Height</legend>
                     <input className="mainInput" placeholder="height" type="number" name="height" id="height" onChange={handleChange} required/>
 
                     <input type="radio" id='cm'  name="heightSystem" defaultChecked onChange={handleChange} required/>
@@ -86,8 +92,7 @@ export function Register(args) {
 
                 
                 <fieldset>
-                    <legend>Weight</legend>
-                    <input className="mainInput" placeholder="weight" type="number" name="weight" onChange={handleChange} required></input>
+                    <input className="mainInput" placeholder="weight" type="number" name="weight" id="weight" onChange={handleChange} required></input>
                     <input type="radio" id='kg' name="weightSystem" defaultChecked onChange={handleChange} required/>
                     <label htmlFor='kg'>Kg</label>
 
@@ -122,7 +127,7 @@ export function Register(args) {
                     <option value="lose">Lose weight</option>
                 </select>
 
-                <button type="submit">Register!</button>
+                <button type="submit">REGISTER!</button>
             </form>
         </div>
     )

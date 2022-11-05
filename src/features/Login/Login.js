@@ -85,12 +85,20 @@ export function Login(args) {
                             <i>&#128170;</i>
                         </div>
                     </div>
+
                     <div id="errorMessages"></div>
-                    <input placeholder="email" id="emailField" onChange={handleChange}></input>
-                    <input placeholder="password" id="passwordField" onChange={handleChange}></input>
-                    <button type="submit">Login!</button>
-                    <button type="submit">Sign in with Google</button>
-                    <Link id="linkToRegister" to="/register">Don't have an account? Register here!</Link>
+
+                    <div id='loginInputsContainer'>
+                        <input type='email' placeholder="Email" id="emailField" onChange={handleChange}></input>
+                        <input type='password' placeholder="Password" id="passwordField" onChange={handleChange}></input>
+                    </div>
+
+                    <div id="loginButtonsContainer">
+                        <button type="submit">Login!</button>
+                        <button type="submit">Sign in with Google</button>
+                        <Link id="linkToRegister" to="/register">Don't have an account? Register here!</Link>
+                    </div>
+                    
                 </form>
             </section>
         </div>

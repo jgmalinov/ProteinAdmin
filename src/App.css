@@ -68,6 +68,133 @@ button:hover {
   box-shadow: 2px 2px 2px black;
 }
 
+/* FRONT Page */
+#front {
+  background-color: rgb(243, 244, 226);
+  display: grid;
+  grid-template: 1fr 2fr 1fr 2fr/ 1fr 3fr 1fr;
+  grid-template-areas:
+  'header header header'
+  'iconsLeft body iconsRight'
+  'start start start'
+  'pizza pizza pizza';
+  width: 100vw;
+  height: 100vh;
+}
+
+#frontHeader {
+  grid-area: header;
+  display: grid;
+  grid-template: 1fr / 1fr 1fr 1fr;
+  grid-template-areas: 
+  'name logo UI';
+}
+
+#front h1 {
+  grid-area: name;
+  margin: 0px 0px 0px 20px;
+  padding: 20px 0px;
+  align-self: center;
+}
+
+#frontHeader>.logo {
+  grid-area: logo;
+  font-size: 54px;
+}
+
+#frontHeader a {
+  font-family: 'Raleway', sans-serif;
+  text-decoration: none;
+  color: black;
+}
+
+#frontHeader a:hover {
+  border-radius: 3px;
+  box-shadow: 1px 1px 1px black;
+}
+
+#frontUI {
+  grid-area: UI;
+  justify-self: flex-end;
+  align-self: center;
+  margin-right: 20px;
+}
+
+#frontBody {
+  grid-area: body;
+  justify-self: center;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(179, 204, 236);
+  border-radius: 5px;
+  height: 300px;
+  box-shadow: 1px 1px 1px 1px;
+}
+
+#frontBody ul {
+  list-style-type: "\1F4AA";
+  font-size: 18px;
+}
+
+#frontBody li {
+  margin: 3px;
+  border-radius: 3px;
+  width: fit-content;
+}
+
+#iconsLeft {
+  grid-area: iconsLeft;
+}
+
+#iconsLeft, #iconsRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#iconsLeft i, #iconsRight i {
+  font-size: 42px;
+  margin: 30px 0px;
+}
+
+#iconsRight {
+  grid-area: iconsRight;
+}
+
+#startButton {
+  grid-area: start;
+  align-self: center;
+  justify-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 60px;
+  border: 3px outset gainsboro;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1.5px black;
+  text-decoration: none;
+}
+
+#startButton button {
+  background-color: rgb(179, 204, 236);
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: black;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+}
+
+#startButton:active {
+  border: 3px inset gainsboro;
+  box-shadow: none;
+}
+
 /* LOGIN Page */
 #loginSection {
   grid-area: a;
@@ -77,16 +204,17 @@ button:hover {
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: rgb(240, 242, 214);
+  background-color: rgb(243, 244, 226);
 }
 
 #loginForm {
   grid-area: b;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid black;
+  display: grid;
+  grid-template: 1fr 1fr 1fr / 1fr;
+  grid-template-areas: 
+  'a'
+  'b'
+  'c';
   border-radius: 5px;
   width: 400px;
   height: 400px;
@@ -94,18 +222,40 @@ button:hover {
   font-family: 'Raleway', sans-serif;
 }
 
-#loginForm i {
-  font-size: 36px;
-  position: relative;
-  bottom: 50px;
-}
 
 .logo {
+  grid-area: a;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
+}
+
+#loginInputsContainer, #loginButtonsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#loginInputsContainer {
+  grid-area: b;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#loginButtonsContainer {
+  grid-area: c;
+}
+
+#loginForm i {
+  font-size: 36px;
 }
 
 #linkToRegister {
-  background-color: rgb(240, 242, 214);
+  background-color: rgb(246, 246, 239);
   color: black;
   text-decoration: none;
   margin: 3px 0px;
@@ -119,14 +269,16 @@ button:hover {
 }
 
 #loginForm input {
-  width: 60%;
   margin: 5px 0px;
-  background-color: rgb(242, 244, 213);
+  background-color: rgb(246, 246, 239);
   border-radius: 5px;
+  border: 2px inset rgb(118, 118, 118);
+  font-size: 16px;
+  height: 26px;
 }
 
 #loginForm button {
-  background-color: rgb(242, 244, 213);
+  background-color: rgb(246, 246, 239);
   margin: 3px 0px;
   font-family: 'Raleway', sans-serif;
   font-size: 16px;
@@ -137,7 +289,18 @@ button:hover {
   justify-self: center;
 }
 /* REGISTER Page */
+#viewBodyRegister {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(243, 244, 226);
+}
+
 #registerForm {
+  background-color: rgb(179, 204, 236);
+  border-radius: 5px;
   grid-area: a;
   align-self: center;
   justify-self: center;
@@ -145,8 +308,54 @@ button:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 60%;
+  width: 450px;
 }
+
+#registerForm>input {
+  border: none;
+  border-radius: 3px;
+  width: 70%;
+  margin: 5px 0px;
+  height: 20px;
+  background-color: rgb(246, 246, 239);
+}
+
+#registerForm select {
+  border-radius: 3px;
+  border: none;
+  width: 70%;
+  margin: 5px 0px;
+  height: 26px;
+  padding: 2px 0px;
+  background-color: rgb(246, 246, 239);
+}
+
+#registerForm fieldset {
+  width: 70%;
+  padding: 0;
+  border: none;
+  border-radius: 3px;
+  background-color: ;
+}
+
+#height, #weight {
+  border-radius: 3px;
+  border: none;
+  width: 50%;
+  margin: 5px 0px;
+  height: 20px;
+  background-color: rgb(246, 246, 239);
+}
+
+#registerForm button {
+  border: 2px inset rgb(118, 118, 118);;
+  border-radius: 5px;
+  width: 40%;
+  margin: 25px 0px;
+  height: 26px;
+  background-color: rgb(246, 246, 239);
+}
+
 /* DASHBOARD */
 #dashboard {
   display: grid;
@@ -561,10 +770,6 @@ button:hover {
   width: 50%;
 }
 
-#registerForm fieldset {
-  width: 50%;
-}
-
 
 #logo {
   grid-area: b;
@@ -614,10 +819,11 @@ button:hover {
   margin-bottom: 5px;
 }
 
+/* 
 .fa-solid.fa-pizza-slice {
   font-size: 80px;
   position: absolute;
-  top: 50%;
+  top: 60%;
   left: 50%;
 }
 #slice1 {
@@ -653,4 +859,5 @@ button:hover {
 #slice6 {
   transform-origin: 0% 100%;
   transform: translate(0%, 100%) rotate(300deg) skew(6.5deg, 6.5deg);
-}
+} 
+*/
