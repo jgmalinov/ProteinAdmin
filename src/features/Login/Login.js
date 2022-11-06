@@ -78,13 +78,17 @@ export function Login(args) {
                 {loggedIn ? <Navigate to={'/dashboard'}/> : undefined}
                 {renderJustRegistered()}
                 <form id="loginForm" onSubmit={handleSubmit}>
-                    <div className='logo'>
-                        <i>&#128170;</i>
-                        <i className='fa-solid fa-utensils'></i>
-                        <div className="secondBicep">
+                    <div id="headerLoginForm">
+                        <Link to='/' id="backArrowLogin"><i class="fa-solid fa-backward-step"></i></Link>
+                        <div className='logo'>
                             <i>&#128170;</i>
+                            <i className='fa-solid fa-utensils'></i>
+                            <div className="secondBicep">
+                                <i>&#128170;</i>
+                            </div>
                         </div>
                     </div>
+
 
                     <div id="errorMessages"></div>
 

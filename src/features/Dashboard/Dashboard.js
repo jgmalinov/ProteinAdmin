@@ -111,7 +111,7 @@ export function Dashboard(args) {
         const userStats = [];
         userStats.push(
             <div className="statusLite">
-                <h2>Daily Calories</h2>
+                <h2>{timeSeries === 'monthly' ? 'Monthly' : 'Daily'} Calories</h2>
                 <h2>{Number(caloriesToday).toFixed(1)} / {Number(goalCalories).toFixed(1)}kcal</h2>
             </div>
         );
@@ -124,10 +124,10 @@ export function Dashboard(args) {
             <div className="statusDetailed">
                 <h2>Calories</h2>
                 <ul>
-                    <li>Calorie Intake Trend: {stats.absTrendCalories} ({stats.absTrendCalories === 'negative' ? 'increasingly deviating from target' : 'lesser deviation from target'})</li>
-                    <li>Average {stats.timeSeries} calorie intake: {stats.meanCaloriesOverall}kcal</li>
-                    <li>Average {stats.timeSeries} deviation from calorie goal: {stats.stdCaloriesOverall}kcal</li>
-                    <li>Average quarterly % change in deviation from calorie goal: {stats.stdChangeCalories}% ({stats.stdChangeCalories > 0 ? 'closer to target' : stats.stdChangeCalories < 0 ? 'further from target' : ''})</li>
+                    <li>Calorie Intake Trend: {stats.absTrendCalories === 'positive' ? <i class="fa-solid fa-arrow-trend-up"></i> : <i class="fa-solid fa-arrow-trend-down"></i>} ({stats.absTrendCalories === 'negative' ? 'increasingly deviating from target' : 'lesser deviation from target'})</li>
+                    <li>Average {stats.timeSeries === 'monthly' ? 'monthly' : 'daily'} calorie intake: {stats.meanCaloriesOverall}kcal</li>
+                    <li>Average {stats.timeSeries === 'monthly' ? 'monthly' : 'daily'} deviation from calorie goal: {stats.stdCaloriesOverall}kcal</li>
+                    <li>Average {stats.timeSeries === 'monthly' ? 'quarterly' : 'weekly'} % change in deviation from calorie goal: {stats.stdChangeCalories}% ({stats.stdChangeCalories > 0 ? 'closer to target' : stats.stdChangeCalories < 0 ? 'further from target' : ''})</li>
                     {stats.timeSeries === 'daily' ? <li>Calories left until today's target met: {Number(stats.caloriesLeftNow).toFixed(2)}kcal</li> : ''}
                 </ul>
             </div>
@@ -140,7 +140,7 @@ export function Dashboard(args) {
         const userStats = [];
         userStats.push(
             <div className="statusLite">
-                <h2>Daily Protein</h2>
+                <h2>{timeSeries === 'monthly' ? 'Monthly' : 'Daily'} Protein</h2>
                 <h2>{Number(proteinToday).toFixed(1)} / {Number(goalProtein).toFixed(1)}g</h2>
             </div>
         );
@@ -153,10 +153,10 @@ export function Dashboard(args) {
             <div className="statusDetailed">
                 <h2>Protein</h2>
                 <ul>
-                    <li>Protein Intake Trend: {stats.absTrendProtein} ({stats.absTrendProtein === 'negative' ? 'increasingly falling short of the target' : 'approaching/exceeding the target'})</li>
-                    <li>Average {stats.timeSeries} protein intake: {stats.meanProteinOverall}g</li>
-                    <li>Average {stats.timeSeries} deviation from protein goal: {stats.stdProteinOverall}g</li>
-                    <li>Average quarterly % change in protein intake: {stats.meanChangeProtein}% ({stats.meanChangeProtein > 0 ? 'higher intake' : stats.stdChangeCalories < 0 ? 'reduced intake' : ''})</li>
+                    <li>Protein Intake Trend: {stats.absTrendProtein === 'positive' ? <i class="fa-solid fa-arrow-trend-up"></i> : <i class="fa-solid fa-arrow-trend-down"></i>} ({stats.absTrendProtein === 'negative' ? 'increasingly falling short of the target' : 'approaching/exceeding the target'})</li>
+                    <li>Average {stats.timeSeries === 'monthly' ? 'monthly' : 'daily'} protein intake: {stats.meanProteinOverall}g</li>
+                    <li>Average {stats.timeSeries === 'monthly' ? 'monthly' : 'daily'} deviation from protein goal: {stats.stdProteinOverall}g</li>
+                    <li>Average {stats.timeSeries === 'monthly' ? 'quarterly' : 'weekly'} % change in protein intake: {stats.meanChangeProtein}% ({stats.meanChangeProtein > 0 ? 'higher intake' : stats.stdChangeCalories < 0 ? 'reduced intake' : ''})</li>
                     {stats.timeSeries === 'daily' ? <li>Protein left until today's target met: {Number(stats.proteinLeftNow).toFixed(2)}g</li> : ''}
                 </ul>
             </div>
@@ -300,10 +300,10 @@ export function Dashboard(args) {
 
                 <div id="visualData">
                     <section id='charts'>
-                        <div id="chartContainerCalories" style={{position: 'relative', height: '40vh', width: '46.78vw'}}>
+                        <div id="chartContainerCalories" style={{position: 'relative', height: '40vh', width: '46.98vw'}}>
                             <canvas id="CalorieChart"></canvas>
                         </div>
-                        <div id="chartContainerProtein" style={{position: 'relative', height: '40vh', width: '46.78vw'}}>
+                        <div id="chartContainerProtein" style={{position: 'relative', height: '40vh', width: '46.97vw'}}>
                             <canvas id="ProteinChart"></canvas>
                         </div>
                     </section>

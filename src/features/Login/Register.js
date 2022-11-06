@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { updateRegistrationForm, selectRegistrationForm, updateErrors, selectErrors, updateSuccessfulRegistration, selectSuccessfulRegistration } from "./RegisterSlice";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { getCalories, getProtein, getAge} from "../Utilities";
 
 
@@ -65,7 +65,11 @@ export function Register(args) {
             {justRegistered ? <Navigate replace to='/login'/> : undefined}
             {renderErrors()}
             <form id="registerForm" onSubmit={handleSubmit}>
-                <h1>Registration Form</h1>
+                <div>
+                    <Link to='/'><i class="fa-solid fa-backward-step"></i></Link>
+                    <h1>Registration Form</h1>
+                </div>
+                
                     <div className='logo'>
                         <i>&#128170;</i>
                         <i className='fa-solid fa-utensils'></i>

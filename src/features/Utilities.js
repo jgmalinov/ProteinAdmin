@@ -51,11 +51,11 @@ export async function BarChartConfig(timeSeries, ref, email, goalCalories, goalP
                     },
                     label1: {
                         type: 'label',
-                        xValue: 1.6,
-                        yValue: goalCalories + 0.15 * goalCalories,
+                        xValue: 3,
+                        yValue: goalCalories - 0.16 * goalCalories,
                         content: `${Number(goalCalories).toFixed(1)} kcal threshold`,
-                        backgroundColor: 'rgba(245,245,245, 0.75)',
-                        font: {size: 9}
+                        backgroundColor: 'rgba(245,245,245, 0.4)',
+                        font: {size: 12}
                     }
                 }
             },
@@ -80,11 +80,11 @@ export async function BarChartConfig(timeSeries, ref, email, goalCalories, goalP
     };
     optionsProtein.plugins.annotation.annotations.label1 = {
         type: 'label',
-        xValue: 1.6,
+        xValue: 3,
         yValue: goalProtein + 0.25 * goalProtein,
         content: `${Number(goalProtein).toFixed(1)} g/protein threshold`,
-        backgroundColor: 'rgba(245,245,245, 0.75)',
-        font: {size: 9}
+        backgroundColor: 'rgba(245,245,245, 0.4)',
+        font: {size: 12}
     }
 
 
@@ -141,12 +141,11 @@ export function createBarChart(timeSeries, barChartData) {
         const ctxProtein = document.getElementById('ProteinChart').getContext('2d');
         const oldCalorieChart = ChartJS.getChart('CalorieChart');
         const oldProteinChart = ChartJS.getChart('ProteinChart'); 
-        if (oldCalorieChart) {
-            oldCalorieChart.destroy();
+
+        if (oldCalorieChart && oldProteinChart) {
+            return
         };
-        if (oldProteinChart) {
-            oldProteinChart.destroy();
-        };
+
         chart1 = new ChartJS(ctxCalories, {
             type: 'bar',
             data: dataCalories,
@@ -204,7 +203,7 @@ export function getCalories(goal, weight, height, age, gender, activityLevel) {
 
 export function calculateCurrentStatus(labels, calories, protein, timeSeries, goalCalories, goalProtein) {
     const currentDate = new Date().toDateString();
-    const sliceRanges = labels.length < 30 ? [{start: 0, end: 3}, {start: 3, end: 6}, {start: 6, end: 9}, {start: 9}] : [{start: 0, end: 8}, {start: 8, end: 16}, {start: 16, end: 24}, {start: 24}] 
+    const sliceRanges = timeSeries === 'monthly' ? [{start: 0, end: 3}, {start: 3, end: 6}, {start: 6, end: 9}, {start: 9}] : [{start: 0, end: 8}, {start: 8, end: 16}, {start: 16, end: 24}, {start: 24}] 
     console.log(calories.slice(sliceRanges[0].start, sliceRanges[0].end));
     const segregatedCalories = {first: {calories: calories.slice(sliceRanges[0].start, sliceRanges[0].end), stat: std(calories.slice(sliceRanges[0].start, sliceRanges[0].end))}, second: {calories: calories.slice(sliceRanges[1].start, sliceRanges[1].end), stat: std(calories.slice(sliceRanges[1].start, sliceRanges[1].end))}, third: {calories: calories.slice(sliceRanges[2].start, sliceRanges[2].end), stat: std(calories.slice(sliceRanges[2].start, sliceRanges[2].end))}, fourth: {calories: calories.slice(sliceRanges[3].start), stat: std(calories.slice(sliceRanges[3].start))}};
     const segregatedProtein = {first: {protein: protein.slice(sliceRanges[0].start, sliceRanges[0].end), stat: std(protein.slice(sliceRanges[0].start, sliceRanges[0].end))}, second: {protein: protein.slice(sliceRanges[1].start, sliceRanges[1].end), stat: std(protein.slice(sliceRanges[1].start, sliceRanges[1].end))}, third: {protein: protein.slice(sliceRanges[2].start, sliceRanges[2].end), stat: std(protein.slice(sliceRanges[2].start, sliceRanges[2].end))}, fourth: {protein: protein.slice(sliceRanges[3].start), stat: std(protein.slice(sliceRanges[3].start))}};

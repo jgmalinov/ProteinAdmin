@@ -221,13 +221,30 @@ button:hover {
   font-family: 'Raleway', sans-serif;
 }
 
+#headerLoginForm {
+  grid-area: a;
+  display: grid;
+  grid-template: 1fr / 1fr 2fr 1fr;
+  grid-template-areas: 
+  'back logo empty';
+}
 
 .logo {
-  grid-area: a;
-  display: flex;
+  grid-area: logo;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   font-size: 36px;
+}
+
+#backArrowLogin {
+  grid-area: back;
+  justify-self: flex-end;
+  align-self: center;
+}
+
+#backArrowLogin>i {
+  margin: 0px;
 }
 
 #loginInputsContainer, #loginButtonsContainer {
@@ -310,6 +327,18 @@ button:hover {
   width: 450px;
 }
 
+#registerForm>div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fa-solid.fa-backward-step {
+  margin-right: 20px;
+  font-size: 42px;
+  color: rgb(243, 244, 226);
+}
+
 #registerForm>input {
   border: none;
   border-radius: 3px;
@@ -360,7 +389,7 @@ button:hover {
   display: grid;
   width: 100%;
   height: 100vh;
-  grid-template: 1fr 300px 4fr/ 1fr 1fr;
+  grid-template: 1fr 330px 4.8fr/ 1fr 1fr;
   grid-template-areas: 
   "a a"
   "b b"
@@ -375,7 +404,7 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-top: 28px;
+  margin-top: 18px;
 }
 
 #title{
@@ -452,6 +481,16 @@ button:hover {
   font-size: 22px;
   margin-right: 15px;
   align-items: center;
+}
+
+.fa-solid.fa-arrow-trend-down {
+  color: red;
+  font-size: 24px;
+}
+
+.fa-solid.fa-arrow-trend-up {
+  color: green;
+  font-size: 24px;
 }
 
 #autocomplete {
@@ -675,7 +714,7 @@ button:hover {
   grid-template-areas: 
   "a b c d";
   justify-self: center;
-  gap: 20px;
+  gap: 15px;
 }
 
 #stats>section {
@@ -734,6 +773,7 @@ button:hover {
 
 .statusLite ul, .statusDetailed ul {
   list-style-type: "\1F4AA";
+  padding-left: 26px;
 }
 
 .statusLite h2 {
