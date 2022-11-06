@@ -27,8 +27,6 @@ export function Dashboard(args) {
     const proteinToday = useSelector(selectProteinToday);
     const goalCalories = ['daily', 'default'].includes(timeSeries) ? CaloriesAsNum : CaloriesAsNum * 30.437;
     const goalProtein = ['daily', 'default'].includes(timeSeries) ? ProteinAsNum : ProteinAsNum * 30.437;
-
-    getDailyCaloriesAndProtein();
     
     // simple daily calories and protein data and goal
 
@@ -41,7 +39,11 @@ export function Dashboard(args) {
 
 
     useEffect(() => {
+        if (!loggedIn) {
+            return
+        }
         if (updateDashboard) {
+            getDailyCaloriesAndProtein();
             dispatch(setUpdateDashboard(false));
         };
 

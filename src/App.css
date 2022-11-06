@@ -759,6 +759,10 @@ button:hover {
   transform-style: preserve-3d;
 }
 
+#currentStatusCalories:hover {
+  transform: rotateY(30deg);
+}
+
 .statusLite, .statusDetailed {
   position: absolute;
   display: flex;

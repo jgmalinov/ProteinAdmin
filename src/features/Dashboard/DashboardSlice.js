@@ -9,7 +9,7 @@ const DashboardSlice = createSlice({
         stats: '',
         caloriesToday: '?',
         proteinToday: '?',
-        updateDashboard: false,
+        updateDashboard: true,
         calorieCardFlipped: false,
         proteinCardFlipped: false
     },

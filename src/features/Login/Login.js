@@ -24,10 +24,13 @@ export function Login(args) {
         async function checkLoginStatus() {
             const url = process.env.REACT_APP_BACKEND_URL;
             const response = await fetch(url + 'login/status', {headers: {'Content-Type': 'application/json'}, credentials: 'include'});
-            const responseMsg = await response.text();
+            const responseJS = await response.json();
+            const responseMsg = responseJS.status;
+            const user = responseJS.user;
 
             if (responseMsg === 'Authenticated') {
                 dispatch(setLoggedIn(true));
+                dispatch(setUser(user));
             }
         }
         checkLoginStatus();
