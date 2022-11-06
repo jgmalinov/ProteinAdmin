@@ -2,23 +2,49 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export function Front (args) {
-    const foodIcons = [
-        <i class="fa-solid fa-egg"></i>,
-        <i class="fa-solid fa-fish"></i>,
-        <i class="fa-solid fa-cheese"></i>,
-        <i class="fa-solid fa-mug-saucer"></i>,
-        <i class="fa-solid fa-pizza-slice"></i>,
-        <i class="fa-solid fa-drumstick-bite"></i>,
-    ]
-
-    const [count, setCount] = useState(0);
-    const [timeoutsSet, setTimeoutsSet] = useState(false);
+    const [intervalSet, setIntervalSet] = useState(false);
 
     useEffect(() => {
-        if (!timeoutsSet) {
+        if (!intervalSet) {
+            setInterval(() => {
+                const foodIcons = [
+                    "fa-solid fa-egg",
+                    "fa-solid fa-fish",
+                    "fa-solid fa-cheese",
+                    "fa-solid fa-mug-saucer",
+                    "fa-solid fa-pizza-slice",
+                    "fa-solid fa-drumstick-bite",
+                ];
 
-        }
-    })
+                const iconsBottom = document.getElementById('iconsBottom');
+                const icons = iconsBottom.childNodes;
+                let timeout = 0;
+                
+                const referenceClassName = icons[0].firstChild.className;
+                let newRandomIndex = Math.floor(Math.random() * 6);
+
+                while (referenceClassName === foodIcons[newRandomIndex]) {
+                    newRandomIndex = Math.floor(Math.random() * 6);
+                };
+
+                for (let i=0; i < icons.length; i++) {
+                    setTimeout(() => {
+                        const oldIcon = icons[i].lastChild;
+                        const newIcon = document.createElement('i');
+                        newIcon.className = foodIcons[newRandomIndex];
+                        icons[i].replaceChild(newIcon, oldIcon);
+                 
+                    }, timeout);
+                    timeout += 500;
+                };
+
+            }, 3000);
+    
+            setIntervalSet(true);
+
+        };
+    }, []);
+
     return (
         <div id="front">
             <div id="frontHeader">
@@ -49,13 +75,10 @@ export function Front (args) {
                 </ul>
             </div>
 
-            <div id="iconsLeft">
+            <div id="iconsBottom">
                 <div id="iconsLeft1"><i class="fa-solid fa-egg"></i></div>
                 <div id="iconsLeft2"><i class="fa-solid fa-fish"></i></div>
                 <div id="iconsLeft3"><i class="fa-solid fa-cheese"></i></div>
-            </div>
-
-            <div id="iconsRight">
                 <div id="iconsRight1"><i class="fa-solid fa-mug-saucer"></i></div>
                 <div id="iconsRight2"><i class="fa-solid fa-pizza-slice"></i></div>
                 <div id="iconsRight3"><i class="fa-solid fa-drumstick-bite"></i></div>
