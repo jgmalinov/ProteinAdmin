@@ -7,6 +7,7 @@ body {
 }
 
 #viewBody {
+  background-size: cover;
   display: grid;
   width: 100%;
   height: 100vh;
@@ -16,7 +17,19 @@ body {
   "c c c"
   "a a a"
   "b b b";
-  
+}
+
+#viewBody::before {
+  content: '';
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-image: url('C:\Users\Georgi\Documents\JSCode\Projects\Tier 3\ProteinAdmin\proteinadmin\src\images\3904.jpg');
+  background-size: cover;
+  opacity: 0.4;
+  z-index: -1;
 }
 
 i {
@@ -68,9 +81,13 @@ button:hover {
   box-shadow: 2px 2px 2px black;
 }
 
+.textLogo {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 45px;
+}
+
 /* FRONT Page */
 #front {
-  background-color: rgb(243, 244, 226);
   display: grid;
   grid-template: 1fr 2fr 1fr 1fr/ 1fr;
   grid-template-areas:
@@ -80,6 +97,19 @@ button:hover {
   'iconsBottom';
   width: 100vw;
   height: 100vh;
+}
+
+#front::before {
+  content: '';
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-image: url('C:\Users\Georgi\Documents\JSCode\Projects\Tier 3\ProteinAdmin\proteinadmin\src\images\3904.jpg');
+  background-size: cover;
+  opacity: 0.4;
+  z-index: -1;
 }
 
 #frontHeader {
@@ -98,12 +128,14 @@ button:hover {
 }
 
 #frontHeader>.logo {
+  color: ;
   grid-area: logo;
-  font-size: 54px;
+  font-size: 64px;
 }
 
 #frontHeader a {
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 28px;
   text-decoration: none;
   color: black;
 }
@@ -128,21 +160,31 @@ button:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgb(179, 204, 236);
-  border-radius: 5px;
+  background-color: rgb(255, 228, 72);
+  border-radius: 10px;
   height: 300px;
-  box-shadow: 1px 1px 1px 1px;
+  box-shadow: 4px 4px 1px 1px;
+  font-family: 'Raleway', sans-serif;
+  padding: 40px 25px;
 }
 
 #frontBody ul {
-  list-style-type: "\1F4AA";
-  font-size: 18px;
+  list-style-type: "\2705";
+  font-size: 22px;
 }
 
 #frontBody li {
   margin: 3px;
   border-radius: 3px;
   width: fit-content;
+}
+
+#frontBody h2 {
+  font-size: 32px;
+}
+
+#frontBody h3 {
+  font-size: 24px;
 }
 
 #iconsBottom {
@@ -171,21 +213,21 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 250px;
-  height: 60px;
-  border: 3px outset gainsboro;
+  width: 320px;
+  height: 80px;
   border-radius: 5px;
-  box-shadow: 1px 1px 1.5px black;
+  box-shadow: 3px 3px 0px 0px black;
   text-decoration: none;
 }
 
 #startButton button {
-  background-color: rgb(179, 204, 236);
+  background-color: rgb(255, 228, 72);
   width: 100%;
   height: 100%;
   text-decoration: none;
   color: black;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 24px;
   font-weight: 600;
 }
 
@@ -203,7 +245,6 @@ button:hover {
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: rgb(243, 244, 226);
 }
 
 #loginForm {
@@ -214,10 +255,10 @@ button:hover {
   'a'
   'b'
   'c';
-  border-radius: 5px;
-  width: 400px;
-  height: 400px;
-  background-color: rgb(179, 204, 236);
+  border-radius: 10px;
+  width: 700px;
+  height: 500px;
+  background-color: rgb(255, 228, 72);
   font-family: 'Raleway', sans-serif;
 }
 
@@ -229,12 +270,17 @@ button:hover {
   'back logo empty';
 }
 
+#headerLoginForm>h1 {
+  justify-self: center;
+  align-self: center;
+}
+
 .logo {
   grid-area: logo;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  font-size: 36px;
+  font-size: 64px;
 }
 
 #backArrowLogin {
@@ -267,7 +313,7 @@ button:hover {
 }
 
 #loginForm i {
-  font-size: 36px;
+  font-size: 52px;
 }
 
 #linkToRegister {
@@ -291,6 +337,7 @@ button:hover {
   border: 2px inset rgb(118, 118, 118);
   font-size: 16px;
   height: 26px;
+  width: 350px;
 }
 
 #loginForm button {
@@ -307,16 +354,29 @@ button:hover {
 /* REGISTER Page */
 #viewBodyRegister {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: rgb(243, 244, 226);
+}
+
+#viewBodyRegister::before {
+  content: '';
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-image: url('C:\Users\Georgi\Documents\JSCode\Projects\Tier 3\ProteinAdmin\proteinadmin\src\images\3904.jpg');
+  background-size: cover;
+  opacity: 0.4;
+  z-index: -1;
 }
 
 #registerForm {
-  background-color: rgb(179, 204, 236);
-  border-radius: 5px;
+  background-color: rgb(255, 228, 72);
+  border-radius: 10px;
   grid-area: a;
   align-self: center;
   justify-self: center;
@@ -324,7 +384,7 @@ button:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 450px;
+  width: 700px;
 }
 
 #registerForm>div {
@@ -335,7 +395,7 @@ button:hover {
 
 .fa-solid.fa-backward-step {
   margin-right: 20px;
-  font-size: 42px;
+  font-size: 52px;
   color: rgb(243, 244, 226);
 }
 
@@ -346,6 +406,7 @@ button:hover {
   margin: 5px 0px;
   height: 20px;
   background-color: rgb(246, 246, 239);
+  border: inset 2px gainsboro;
 }
 
 #registerForm select {
@@ -356,6 +417,7 @@ button:hover {
   height: 26px;
   padding: 2px 0px;
   background-color: rgb(246, 246, 239);
+  border: inset 2px gainsboro;
 }
 
 #registerForm fieldset {
@@ -363,7 +425,6 @@ button:hover {
   padding: 0;
   border: none;
   border-radius: 3px;
-  background-color: ;
 }
 
 #height, #weight {
@@ -373,6 +434,7 @@ button:hover {
   margin: 5px 0px;
   height: 20px;
   background-color: rgb(246, 246, 239);
+  border: inset 2px gainsboro;
 }
 
 #registerForm button {
@@ -386,15 +448,29 @@ button:hover {
 
 /* DASHBOARD */
 #dashboard {
+  position: relative;
   display: grid;
-  width: 100%;
-  height: 100vh;
-  grid-template: 1fr 330px 4.8fr/ 1fr 1fr;
+  grid-template: 1fr 330px 3.8fr/ 1fr 1fr;
   grid-template-areas: 
   "a a"
   "b b"
   "c c";
-  background-color: white;
+  box-sizing: border-box;
+}
+
+#dashboard::before {
+  width: 100%;
+  height: 100%;
+  content: '';
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-image: url('C:\Users\Georgi\Documents\JSCode\Projects\Tier 3\ProteinAdmin\proteinadmin\src\images\3904.jpg');
+  background-size: cover;
+  opacity: 0.4;
+  z-index: -1;
 }
 
 #dashboard header {
@@ -453,7 +529,7 @@ button:hover {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 #charts {
@@ -802,6 +878,8 @@ button:hover {
 #visualData canvas {
   border: 3px solid black;
   border-radius: 10px;
+  background-color: snow;
+  opacity: 0.85;
 }
 
 #visualDataUI button {

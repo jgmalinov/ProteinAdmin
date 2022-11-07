@@ -64,19 +64,19 @@ export function Register(args) {
         <div id="viewBodyRegister">
             {justRegistered ? <Navigate replace to='/login'/> : undefined}
             {renderErrors()}
+            <div className='logo'>
+                    <i>&#128170;</i>
+                    <i className='fa-solid fa-utensils'></i>
+                    <div className="secondBicep">
+                        <i>&#128170;</i>
+                    </div>
+                </div>
             <form id="registerForm" onSubmit={handleSubmit}>
                 <div>
                     <Link to='/'><i class="fa-solid fa-backward-step"></i></Link>
-                    <h1>Registration Form</h1>
-                </div>
-                
-                    <div className='logo'>
-                        <i>&#128170;</i>
-                        <i className='fa-solid fa-utensils'></i>
-                        <div className="secondBicep">
-                            <i>&#128170;</i>
-                        </div>
-                    </div>
+                    <h1 className="textLogo">Registration Form</h1>
+                </div> 
+    
                 <input className="mainInput" placeholder="email" type="email" name="email" id="email" onChange={handleChange} required></input>
                 <input className="mainInput" placeholder="password" type="password" name="password" id="password" onChange={handleChange} required></input>
                 <input className="mainInput" placeholder="confirm password" type="password" name="confirmPassword" id="confirmPassword" onChange={handleChange} required></input>

@@ -77,19 +77,19 @@ export function Login(args) {
     return (
         <div id="viewBody">
             <section id="loginSection">
-                <h1>Protein Admin</h1>
                 {loggedIn ? <Navigate to={'/dashboard'}/> : undefined}
                 {renderJustRegistered()}
+                <div className='logo'>
+                    <i>&#128170;</i>
+                    <i className='fa-solid fa-utensils'></i>
+                    <div className="secondBicep">
+                        <i>&#128170;</i>
+                    </div>
+                </div>
                 <form id="loginForm" onSubmit={handleSubmit}>
                     <div id="headerLoginForm">
                         <Link to='/' id="backArrowLogin"><i class="fa-solid fa-backward-step"></i></Link>
-                        <div className='logo'>
-                            <i>&#128170;</i>
-                            <i className='fa-solid fa-utensils'></i>
-                            <div className="secondBicep">
-                                <i>&#128170;</i>
-                            </div>
-                        </div>
+                        <h1 className="textLogo">Protein Admin</h1>
                     </div>
 
 

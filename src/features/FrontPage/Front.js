@@ -48,7 +48,7 @@ export function Front (args) {
     return (
         <div id="front">
             <div id="frontHeader">
-                <h1>Protein Admin</h1>
+                <h1 className="textLogo">Protein Admin</h1>
 
                 <div className='logo'>
                     <i>&#128170;</i>

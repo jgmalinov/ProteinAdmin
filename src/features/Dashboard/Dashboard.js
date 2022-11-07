@@ -266,7 +266,7 @@ export function Dashboard(args) {
         return (
             <div id="dashboard">
                 <header>
-                    <h1 id="title">Protein Admin</h1>
+                    <h1 id="title" className="textLogo">Protein Admin</h1>
                     <Logger />
                     <div id="sideBarIconContainer">
                         <i class="fa-solid fa-filter" onClick={toggleFilters}></i>
@@ -302,10 +302,10 @@ export function Dashboard(args) {
 
                 <div id="visualData">
                     <section id='charts'>
-                        <div id="chartContainerCalories" style={{position: 'relative', height: '40vh', width: '46.98vw'}}>
+                        <div id="chartContainerCalories" style={{position: 'relative', height: '40vh', width: '46.6vw'}}>
                             <canvas id="CalorieChart"></canvas>
                         </div>
-                        <div id="chartContainerProtein" style={{position: 'relative', height: '40vh', width: '46.97vw'}}>
+                        <div id="chartContainerProtein" style={{position: 'relative', height: '40vh', width: '46.6vw'}}>
                             <canvas id="ProteinChart"></canvas>
                         </div>
                     </section>
