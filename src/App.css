@@ -790,7 +790,7 @@ button:hover {
   grid-template-areas: 
   "a b c d";
   justify-self: center;
-  gap: 15px;
+  gap: 10px;
 }
 
 #stats>section {
@@ -810,6 +810,7 @@ button:hover {
   border-radius: 10px;
   background-color: rgb(179, 204, 236);
   align-self: flex-start;
+  padding: 0px 10px;
 }
 
 .overviewStats ul {
@@ -836,7 +837,7 @@ button:hover {
 }
 
 #currentStatusCalories:hover {
-  transform: rotateY(30deg);
+  transform: ;
 }
 
 .statusLite, .statusDetailed {
@@ -847,8 +848,9 @@ button:hover {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   height: 100%;
-  width: 100%;
+  width: 94%;
   border-radius: 10px;
+  padding: 0px 11px
 }
 
 .statusLite ul, .statusDetailed ul {
