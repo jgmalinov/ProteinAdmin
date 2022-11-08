@@ -446,6 +446,48 @@ button:hover {
   background-color: rgb(246, 246, 239);
 }
 
+/* HELP SECTION */
+
+#help {
+  position: relative;
+}
+
+#help::before {
+  content: '';
+  background-image: url('C:\Users\Georgi\Documents\JSCode\Projects\Tier 3\ProteinAdmin\proteinadmin\src\images\3904.jpg');
+  background-size: cover;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  z-index: -1;
+  opacity: 0.04;
+}
+
+#help .fa-solid.fa-backward-step {
+  color: black;
+}
+
+#helpHeader {
+  text-align: center;
+}
+
+#helpBody {
+  padding: 0px 20px;
+  padding-bottom: 20px;
+}
+
+#helpBody h2, #helpBody h3{
+  padding-left: 40px;
+}
+
+#helpBody li ul {
+  margin-top: 20px;
+}
+
 /* DASHBOARD */
 #dashboard {
   position: relative;

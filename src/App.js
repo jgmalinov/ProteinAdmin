@@ -7,6 +7,7 @@ import { Front } from './features/FrontPage/Front';
 import { pizzaEatingAnimation } from './Animations/animations';
 import {Routes, Route, Link} from "react-router-dom";
 import { FoodForm } from './features/FoodInsertion/FoodForm';
+import { Help } from './features/HelpSection/Help';
 
 
 window.onload = pizzaEatingAnimation;
@@ -20,6 +21,7 @@ function App() {
           <Route path='/login' element={<Login/>} />
           <Route path='/register' element={<Register />} />
           <Route path='/foodform' element={<FoodForm />} />
+          <Route path='/help' element={<Help />} />
         </Routes>
     </div>
   );
