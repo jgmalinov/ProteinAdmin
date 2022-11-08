@@ -836,6 +836,9 @@ button:hover {
   transform-style: preserve-3d;
 }
 
+#currentStatusCalories:hover, #currentStatusProtein:hover {
+  cursor: pointer;
+}
 
 .statusLite, .statusDetailed {
   position: absolute;
