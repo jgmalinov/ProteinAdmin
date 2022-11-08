@@ -97,6 +97,38 @@ app.post('/register', async (req, res, next) => {
 });
 
 
+app.post('/edit', (req, res, next) => {
+    const email = req.user.email;
+    const profileEdits = req.body;
+    const {name, weight, height, goal, activityLevel, dob} = profileEdits;
+
+    pool.query(`UPDATE users
+                SET name =  CASE
+                                WHEN $1 <> name THEN $1
+                            END
+                SET weight =  CASE
+                                WHEN $2 <> name THEN $2
+                            END
+                SET height =  CASE
+                                WHEN $3 <> name THEN $3
+                            END                            
+                SET goal =  CASE
+                                WHEN $4 <> name THEN $4
+                            END
+                SET activityLevel = CASE
+                                        WHEN $5 <> name THEN $5
+                                    END
+                SET dob =   CASE
+                                WHEN $6 <> name THEN $6
+                            END`, [name, weight, height, goal, activityLevel, dob], (err, result) => {
+                                if (err) {
+                                    throw(err)
+                                }
+                                console.log(result.rows);
+                            })
+});
+
+
 app.post('/login', (req, res, next) => {
     const postAuthenticationFunc = passport.authenticate('local', {failureMessage:true, successMessage: true}, (err, user, info) => {
         if (err) {

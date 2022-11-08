@@ -488,6 +488,28 @@ button:hover {
   margin-top: 20px;
 }
 
+/* EDIT PROFILE SECTION */
+
+#editProfileForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#editProfileForm input, #editProfileForm select {
+  margin-bottom: 20px;
+  width: 175px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+#editProfileForm select {
+  padding: 1px 2px;
+  box-sizing: content-box;
+  border: 2px inset rgb(118, 118, 118);
+}
+
 /* DASHBOARD */
 #dashboard {
   position: relative;
