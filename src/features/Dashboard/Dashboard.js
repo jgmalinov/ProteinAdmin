@@ -262,6 +262,24 @@ export function Dashboard(args) {
         dailyMenuTable.style.left = '0%';
     };
 
+    function flipCardInteractivityQue(e) {
+        console.log(e.currentTarget);
+        if (e.currentTarget.style.transform === 'rotateY(0deg)') {
+            e.currentTarget.style.transform = 'rotateY(25deg)';
+        } else if (e.currentTarget.style.transform === 'rotateY(180deg)') {
+            e.currentTarget.style.transform = 'rotateY(205deg)';
+        };
+    };
+
+    function flipCardInteractivityQueUndo(e) {
+        console.log(e.currentTarget);
+        if (e.currentTarget.style.transform === 'rotateY(25deg)') {
+            e.currentTarget.style.transform = 'rotateY(0deg)';
+        } else if (e.currentTarget.style.transform === 'rotateY(205deg)') {
+            e.currentTarget.style.transform = 'rotateY(180deg)';
+        };
+    };
+
     function renderContent() {
         return (
             <div id="dashboard">
@@ -289,12 +307,12 @@ export function Dashboard(args) {
                         {displayTargets()}
                     </section>
 
-                    <section id="currentStatusCalories" onClick={toggleCaloriesInfo}>
+                    <section id="currentStatusCalories" style={{'transform': 'rotateY(0deg)'}} onClick={toggleCaloriesInfo} onMouseOver={flipCardInteractivityQue} onMouseOut={flipCardInteractivityQueUndo}>
                             {displayCalorieStatus()}
                             {displayCalorieStatusLite()}
                     </section>
 
-                    <section id="currentStatusProtein" onClick={toggleProteinInfo}>
+                    <section id="currentStatusProtein"  style={{'transform': 'rotateY(0deg)'}} onClick={toggleProteinInfo} onMouseOver={flipCardInteractivityQue} onMouseOut={flipCardInteractivityQueUndo}>
                             {displayProteinStatus()}
                             {displayProteinStatusLite()}
                     </section>

@@ -836,9 +836,6 @@ button:hover {
   transform-style: preserve-3d;
 }
 
-#currentStatusCalories:hover {
-  transform: ;
-}
 
 .statusLite, .statusDetailed {
   position: absolute;
