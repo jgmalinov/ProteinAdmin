@@ -100,27 +100,38 @@ app.post('/register', async (req, res, next) => {
 app.post('/edit', (req, res, next) => {
     const email = req.user.email;
     const profileEdits = req.body;
-    const {name, weight, height, goal, activityLevel, dob} = profileEdits;
+    let {name, weight, height, goal, activityLevel, dob} = profileEdits;
+    weight = parseFloat(weight);
+    height = parseFloat(height);
+    dob = new Date(dob);
 
     pool.query(`UPDATE users
-                SET name =  CASE
-                                WHEN $1 <> name THEN $1
-                            END
-                SET weight =  CASE
-                                WHEN $2 <> name THEN $2
-                            END
-                SET height =  CASE
-                                WHEN $3 <> name THEN $3
-                            END                            
-                SET goal =  CASE
-                                WHEN $4 <> name THEN $4
-                            END
-                SET activityLevel = CASE
-                                        WHEN $5 <> name THEN $5
-                                    END
-                SET dob =   CASE
-                                WHEN $6 <> name THEN $6
-                            END`, [name, weight, height, goal, activityLevel, dob], (err, result) => {
+                SET 
+                name =          CASE
+                                    WHEN $1 <> name THEN $2
+                                    ELSE name
+                                END,
+                weight =        CASE
+                                    WHEN $3::float <> weight THEN $4::float
+                                    ELSE weight
+                                END,
+                height =        CASE
+                                    WHEN $5::float <> height THEN $6::float
+                                    ELSE height
+                                END,                           
+                goal =          CASE
+                                    WHEN $7 <> goal THEN $8
+                                    ELSE goal
+                                END,
+                activityLevel = CASE
+                                    WHEN $9 <> activitylevel THEN $10
+                                    ELSE activitylevel
+                                END,
+                dob =           CASE
+                                    WHEN $11::DATE <> dob THEN $12::DATE
+                                    ELSE dob
+                                END
+                WHERE email = $13`, [name, name, weight, weight, height, height, goal, goal, activityLevel, activityLevel, dob, dob, email], (err, result) => {
                                 if (err) {
                                     throw(err)
                                 }
