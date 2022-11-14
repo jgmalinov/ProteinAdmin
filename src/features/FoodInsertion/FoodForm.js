@@ -1,11 +1,19 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { selectUser, setTimeSeries } from "../Dashboard/DashboardSlice";
 import { setCategory, setSubcategory, setVariation, setValues, setSubcategoryData, selectFoodForm, selectSubcategoryData } from "./FoodSlice";
 
 export function FoodForm(args) {
     const dispatch = useDispatch();
     const foodForm = useSelector(selectFoodForm);
     const subcategoryData = useSelector(selectSubcategoryData);
+    const user = useSelector(selectUser);
+    const admin = user.admin;
+
+    useEffect(() => {
+        dispatch(setTimeSeries('default'));
+    })
 
     const optionsJSX = [];
     if (subcategoryData.length === 0) {
@@ -34,6 +42,7 @@ export function FoodForm(args) {
     };
 
     async function handleSubmit(e) {
+        e.preventDefault();
         const url = process.env.REACT_APP_BACKEND_URL;
         const response = await fetch(url + 'foodform', {method: 'POST', headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}, credentials: 'include', body: JSON.stringify(foodForm)});
     }
@@ -70,9 +79,9 @@ export function FoodForm(args) {
         if(e.target.id === 'foodCategory') {
             getSubcategories(value);
         }
-    }
+    };
 
-    return (
+    const foodFormJSX = (
         <div id="foodFormContainer">
             <Link to='/dashboard'>
                 <div>
@@ -83,7 +92,7 @@ export function FoodForm(args) {
 
             <form onSubmit={handleSubmit} id='foodForm'>
                 <h2>Nutritional data insertion form</h2>
-                <select name="category" id="foodCategory" onChange={handleChange}>
+                <select name="category" id="foodCategory" onChange={handleChange} required>
                     <option value='none'>--Select food category--</option>
                     <option value='meat'>Meat</option>
                     <option value='dairy'>Dairy</option>
@@ -102,14 +111,24 @@ export function FoodForm(args) {
 
                 <input placeholder="--Or insert a new one--" type='text' name="subcategory" id="foodSubcategory2" onChange={handleChange}></input>
 
-                <input placeholder="--describe the food briefly (dish name, variations such as baked, roasted, origin etc.--" type='text' name="type" id="variationType" onChange={handleChange}></input>
+                <input placeholder="--describe the food briefly (dish name, variations such as baked, roasted, origin etc.--" type='text' name="type" id="variationType" onChange={handleChange} required></input>
                 <input placeholder="--brand (optional)--" type='text' name="brand" id="variationBrand" onChange={handleChange}></input>
 
-                <input placeholder="kcal per 100g" name="calories" id="valueKcal" type='number' step='0.1' onChange={handleChange}></input>
-                <input placeholder="protein (grams) per 100g" name="protein" id="valueProt" type='number' step='0.1' onChange={handleChange}></input>
+                <input placeholder="kcal per 100g" name="calories" id="valueKcal" type='number' step='0.1' onChange={handleChange} required></input>
+                <input placeholder="protein (grams) per 100g" name="protein" id="valueProt" type='number' step='0.1' onChange={handleChange} required></input>
                 
                 <button type="submit">Submit!</button>
             </form>
         </div>
+    );
+
+    const noAdminRightsJSX = (
+        <div id="foodFormContainer">
+            <Link to='/dashboard' id="backArrowLogin"><i class="fa-solid fa-backward-step"></i>Back to Dashboard</Link>
+            <h1 id="sadFaceIcon">&#128542;</h1>
+            <h2 id="foodFormNotAdminMessage">You have not been granted administrator rights</h2>
+        </div>
     )
+
+    return admin ? foodFormJSX : noAdminRightsJSX;
 }

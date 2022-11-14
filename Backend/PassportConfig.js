@@ -18,7 +18,7 @@ function initialize(passport) {
                         if (err) {
                             console.log(err)
                         } else if (isMatch) {
-                            const user = {name: match.name, email: match.email, dob: match.dob, height: match.height, heightSystem: match.heightsystem, weight: match.weight, weightSystem: match.weightsystem, activityLevel: match.activitylevel, goal: match.goal, gender: match.gender, menu: {}}
+                            const user = {name: match.name, email: match.email, dob: match.dob, height: match.height, heightSystem: match.heightsystem, weight: match.weight, weightSystem: match.weightsystem, activityLevel: match.activitylevel, goal: match.goal, gender: match.gender, menu: {}, admin: match.admin}
                             return done(null, user, {message: 'Success'});
                         } else if (!isMatch) {
                             return done(null, false, {message: 'Password incorrect'})

@@ -490,11 +490,47 @@ button:hover {
 
 /* EDIT PROFILE SECTION */
 
+#editProfile {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+}
+
+#editProfile::before {
+  content: '';
+  background-image: url('C:\Users\Georgi\Documents\JSCode\Projects\Tier 3\ProteinAdmin\proteinadmin\src\images\3904.jpg');
+  background-size: cover;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  z-index: -1;
+  opacity: 0.2;
+}
+
 #editProfileForm {
+  width: 45vw;
+  height: 70vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: rgb(255, 228, 72);
+  border-radius: 10px;
+}
+
+#editProfileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 42%;
+  font-size: 22px;
 }
 
 #editProfileForm input, #editProfileForm select {
@@ -508,6 +544,28 @@ button:hover {
   padding: 1px 2px;
   box-sizing: content-box;
   border: 2px inset rgb(118, 118, 118);
+}
+
+#editProfileForm>button {
+  background-color: rgb(246, 246, 239);
+  border: 2px outset rgb(118, 118, 118);
+  border-radius: 3px;
+  margin-bottom: 20px;
+  width: 120px;
+  height: 40px;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 20px
+}
+
+#editProfileForm>button:active {
+  border: 2px inset rgb(118, 118, 118);
+}
+
+#editProfileNote {
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  margin: 0px 10px 20px 10px;
+  text-align: center;
 }
 
 /* DASHBOARD */
@@ -971,21 +1029,47 @@ button:hover {
   align-items: center;
 }
 
+#foodFormContainer::before {
+  content: '';
+  background-image: url('C:\Users\Georgi\Documents\JSCode\Projects\Tier 3\ProteinAdmin\proteinadmin\src\images\3904.jpg');
+  background-size: cover;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  z-index: -1;
+  opacity: 0.2;
+}
+
+#sadFaceIcon {
+  font-size: 100px;
+}
+
+#foodFormNotAdminMessage {
+  font-size: 40px;
+}
+
 #foodFormContainer div {
-  width: 250px;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: dotted black 2px;
 }
 
 #foodFormContainer i {
-  font-size: 30px;
+  font-size: 50px;
   margin-right: 10px;
+  color: black;
 }
 
 #foodFormContainer a {
   text-decoration: none;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 50px;
+  color: black;
 }
 
 #foodForm {
@@ -994,16 +1078,32 @@ button:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: rgb(255, 228, 72);
+  padding: 50px;
+  border-radius: 10px;
 }
 
 #foodForm select, #foodForm input {
   width: 250px;
   height: 25px;
   padding: 2px;
-  border-width: 1px;
-  border-color: black;
+  border: 2px inset rgb(118, 118, 118);
+  border-radius: 5px;
   box-sizing: content-box;
   margin-bottom: 5px;
+}
+
+#foodForm button {
+  border: 2px outset rgb(118, 118, 118);
+  background-color: rgb(246, 246, 239);
+  padding: 5px 25px;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+#foodForm button:active {
+  border: 2px inset rgb(118, 118, 118);
 }
 
 /* 

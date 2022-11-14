@@ -53,6 +53,9 @@ export function Dashboard(args) {
                 dispatch(setStats({timeSeries, ...calculateCurrentStatus(barChartData.labels, barChartData.calories, barChartData.protein, timeSeries, goalCalories, goalProtein)}));
             }
             createBarChart(timeSeries, barChartData);
+            if (timeSeries === 'default') {
+                dispatch(setTimeSeries('daily'));
+            };
         }
         BarChart(timeSeries);
         const statusLiteCalories = document.querySelector('#currentStatusCalories>.statusLite');
@@ -88,8 +91,8 @@ export function Dashboard(args) {
         userStats.push(<h2 className="userStats">{name}</h2>);
         userStats.push(<ul>
                             <li className="userStats">Age: {age}</li>
-                            <li className="userStats">Weight: {height + heightSystem}</li>
-                            <li className="userStats">Height: {weight + weightSystem}</li>
+                            <li className="userStats">Weight: {weight.toString() + weightSystem}</li>
+                            <li className="userStats">Height: {height.toString() + heightSystem}</li>
                             <li className="userStats">Activity Level: {activityLevel}</li>
                       </ul>)
         userStats.push();
@@ -229,6 +232,7 @@ export function Dashboard(args) {
         if (responseMessage === 'logged out') {
             dispatch(setLoggedIn(false));
             dispatch(setUser({}));
+            dispatch(setTimeSeries('default'));
         }
     };
 

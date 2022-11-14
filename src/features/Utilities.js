@@ -4,6 +4,7 @@ import TrendlineLinearPlugin from 'chartjs-plugin-trendline';
 import { Bar, Chart } from 'react-chartjs-2';
 import regression from 'regression';
 import {abs, std} from 'mathjs';
+import e from 'cors';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, BarController, Title, Tooltip, Legend, annotationPlugin, TrendlineLinearPlugin);
 
@@ -175,6 +176,7 @@ export function createBarChart(timeSeries, barChartData) {
     
 
 const activityFactors = {
+    BMR: 1,
     Sedentary: 1.2,
     Light: 1.375,
     Moderate: 1.465,
@@ -203,8 +205,29 @@ export function getCalories(goal, weight, height, age, gender, activityLevel) {
 
 export function calculateCurrentStatus(labels, calories, protein, timeSeries, goalCalories, goalProtein) {
     const currentDate = new Date().toDateString();
-    const sliceRanges = timeSeries === 'monthly' ? [{start: 0, end: 3}, {start: 3, end: 6}, {start: 6, end: 9}, {start: 9}] : [{start: 0, end: 8}, {start: 8, end: 16}, {start: 16, end: 24}, {start: 24}] 
-    console.log(calories.slice(sliceRanges[0].start, sliceRanges[0].end));
+    const labelRemainder = labels.length % 4
+    const labelsInAQuarter = (labels.length - labelRemainder) / 4;
+    let currentQuarterIndex = 0;
+    let currentQuarterCount = [];
+    let sliceRanges = [{start: 0, end: 0}, {start: 0, end: 0}, {start: 0, end: 0}, {start: 0}];
+    for (let i = 0; i <= labels.length; i++) {
+        if (currentQuarterIndex !== 3) {
+            if (currentQuarterCount.length === 0) {
+                sliceRanges[currentQuarterIndex].start = i;
+                currentQuarterCount.push('+');
+            } else if (currentQuarterCount.length === (labelsInAQuarter - 1)){
+                sliceRanges[currentQuarterIndex].end = i;
+                currentQuarterIndex += 1;
+                currentQuarterCount = [];
+            } else {
+                currentQuarterCount.push('+');
+            }
+        } else {
+            sliceRanges[currentQuarterIndex].start = i;
+            break;
+        }  
+    };
+
     const segregatedCalories = {first: {calories: calories.slice(sliceRanges[0].start, sliceRanges[0].end), stat: std(calories.slice(sliceRanges[0].start, sliceRanges[0].end))}, second: {calories: calories.slice(sliceRanges[1].start, sliceRanges[1].end), stat: std(calories.slice(sliceRanges[1].start, sliceRanges[1].end))}, third: {calories: calories.slice(sliceRanges[2].start, sliceRanges[2].end), stat: std(calories.slice(sliceRanges[2].start, sliceRanges[2].end))}, fourth: {calories: calories.slice(sliceRanges[3].start), stat: std(calories.slice(sliceRanges[3].start))}};
     const segregatedProtein = {first: {protein: protein.slice(sliceRanges[0].start, sliceRanges[0].end), stat: std(protein.slice(sliceRanges[0].start, sliceRanges[0].end))}, second: {protein: protein.slice(sliceRanges[1].start, sliceRanges[1].end), stat: std(protein.slice(sliceRanges[1].start, sliceRanges[1].end))}, third: {protein: protein.slice(sliceRanges[2].start, sliceRanges[2].end), stat: std(protein.slice(sliceRanges[2].start, sliceRanges[2].end))}, fourth: {protein: protein.slice(sliceRanges[3].start), stat: std(protein.slice(sliceRanges[3].start))}};
     const deviationFromGoalCalories = [], deviationFromGoalProtein = [];
@@ -273,8 +296,8 @@ export function calculateCurrentStatus(labels, calories, protein, timeSeries, go
         };
     };
 
-    caloriesLeftNow = goalCalories - calories[currentDateIndex];
-    proteinLeftNow = goalProtein - protein[currentDateIndex];
+    caloriesLeftNow = currentDateIndex !== -1 ? goalCalories - calories[currentDateIndex] : 0;
+    proteinLeftNow = currentDateIndex !== -1 ? goalProtein - protein[currentDateIndex] : 0;
 
     stdChangeCalories = ((segregatedCalories.second.percentageChange + segregatedCalories.third.percentageChange + segregatedCalories.fourth.percentageChange) / 3).toFixed(2);
     meanChangeProtein = ((segregatedProtein.second.percentageChange + segregatedProtein.third.percentageChange + segregatedProtein.fourth.percentageChange) / 3).toFixed(2);

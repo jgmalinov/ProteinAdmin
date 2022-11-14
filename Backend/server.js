@@ -136,7 +136,32 @@ app.post('/edit', (req, res, next) => {
                                     throw(err)
                                 }
                                 console.log(result.rows);
-                            })
+                                pool.query(`SELECT name, email, dob, height, heightsystem, weight, weightsystem, goal, activitylevel, gender, admin
+                                            FROM users
+                                            WHERE email=$1`, [email], (err, result) => {
+                                                if (err) {
+                                                    throw(err)
+                                                }
+                                                if (result.rows.length > 0) {
+                                                    const {name, email, dob, height, heightsystem, weight, weightsystem, goal, activitylevel, gender, admin} = result.rows[0];
+                                                    const user = {name, email, dob, height, heightSystem: heightsystem, weight, weightSystem: weightsystem, goal, activityLevel: activitylevel, gender, menu: {}, admin};
+                                                    
+                                                    req.logout((err) => {
+                                                        if (err) {
+                                                            throw(err)
+                                                        }
+                                                        req.logIn(user, (err) => {
+                                                            if (err) {
+                                                                throw(err)
+                                                            };
+                                                            res.send({message: 'Success'});
+                                                        });
+                                                    });
+                                                } else {
+                                                    res.send({message: 'No user data'})
+                                                }
+                                            });
+                            });
 });
 
 

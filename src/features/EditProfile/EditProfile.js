@@ -1,14 +1,24 @@
 import { selectUser } from "../Dashboard/DashboardSlice"
 import { useSelector, useDispatch } from "react-redux"
 import { selectProfile, setActivityLevel, setDOB, setGoal, setHeight, setName, setWeight, setProfile } from "./EditProfileSlice";
+import { setLoggedIn } from "../Login/LoginSlice";
+import { useNavigate } from 'react-router-dom';
+import { setTimeSeries } from "../Dashboard/DashboardSlice";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export function EditProfile() {
     const user = useSelector(selectUser);
     const profile = useSelector(selectProfile);
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(setTimeSeries('default'))
+    });
+
     if (profile.name === '') {
-        dispatch(setProfile({name: user.name, dob: new Date(user.dob), activityLevel: user.activityLevel, weight: user.weight, height: user.height, goal: user.goal}));
+        dispatch(setProfile({name: user.name, dob: user.dob, activityLevel: user.activityLevel, weight: user.weight, height: user.height, goal: user.goal}));
     } 
 
     function updateValueOuter(action) {
@@ -23,13 +33,38 @@ export function EditProfile() {
         const url = process.env.REACT_APP_BACKEND_URL;
         const response = await fetch(url + 'edit', {method: 'POST', credentials: 'include', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(profile)});
         const responseJS = await response.json();
+        const message = responseJS.message;
+        const editProfileForm = document.getElementById('editProfileForm');
 
-        
+        const messageNode = document.createElement('p');
+        messageNode.innerHTML = message;
+        messageNode.style.backgroundColor = 'rgb(246, 246, 239)';
+        messageNode.style.borderRadius = '5px';
+        messageNode.style.padding = '5px';
+
+        editProfileForm.appendChild(messageNode);
+        setTimeout(() => {
+            dispatch(setLoggedIn(false));
+            dispatch(setTimeSeries('default'));
+            navigate('/dashboard');
+        }, 1000);
     }
 
     return (
         <div id="editProfile">
+            <div className='logo'>
+                <i>&#128170;</i>
+                <i className='fa-solid fa-utensils'></i>
+                <div className="secondBicep">
+                    <i>&#128170;</i>
+                </div>
+            </div>
             <form id='editProfileForm' onSubmit={handleSubmit}>
+                <div id="editProfileHeader">
+                    <Link to='/dashboard' id="backArrowLogin"><i class="fa-solid fa-backward-step"></i></Link>
+                    <h2>Edit Profile</h2>
+                </div>
+                
                 <label>Name</label>
                 <input placeholder={user.name}  onChange={updateValueOuter(setName)}></input>
                 <label>DOB</label>
@@ -60,6 +95,7 @@ export function EditProfile() {
                 </select>
 
                 <button>CONFIRM</button>
+                <p id="editProfileNote">*You only need to enter the values that you need to change, everything else remains the same by default</p>
             </form>
         </div>
     )
