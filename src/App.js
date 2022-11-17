@@ -4,14 +4,10 @@ import { Login } from './features/Login/Login';
 import { Register } from './features/Login/Register';
 import { Dashboard } from "./features/Dashboard/Dashboard";
 import { Front } from './features/FrontPage/Front';
-import { pizzaEatingAnimation } from './Animations/animations';
 import {Routes, Route, Link} from "react-router-dom";
 import { FoodForm } from './features/FoodInsertion/FoodForm';
 import { Help } from './features/HelpSection/Help';
 import { EditProfile } from './features/EditProfile/EditProfile';
-
-
-window.onload = pizzaEatingAnimation;
 
 function App() {
   return (

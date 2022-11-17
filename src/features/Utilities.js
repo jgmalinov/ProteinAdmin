@@ -5,6 +5,26 @@ import { Bar, Chart } from 'react-chartjs-2';
 import regression from 'regression';
 import {abs, std} from 'mathjs';
 import e from 'cors';
+import { store } from '../app/store';
+import { Provider } from 'react-redux';
+import {BrowserRouter as Router} from 'react-router-dom';
+import { render } from '@testing-library/react';
+import App from '../App';
+
+function Providers() {
+    return (
+        <Provider store={store}>
+            <Router>
+                <App></App>
+            </Router>
+        </Provider>
+    )
+};
+
+function customRender(ui, options) {
+    render(ui, {wrapper: Providers, ...options});
+};
+
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, BarController, Title, Tooltip, Legend, annotationPlugin, TrendlineLinearPlugin);
 
@@ -389,7 +409,5 @@ export function expandCurrentBatch(e) {
     }
 };
 
- 
- 
-
-<i class="fa-brands fa-golang"></i>
+export * from '@testing-library/react';
+export {customRender as render};

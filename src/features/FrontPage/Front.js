@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 
 export function Front (args) {
     const [intervalSet, setIntervalSet] = useState(false);
+    const [featureIndices, setFeatureIndices] = useState({first: 0, second: 1});
+    const features = ['Streamlined, yet comprehensive data', 'Easy to navigate', 'Tracks calories and protein exclusively, including straightforward analytics on how you are doing', 
+                      'Visual queues on meeting your daily targets', 'Responsive design - use seamlessly from your pc, mobile phone or tablet'];
 
     useEffect(() => {
         if (!intervalSet) {
@@ -45,15 +48,21 @@ export function Front (args) {
         };
     }, []);
 
+    function nextIndices() {
+        const firstIndex = (featureIndices.first + 1) > features.length ? 0 : featureIndices.first + 1;
+        const secondIndex = (featureIndices.second + 1) > features.length ? 0 : featureIndices.second + 1;
+        setFeatureIndices({first: firstIndex, second: secondIndex}); 
+    }
+
     return (
         <div id="front">
             <div id="frontHeader">
                 <h1 className="textLogo">Protein Admin</h1>
 
-                <div className='logo'>
-                    <i>&#128170;</i>
-                    <i className='fa-solid fa-utensils'></i>
-                    <div className="secondBicep">
+                <div className='logo' data-testid='logo Front'>
+                    <i data-testid='left bicep Front'>&#128170;</i>
+                    <i className='fa-solid fa-utensils' data-testid='utensils Front'></i>
+                    <div className="secondBicep" data-testid="right bicep Front">
                         <i>&#128170;</i>
                     </div>
                 </div>
@@ -64,29 +73,24 @@ export function Front (args) {
             </div>
 
             <div id="frontBody">
-                <h2>Fitness nutrition-tracking web app</h2>
-                <h3>With Protein Admin, keeping track of your nutritional goals is no longer an undue chore!</h3>
-                <ul>
-                    <li>Streamlined, yet comprehensive data</li>
-                    <li>Easy to navigate</li>
-                    <li>Tracks calories and protein exclusively, including straightforward analytics on how you are doing</li>
-                    <li>Visual queues on meeting your daily targets</li>
-                    <li>Responsive design - use seamlessly from your pc, mobile phone or tablet</li>
+                <h2>Streamlined Nutrition Tracker</h2>
+                <h3>With Protein Admin, tracking your nutritional goals daily is no longer impractical!</h3>
+                <ul id="featuresUL">
+                    <li id="firstIndex">{features[featureIndices.first]}</li>
+                    <li id="secondIndex">{features[featureIndices.second]}</li>
                 </ul>
             </div>
 
             <div id="iconsBottom">
-                <div id="iconsLeft1"><i class="fa-solid fa-egg"></i></div>
-                <div id="iconsLeft2"><i class="fa-solid fa-fish"></i></div>
-                <div id="iconsLeft3"><i class="fa-solid fa-cheese"></i></div>
-                <div id="iconsRight1"><i class="fa-solid fa-mug-saucer"></i></div>
-                <div id="iconsRight2"><i class="fa-solid fa-pizza-slice"></i></div>
-                <div id="iconsRight3"><i class="fa-solid fa-drumstick-bite"></i></div>
+                <div id="iconsLeft1"><i className="fa-solid fa-egg"></i></div>
+                <div id="iconsLeft2"><i className="fa-solid fa-fish"></i></div>
+                <div id="iconsLeft3"><i className="fa-solid fa-cheese"></i></div>
+                <div id="iconsRight1"><i className="fa-solid fa-mug-saucer"></i></div>
+                <div id="iconsRight2"><i className="fa-solid fa-pizza-slice"></i></div>
+                <div id="iconsRight3"><i className="fa-solid fa-drumstick-bite"></i></div>
             </div>
 
             <Link id="startButton" to='/login'><button >CLICK HERE TO GET STARTED!</button></Link>
-            
-
         </div>
     )
 } 

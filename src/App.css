@@ -128,7 +128,6 @@ button:hover {
 }
 
 #frontHeader>.logo {
-  color: ;
   grid-area: logo;
   font-size: 64px;
 }
@@ -168,9 +167,31 @@ button:hover {
   padding: 40px 25px;
 }
 
-#frontBody ul {
+#frontBody h2 {
+  box-shadow: 1px 1px 1px 1px;
+}
+
+#featuresUL {
   list-style-type: "\2705";
   font-size: 22px;
+  display: flex;
+  background-color: rgb(236, 245, 253);
+  height: 30%;
+  width: 95%;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#firstIndex, #secondIndex {
+  position: absolute;
+  transition: 0.3s;
+}
+
+#secondIndex {
+  transform: translate(-300%, 0%);
+  opacity: 0;
 }
 
 #frontBody li {

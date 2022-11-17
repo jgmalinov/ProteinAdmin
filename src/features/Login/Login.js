@@ -76,7 +76,7 @@ export function Login(args) {
 
     return (
         <div id="viewBody">
-            <section id="loginSection">
+            <section id="loginSection" data-testid='loginSection'>
                 {loggedIn ? <Navigate to={'/dashboard'}/> : undefined}
                 {renderJustRegistered()}
                 <div className='logo'>
