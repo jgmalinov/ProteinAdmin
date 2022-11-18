@@ -171,12 +171,28 @@ button:hover {
   box-shadow: 1px 1px 1px 1px;
 }
 
+#frontUlContainer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 47px;
+}
+
+.fa-solid.fa-square-caret-right, .fa-solid.fa-square-caret-left {
+  font-size: 54px;
+} 
+
 #featuresUL {
   list-style-type: "\2705";
   font-size: 22px;
-  display: flex;
+  display: grid;
+  grid-template: 1fr / 1fr;
+  grid-template-areas: 
+  " UL ";
   background-color: rgb(236, 245, 253);
-  height: 30%;
+  height: 100%;
   width: 95%;
   justify-content: center;
   align-items: center;
@@ -185,12 +201,15 @@ button:hover {
 }
 
 #firstIndex, #secondIndex {
-  position: absolute;
-  transition: 0.3s;
+  grid-area: UL;
+  justify-self: center;
+  align-self: center;
+  transition-duration: 0.3s, 0.8s;
+  transition-property: transform, opacity;
 }
 
 #secondIndex {
-  transform: translate(-300%, 0%);
+  transform: translate(-500%, 0%);
   opacity: 0;
 }
 

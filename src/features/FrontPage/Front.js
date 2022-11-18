@@ -6,6 +6,7 @@ export function Front (args) {
     const [featureIndices, setFeatureIndices] = useState({first: 0, second: 1});
     const features = ['Streamlined, yet comprehensive data', 'Easy to navigate', 'Tracks calories and protein exclusively, including straightforward analytics on how you are doing', 
                       'Visual queues on meeting your daily targets', 'Responsive design - use seamlessly from your pc, mobile phone or tablet'];
+    let animationRunning = false;
 
     useEffect(() => {
         if (!intervalSet) {
@@ -54,6 +55,52 @@ export function Front (args) {
         setFeatureIndices({first: firstIndex, second: secondIndex}); 
     }
 
+    async function nextFeature(e) {
+        if (animationRunning) {
+            return;
+        };
+        
+        const firstIndex = document.getElementById('firstIndex');
+        const secondIndex = document.getElementById('secondIndex');
+        let visibleFeature, hiddenFeature;
+
+        if (firstIndex.style.transform === 'translate(0%, 0%)') {
+            visibleFeature = firstIndex;
+            hiddenFeature = secondIndex;
+        } else if (secondIndex.style.transform === 'translate(0%, 0%)') {
+            visibleFeature = secondIndex;
+            hiddenFeature = firstIndex;
+        };
+
+        await new Promise((resolve) => {
+            if (e.target.classList[1] === 'fa-square-caret-left') {
+                hiddenFeature.style.transform = 'translate(500%, 0%)';
+            };
+
+            setTimeout(() => {
+                resolve('done');
+            }, 100);
+        });
+        
+        if (e.target.classList[1] === 'fa-square-caret-left') {
+            visibleFeature.style.transform = 'translate(-500%, 0%)';
+        } else {
+            visibleFeature.style.transform = 'translate(500%, 0%)';
+        };
+        hiddenFeature.style.transform = 'translate(0%, 0%)';
+        hiddenFeature.style.opacity = 1;
+
+        await new Promise((resolve) => {
+            visibleFeature.style.opacity = 0;
+            animationRunning = true;
+            setTimeout(() => {
+                resolve('done2');
+            }, 800)
+        });
+        visibleFeature.style.transform = 'translate(-500%, 0%)';
+        animationRunning = false;
+    };
+
     return (
         <div id="front">
             <div id="frontHeader">
@@ -75,10 +122,14 @@ export function Front (args) {
             <div id="frontBody">
                 <h2>Streamlined Nutrition Tracker</h2>
                 <h3>With Protein Admin, tracking your nutritional goals daily is no longer impractical!</h3>
-                <ul id="featuresUL">
-                    <li id="firstIndex">{features[featureIndices.first]}</li>
-                    <li id="secondIndex">{features[featureIndices.second]}</li>
-                </ul>
+                <div id="frontUlContainer">
+                    <i class="fa-solid fa-square-caret-left" onClick={nextFeature}></i>
+                    <ul id="featuresUL">
+                        <li id="firstIndex" style={{'transform': 'translate(0%, 0%)'}}>{features[featureIndices.first]}</li>
+                        <li id="secondIndex">{features[featureIndices.second]}</li>
+                    </ul>
+                    <i class="fa-solid fa-square-caret-right" onClick={nextFeature}></i>
+                </div>
             </div>
 
             <div id="iconsBottom">
