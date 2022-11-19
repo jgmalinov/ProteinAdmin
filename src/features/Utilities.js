@@ -7,22 +7,18 @@ import {abs, std} from 'mathjs';
 import e from 'cors';
 import { store } from '../app/store';
 import { Provider } from 'react-redux';
-import {BrowserRouter as Router} from 'react-router-dom';
+import {unstable_HistoryRouter as Router, Routes, Route} from 'react-router-dom';
 import { render } from '@testing-library/react';
 import App from '../App';
 
-function Providers() {
-    return (
+function customRender(path, history, options) {
+    render(
         <Provider store={store}>
-            <Router>
-                <App></App>
+            <Router history={history}>
+                <App />
             </Router>
-        </Provider>
-    )
-};
-
-function customRender(ui, options) {
-    render(ui, {wrapper: Providers, ...options});
+        </Provider>,
+        {...options});
 };
 
 

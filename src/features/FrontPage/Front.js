@@ -130,8 +130,11 @@ export function Front (args) {
             </div>
 
             <div id="frontBody">
-                <h2>Streamlined Nutrition Tracker</h2>
-                <h3>With Protein Admin, tracking your nutritional goals daily is no longer impractical!</h3>
+                <div id="frontBodyHeadings">
+                    <h2>Streamlined Nutrition Tracker</h2>
+                    <h3>With Protein Admin, tracking your nutritional goals daily is no longer impractical!</h3>
+                </div>
+
                 <div id="frontUlContainer">
                     <i class="fa-solid fa-square-caret-left" onClick={nextFeature}></i>
                     <ul id="featuresUL">

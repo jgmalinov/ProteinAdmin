@@ -118,6 +118,7 @@ button:hover {
   grid-template: 1fr / 1fr 1fr 1fr;
   grid-template-areas: 
   'name logo UI';
+  margin-bottom: 30px;
 }
 
 #front h1 {
@@ -159,17 +160,32 @@ button:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgb(255, 228, 72);
+  background-color: transparent;
   border-radius: 10px;
   height: 400px;
   width: 80%;
-  box-shadow: 4px 4px 1px 1px;
   font-family: 'Raleway', sans-serif;
-  padding: 40px 25px;
+  padding: 25px 25px;
+  margin-bottom: 20px;
+  border: none;
 }
 
-#frontBody h2 {
-  box-shadow: 1px 1px 1px 1px;
+#frontBodyHeadings {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  box-shadow: 2px 2px 1.2px 1.2px;
+  margin-bottom: 30px;
+  border: 2px outset black;
+  border-radius: 10px;
+  width: 95%;
+}
+
+#frontBodyHeadings h2 {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 40px;
 }
 
 #frontUlContainer {
@@ -179,6 +195,10 @@ button:hover {
   align-items: center;
   width: 95%;
   height: 55px;
+  box-shadow: 2px 2px 1.4px 1px;
+  padding: 15px;
+  border: 2px outset black;
+  border-radius: 10px;
 }
 
 .fa-solid.fa-square-caret-right, .fa-solid.fa-square-caret-left {
@@ -192,7 +212,8 @@ button:hover {
   grid-template: 1fr / 1fr;
   grid-template-areas: 
   " UL ";
-  background-color: rgb(236, 245, 253);
+  background-color: rgb(240 248 255);
+  opacity: 0.8;
   height: 100%;
   width: 95%;
   justify-content: center;
@@ -218,10 +239,6 @@ button:hover {
   margin: 3px;
   border-radius: 3px;
   width: fit-content;
-}
-
-#frontBody h2 {
-  font-size: 32px;
 }
 
 #frontBody h3 {
@@ -262,7 +279,7 @@ button:hover {
 }
 
 #startButton button {
-  background-color: rgb(255, 228, 72);
+  background-color: transparent;
   width: 100%;
   height: 100%;
   text-decoration: none;
