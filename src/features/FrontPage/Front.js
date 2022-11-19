@@ -43,17 +43,24 @@ export function Front (args) {
                 };
 
             }, 3000);
+
+            setInterval(() => {
+                const goLeftButton = document.getElementsByClassName('fa-square-caret-left')[0];
+                goLeftButton.click();
+            }, 3000);
     
             setIntervalSet(true);
 
         };
     }, []);
 
-    function nextIndices() {
-        const firstIndex = (featureIndices.first + 1) > features.length ? 0 : featureIndices.first + 1;
-        const secondIndex = (featureIndices.second + 1) > features.length ? 0 : featureIndices.second + 1;
-        setFeatureIndices({first: firstIndex, second: secondIndex}); 
-    }
+    function nextIndex(visibleFeature, hiddenFeature, nextOrPrevious) {
+         const visibleFeatureText = visibleFeature.innerHTML;
+         const indexOfVisibleFeature = features.indexOf(visibleFeatureText);
+         let indexOfNextFeature = nextOrPrevious === 'next' ? indexOfVisibleFeature + 1 : indexOfVisibleFeature - 1;
+         indexOfNextFeature = indexOfNextFeature > features.length - 1 ? 0 : (indexOfNextFeature < 0 ? features.length - 1 : indexOfNextFeature);
+         hiddenFeature.innerHTML = features[indexOfNextFeature];
+    };
 
     async function nextFeature(e) {
         if (animationRunning) {
@@ -74,18 +81,21 @@ export function Front (args) {
 
         await new Promise((resolve) => {
             if (e.target.classList[1] === 'fa-square-caret-left') {
-                hiddenFeature.style.transform = 'translate(500%, 0%)';
+                hiddenFeature.style.transform = 'translate(700%, 0%)';
+                nextIndex(visibleFeature, hiddenFeature, 'previous');
+            } else {
+                nextIndex(visibleFeature, hiddenFeature, 'next');
             };
 
             setTimeout(() => {
                 resolve('done');
-            }, 100);
+            }, 190);
         });
         
         if (e.target.classList[1] === 'fa-square-caret-left') {
-            visibleFeature.style.transform = 'translate(-500%, 0%)';
+            visibleFeature.style.transform = 'translate(-600%, 0%)';
         } else {
-            visibleFeature.style.transform = 'translate(500%, 0%)';
+            visibleFeature.style.transform = 'translate(700%, 0%)';
         };
         hiddenFeature.style.transform = 'translate(0%, 0%)';
         hiddenFeature.style.opacity = 1;
@@ -95,9 +105,9 @@ export function Front (args) {
             animationRunning = true;
             setTimeout(() => {
                 resolve('done2');
-            }, 800)
+            }, 730)
         });
-        visibleFeature.style.transform = 'translate(-500%, 0%)';
+        visibleFeature.style.transform = 'translate(-600%, 0%)';
         animationRunning = false;
     };
 

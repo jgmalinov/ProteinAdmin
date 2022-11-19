@@ -161,7 +161,8 @@ button:hover {
   align-items: center;
   background-color: rgb(255, 228, 72);
   border-radius: 10px;
-  height: 300px;
+  height: 400px;
+  width: 80%;
   box-shadow: 4px 4px 1px 1px;
   font-family: 'Raleway', sans-serif;
   padding: 40px 25px;
@@ -176,12 +177,12 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 90%;
-  height: 47px;
+  width: 95%;
+  height: 55px;
 }
 
 .fa-solid.fa-square-caret-right, .fa-solid.fa-square-caret-left {
-  font-size: 54px;
+  font-size: 60px;
 } 
 
 #featuresUL {
@@ -204,12 +205,12 @@ button:hover {
   grid-area: UL;
   justify-self: center;
   align-self: center;
-  transition-duration: 0.3s, 0.8s;
+  transition-duration: 0.6s, 0.7s;
   transition-property: transform, opacity;
 }
 
 #secondIndex {
-  transform: translate(-500%, 0%);
+  transform: translate(-600%, 0%);
   opacity: 0;
 }
 
