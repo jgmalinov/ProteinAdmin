@@ -135,13 +135,13 @@ export function Front (args) {
                     <h3>With Protein Admin, tracking your nutritional goals daily is no longer impractical!</h3>
                 </div>
 
-                <div id="frontUlContainer">
-                    <i class="fa-solid fa-square-caret-left" onClick={nextFeature}></i>
+                <div id="frontUlContainer" data-testid='frontUlContainer'>
+                    <i class="fa-solid fa-square-caret-left" role='button' placeholder="buttonPrevious" onClick={nextFeature}></i>
                     <ul id="featuresUL">
                         <li id="firstIndex" style={{'transform': 'translate(0%, 0%)'}}>{features[featureIndices.first]}</li>
                         <li id="secondIndex">{features[featureIndices.second]}</li>
                     </ul>
-                    <i class="fa-solid fa-square-caret-right" onClick={nextFeature}></i>
+                    <i class="fa-solid fa-square-caret-right" role='button' placeholder="buttonNext" onClick={nextFeature}></i>
                 </div>
             </div>
 

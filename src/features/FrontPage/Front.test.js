@@ -52,10 +52,11 @@ describe('Front page header', () => {
         const loginButton = screen.getByRole('link', {name: /login/i});
         console.log(history.location.pathname);
         console.log(window.location.pathname);
+        screen.debug();
         await user.click(loginButton);
         console.log(history.location.pathname);
         console.log(window.location.pathname);
-        console.log(history);
+        screen.debug();
         expect(history.location.pathname).toBe('/login');
 
     });
@@ -75,8 +76,6 @@ describe('Front page header', () => {
 
 describe('Front page body', () => {
     it('Renders the h2 heading correctly', () => {
-        let history = createMemoryHistory();
-        console.log(history.location.pathname);
         render('/', history);
         const h2Heading = screen.getByRole('heading', {
             level: 2
@@ -86,4 +85,58 @@ describe('Front page body', () => {
         expect(h2Heading).toBeInTheDocument();
         expect(h2HeadingText).toBe('Streamlined Nutrition Tracker');
     });
-})
+    it('Renders the h3 heading correctly', () => {
+        render('/', history);
+        const h3Heading = screen.getByRole('heading', {
+            level: 3
+        });
+        const h3HeadingText = h3Heading.innerHTML;
+
+        expect(h3HeadingText).toBe('With Protein Admin, tracking your nutritional goals daily is no longer impractical!');
+    });
+    it('Renders the Ul container properly', () => {
+        render('/', history);
+        const UlContainer = screen.getByTestId('frontUlContainer');
+        
+        expect(UlContainer).toBeInTheDocument();
+    });
+    it('Renders the Ul container buttons correctly', () => {
+        render('/', history);
+        const buttonNext = screen.getByPlaceholderText('buttonPrevious');
+        const buttonPrevious = screen.getByPlaceholderText('buttonNext');
+
+        expect(buttonNext).toBeInTheDocument();
+        expect(buttonPrevious).toBeInTheDocument();
+    });
+    it('Renders the list of features correctly', () => {
+        render('/', history);
+        const Ul = screen.getByRole('list');
+        expect(Ul).toBeInTheDocument();
+    });
+    test('The list contains the two initial features upon render', () => {
+        render('/', history);
+        const Ul = screen.getByRole('list');
+        const listItems = Ul.childNodes;
+        const firstFeature = listItems[0], secondFeature = listItems[1];
+
+        expect(firstFeature.innerHTML).toBe('Streamlined, yet comprehensive data');
+        expect(secondFeature.innerHTML).toBe('Easy to navigate');
+    });
+    test('The list items change automatically every 3 seconds', () => {
+        jest.useFakeTimers();
+        expect.assertions(2);
+        render('/', history);
+        let Ul, listItems, firstFeature, secondFeature;
+   
+        setTimeout(() => {
+            Ul = screen.getByRole('list');
+            listItems = Ul.childNodes;
+            firstFeature = listItems[0];
+            secondFeature = listItems[1];
+            console.log(firstFeature.innerHTML, secondFeature.innerHTML);
+            expect(firstFeature.innerHTML).toBe('Streamlined, yet comprehensive data');
+            expect(secondFeature.innerHTML).toBe('Responsive design - use seamlessly from your pc, mobile phone or tablet');
+        }, 3000) 
+        jest.runOnlyPendingTimers();
+    });
+});
