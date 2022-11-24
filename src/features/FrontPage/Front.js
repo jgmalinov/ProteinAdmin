@@ -157,15 +157,4 @@ export function Front (args) {
             <Link id="startButton" to='/login'><button >CLICK HERE TO GET STARTED!</button></Link>
         </div>
     )
-} 
-
-/* 
-<section id="logo">
-<i className="fa-solid fa-pizza-slice" id="slice1"></i>
-<i className="fa-solid fa-pizza-slice" id="slice2"></i>
-<i className="fa-solid fa-pizza-slice" id="slice3"></i>
-<i className="fa-solid fa-pizza-slice" id="slice4"></i>
-<i className="fa-solid fa-pizza-slice" id="slice5"></i>
-<i className="fa-solid fa-pizza-slice" id="slice6"></i>
-</section>
-*/
+};
