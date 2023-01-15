@@ -26,7 +26,7 @@ body {
   bottom: 0px;
   left: 0px;
   right: 0px;
-  background-image: url('C:\Users\Georgi\Documents\JSCode\Projects\Tier 3\ProteinAdmin\proteinadmin\src\images\3904.jpg');
+  background-image: url('./images/3904.jpg');
   background-size: cover;
   opacity: 0.4;
   z-index: -1;
@@ -106,7 +106,7 @@ button:hover {
   bottom: 0px;
   left: 0px;
   right: 0px;
-  background-image: url('C:\Users\Georgi\Documents\JSCode\Projects\Tier 3\ProteinAdmin\proteinadmin\src\images\3904.jpg');
+  background-image: url('./images/3904.jpg');
   background-size: cover;
   opacity: 0.4;
   z-index: -1;
@@ -426,7 +426,7 @@ button:hover {
   bottom: 0px;
   left: 0px;
   right: 0px;
-  background-image: url('C:\Users\Georgi\Documents\JSCode\Projects\Tier 3\ProteinAdmin\proteinadmin\src\images\3904.jpg');
+  background-image: url('./images/3904.jpg');
   background-size: cover;
   opacity: 0.4;
   z-index: -1;
@@ -512,7 +512,7 @@ button:hover {
 
 #help::before {
   content: '';
-  background-image: url('C:\Users\Georgi\Documents\JSCode\Projects\Tier 3\ProteinAdmin\proteinadmin\src\images\3904.jpg');
+  background-image: url('./images/3904.jpg');
   background-size: cover;
   position: absolute;
   width: 100%;
@@ -559,7 +559,7 @@ button:hover {
 
 #editProfile::before {
   content: '';
-  background-image: url('C:\Users\Georgi\Documents\JSCode\Projects\Tier 3\ProteinAdmin\proteinadmin\src\images\3904.jpg');
+  background-image: url('./images/3904.jpg');
   background-size: cover;
   position: absolute;
   width: 100%;
@@ -647,7 +647,7 @@ button:hover {
   bottom: 0px;
   left: 0px;
   right: 0px;
-  background-image: url('C:\Users\Georgi\Documents\JSCode\Projects\Tier 3\ProteinAdmin\proteinadmin\src\images\3904.jpg');
+  background-image: url('./images/3904.jpg');
   background-size: cover;
   opacity: 0.4;
   z-index: -1;
@@ -1089,7 +1089,7 @@ button:hover {
 
 #foodFormContainer::before {
   content: '';
-  background-image: url('C:\Users\Georgi\Documents\JSCode\Projects\Tier 3\ProteinAdmin\proteinadmin\src\images\3904.jpg');
+  background-image: url('./images/3904.jpg');
   background-size: cover;
   position: absolute;
   width: 100%;
