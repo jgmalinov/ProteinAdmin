@@ -7,9 +7,7 @@ const session = require('express-session');
 const passport = require('passport');
 const initialize = require('./PassportConfig');
 const cors = require('cors');
-const e = require('cors');
 const format = require('pg-format');
-const { abs } = require('mathjs');
 
 initialize(passport);
 
