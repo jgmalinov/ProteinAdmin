@@ -21,7 +21,7 @@ export function Register(args) {
         const caloriesTarget = getCalories(goal, Number(weight), Number(height), age, gender, activityLevel).goalCalories;
         const proteinTarget = getProtein(weight);
 
-        const response = await fetch(url + `/?calories=${caloriesTarget}&protein=${proteinTarget}`, {method: 'POST', body: JSON.stringify(registrationForm), headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}});
+        const response = await fetch(url + `?calories=${caloriesTarget}&protein=${proteinTarget}`, {method: 'POST', body: JSON.stringify(registrationForm), headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}});
         const responseJS = response.json();
         console.log(responseJS);
         responseJS.then((res) => {
