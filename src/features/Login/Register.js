@@ -14,7 +14,7 @@ export function Register(args) {
         e.preventDefault();
         dispatch(updateErrors([]));
     
-        const url = process.env.REACT_APP_BACKEND_URL;
+        const url = process.env.REACT_APP_BACKEND_URL + 'register/';
 
         let {goal, weight, height, DOB, gender, activityLevel} = registrationForm;
         const age = getAge(DOB);

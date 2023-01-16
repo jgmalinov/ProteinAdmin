@@ -42,11 +42,8 @@ export function Login(args) {
             dispatch(updateSuccessfulRegistration(false));
         };
         const errorMessageBox = document.getElementById('errorMessages');
-        const protocol = process.env.REACT_APP_BACKEND_PROTOCOL;
-        const host =  process.env.REACT_APP_BACKEND_HOST;
-        const port = process.env.REACT_APP_BACKEND_PORT;
-        const pathname = window.location.pathname;
-        const url = protocol + '//' + host + ':' + port + pathname;
+
+        const url = process.env.REACT_APP_BACKEND_URL + 'login/';
        
         fetch(url, {method: 'POST', 
                     redirect: 'follow', 
