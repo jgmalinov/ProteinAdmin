@@ -53,7 +53,7 @@ app.post('/register', async (req, res, next) => {
         errors.errors.push({message: "Passwords do not match"})
     };
     
-    pool.query(`SELECT * FROM users WHERE email = $1`, [email], (err, results) => {
+    pool.query(`SELECT * FROM user WHERE email = $1`, [email], (err, results) => {
         if (err) {
             throw err;
         }; 
@@ -64,7 +64,7 @@ app.post('/register', async (req, res, next) => {
         };
         const saltRounds = 10;
         bcrypt.hash(password, saltRounds, function(err, hash) {
-            pool.query(`INSERT INTO users (name, email, password, dob, weight, weightsystem, height, heightsystem, gender, activitylevel, goal)
+            pool.query(`INSERT INTO user (name, email, password, dob, weight, weightsystem, height, heightsystem, gender, activitylevel, goal)
                         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, [name, email, hash, DOB, weight, weightSystem, height, heightSystem, gender, activityLevel, goal], (err, result) => {
                             if (err) {
                                 throw(err)
@@ -105,7 +105,7 @@ app.post('/edit', (req, res, next) => {
     height = parseFloat(height);
     dob = new Date(dob);
 
-    pool.query(`UPDATE users
+    pool.query(`UPDATE user
                 SET 
                 name =          CASE
                                     WHEN $1 <> name THEN $2
@@ -137,7 +137,7 @@ app.post('/edit', (req, res, next) => {
                                 }
                                 console.log(result.rows);
                                 pool.query(`SELECT name, email, dob, height, heightsystem, weight, weightsystem, goal, activitylevel, gender, admin
-                                            FROM users
+                                            FROM user
                                             WHERE email=$1`, [email], (err, result) => {
                                                 if (err) {
                                                     throw(err)
@@ -276,9 +276,9 @@ app.get('/get/chartdata/monthly', (req, res) => {
 
 app.get('/foodform/:category', (req, res) => {
     const category  = req.params.category;
-    pool.query(`SELECT subcategories.name FROM categories
-                JOIN subcategories ON categories.id = subcategories.category_id
-                WHERE categories.name = $1`, [category], (err, result) => {
+    pool.query(`SELECT subcategory.name FROM category
+                JOIN subcategory ON category.id = subcategory.category_id
+                WHERE category.name = $1`, [category], (err, result) => {
         if (err) {
             console.log(err)
         }
@@ -297,9 +297,9 @@ app.post('/foodform', (req, res) => {
 
     new Promise((resolve) => {
         resolve(
-            pool.query(`INSERT INTO subcategories (name, category_id)
-            SELECT $1 as subcategoryName, id FROM categories WHERE name=$2
-            AND NOT EXISTS(SELECT name FROM subcategories WHERE name=$3);`, [form.subcategory, form.category, form.subcategory], (err, results) => {
+            pool.query(`INSERT INTO subcategory (name, category_id)
+            SELECT $1 as subcategoryName, id FROM category WHERE name=$2
+            AND NOT EXISTS(SELECT name FROM subcategory WHERE name=$3);`, [form.subcategory, form.category, form.subcategory], (err, results) => {
                 if (err) {
                     console.log(err);
                 }
@@ -307,19 +307,19 @@ app.post('/foodform', (req, res) => {
             })
         )
     }).then((res) => {
-        pool.query(`INSERT INTO values (calories, protein)
-                SELECT $1 as calories, $2 as protein WHERE NOT EXISTS(SELECT * FROM values WHERE calories=$3 AND protein=$4);`, [form.values.calories, form.values.protein, form.values.calories, form.values.protein], (err, result) => {
+        pool.query(`INSERT INTO value (calories, protein)
+                SELECT $1 as calories, $2 as protein WHERE NOT EXISTS(SELECT * FROM value WHERE calories=$3 AND protein=$4);`, [form.values.calories, form.values.protein, form.values.calories, form.values.protein], (err, result) => {
                     if (err) {
                         console.log(err)
                     }
                     console.log('successfully added values');
         })
     }).then((res) => {
-        pool.query(`INSERT INTO variations(type, brand, subcategory_id, value_id)
-                SELECT $1 as type, $2 as brand, subcategories.id, values.id 
-                FROM subcategories, values
-                WHERE subcategories.name=$3 AND values.protein=$4 AND values.calories=$5
-                AND NOT EXISTS(SELECT type, brand FROM variations
+        pool.query(`INSERT INTO variation(type, brand, subcategory_id, value_id)
+                SELECT $1 as type, $2 as brand, subcategory.id, value.id 
+                FROM subcategory, value
+                WHERE subcategory.name=$3 AND value.protein=$4 AND value.calories=$5
+                AND NOT EXISTS(SELECT type, brand FROM variation
                               WHERE type=$6 AND brand=$7)`, [form.variation.type, form.variation.brand, form.subcategory, form.values.protein, form.values.calories, form.variation.type, form.variation.brand],
                               (err, result) => {
                                 if (err) {
@@ -332,11 +332,11 @@ app.post('/foodform', (req, res) => {
 });
 
 app.get('/table', (req, res) => {
-    pool.query(`SELECT categories.id as id, categories.name as category, subcategories.name as subcategory, variations.type as description, variations.brand as brand, values.calories as calories, values.protein as protein 
-                FROM categories
-                JOIN subcategories ON categories.id=subcategories.category_id
-                JOIN variations ON subcategories.id=variations.subcategory_id
-                JOIN values ON variations.value_id=values.id
+    pool.query(`SELECT category.id as id, category.name as category, subcategory.name as subcategory, variation.type as description, variation.brand as brand, value.calories as calories, value.protein as protein 
+                FROM category
+                JOIN subcategory ON category.id=subcategory.category_id
+                JOIN variation ON subcategory.id=variation.subcategory_id
+                JOIN value ON variation.value_id=value.id
                 ORDER by id`, (err, result) => {
                     if (err) {
                         console.log(err)
