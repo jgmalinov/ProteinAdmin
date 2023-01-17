@@ -109,6 +109,8 @@ button:hover {
   background-size: cover;
   opacity: 0.4;
   z-index: -1;
+  width: 100vw;
+  height: 100vh;
 }
 
 #frontHeader {
