@@ -112,6 +112,7 @@ button:hover {
 }
 
 #frontHeader {
+  justify-self: center;
   grid-area: header;
   display: grid;
   grid-template: 1fr 2fr / 1fr 1fr 1fr;
@@ -120,6 +121,8 @@ button:hover {
   'headings headings headings';
   margin-bottom: 30px;
   background: rgba(255, 228, 72, 0.9);
+  border-radius: 0px 0px 10px 10px;
+  width: 95%;
 }
 
 #front h1 {
@@ -248,8 +251,10 @@ button:hover {
   display: flex;
   justify-content: space-between;
   justify-self: center;
-  width:98%;
+  width:95%;
+  border-radius: 10px 10px 0px 0px;
   align-items: center;
+  background: rgba(255, 228, 72, 0.9);
 }
 
 #iconsBottom div {
