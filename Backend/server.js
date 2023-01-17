@@ -53,7 +53,7 @@ app.post('/register', async (req, res, next) => {
         errors.errors.push({message: "Passwords do not match"})
     };
     
-    pool.query(`SELECT * FROM user WHERE email = $1`, [email], (err, results) => {
+    pool.query(`SELECT * FROM "user" WHERE email = $1`, [email], (err, results) => {
         if (err) {
             throw err;
         }; 
@@ -64,7 +64,7 @@ app.post('/register', async (req, res, next) => {
         };
         const saltRounds = 10;
         bcrypt.hash(password, saltRounds, function(err, hash) {
-            pool.query(`INSERT INTO user (name, email, password, dob, weight, weightsystem, height, heightsystem, gender, activitylevel, goal)
+            pool.query(`INSERT INTO "user" (name, email, password, dob, weight, weightsystem, height, heightsystem, gender, activitylevel, goal)
                         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, [name, email, hash, DOB, weight, weightSystem, height, heightSystem, gender, activityLevel, goal], (err, result) => {
                             if (err) {
                                 throw(err)
@@ -105,7 +105,7 @@ app.post('/edit', (req, res, next) => {
     height = parseFloat(height);
     dob = new Date(dob);
 
-    pool.query(`UPDATE user
+    pool.query(`UPDATE "user"
                 SET 
                 name =          CASE
                                     WHEN $1 <> name THEN $2
@@ -137,7 +137,7 @@ app.post('/edit', (req, res, next) => {
                                 }
                                 console.log(result.rows);
                                 pool.query(`SELECT name, email, dob, height, heightsystem, weight, weightsystem, goal, activitylevel, gender, admin
-                                            FROM user
+                                            FROM "user"
                                             WHERE email=$1`, [email], (err, result) => {
                                                 if (err) {
                                                     throw(err)
