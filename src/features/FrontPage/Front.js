@@ -127,14 +127,16 @@ export function Front (args) {
                 <div id="frontUI">
                     <Link to='/login'>LOGIN</Link> | <Link to='/register'>REGISTER</Link>
                 </div>
-            </div>
-
-            <div id="frontBody">
+            
                 <div id="frontBodyHeadings">
                     <h2>Streamlined Nutrition Tracker</h2>
                     <h3>With Protein Admin, tracking your nutritional goals daily is no longer impractical!</h3>
                 </div>
+            </div>
 
+            <div id="frontBody">
+                <Link id="startButton" to='/login'><button >CLICK HERE TO GET STARTED!</button></Link>
+                
                 <div id="frontUlContainer" data-testid='frontUlContainer'>
                     <i class="fa-solid fa-square-caret-left" role='button' placeholder="buttonPrevious" onClick={nextFeature}></i>
                     <ul id="featuresUL">
@@ -153,8 +155,6 @@ export function Front (args) {
                 <div id="iconsRight2"><i className="fa-solid fa-pizza-slice"></i></div>
                 <div id="iconsRight3"><i className="fa-solid fa-drumstick-bite"></i></div>
             </div>
-
-            <Link id="startButton" to='/login'><button >CLICK HERE TO GET STARTED!</button></Link>
         </div>
     )
 };

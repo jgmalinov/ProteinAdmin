@@ -89,11 +89,10 @@ button:hover {
 /* FRONT Page */
 #front {
   display: grid;
-  grid-template: 1fr 2fr 1fr 1fr/ 1fr;
+  grid-template: 0.8fr 1.2fr 0.4fr/ 1fr;
   grid-template-areas:
   'header'
   'body'
-  'start'
   'iconsBottom';
   width: 100vw;
   height: 100vh;
@@ -115,10 +114,12 @@ button:hover {
 #frontHeader {
   grid-area: header;
   display: grid;
-  grid-template: 1fr / 1fr 1fr 1fr;
+  grid-template: 1fr 2fr / 1fr 1fr 1fr;
   grid-template-areas: 
-  'name logo UI';
+  'name logo UI'
+  'headings headings headings';
   margin-bottom: 30px;
+  background: rgba(255, 228, 72, 0.9);
 }
 
 #front h1 {
@@ -131,6 +132,8 @@ button:hover {
 #frontHeader>.logo {
   grid-area: logo;
   font-size: 64px;
+  background: rgb(160, 200, 120);
+  border-radius: 0px 0px 10px 10px;
 }
 
 #frontHeader a {
@@ -158,12 +161,10 @@ button:hover {
   align-self: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  background-color: transparent;
   border-radius: 10px;
-  height: 400px;
-  width: 80%;
+  width: 100%;
   font-family: 'Raleway', sans-serif;
   padding: 25px 25px;
   margin-bottom: 20px;
@@ -171,16 +172,13 @@ button:hover {
 }
 
 #frontBodyHeadings {
+  grid-area: headings;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 15px;
-  box-shadow: 2px 2px 1.2px 1.2px;
-  margin-bottom: 30px;
-  border: 2px outset black;
   border-radius: 10px;
-  width: 95%;
+  padding: 15px;
 }
 
 #frontBodyHeadings h2 {
@@ -189,15 +187,12 @@ button:hover {
 }
 
 #frontUlContainer {
-  margin-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 95%;
   height: 55px;
-  box-shadow: 2px 2px 1.4px 1px;
-  padding: 15px;
-  border: 2px outset black;
+  padding: 0px 15px;
   border-radius: 10px;
 }
 
@@ -212,14 +207,14 @@ button:hover {
   grid-template: 1fr / 1fr;
   grid-template-areas: 
   " UL ";
-  background-color: rgb(240 248 255);
-  opacity: 0.8;
   height: 100%;
   width: 95%;
   justify-content: center;
   align-items: center;
-  border-radius: 10px;
+  border-radius: 0px 0px 10px 10px;
   overflow: hidden;
+  background: rgb(160, 200, 120, 0.9);
+  box-shadow: 1px 1px 0px 0px black;
 }
 
 #firstIndex, #secondIndex {
@@ -251,7 +246,9 @@ button:hover {
 
 #iconsBottom {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  justify-self: center;
+  width:98%;
   align-items: center;
 }
 
@@ -260,7 +257,7 @@ button:hover {
 }
 
 #iconsBottom i {
-  font-size: 42px;
+  font-size: 60px;
   margin: 0px 20px;
 }
 
@@ -271,11 +268,13 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 320px;
+  width: 390px;
   height: 80px;
-  border-radius: 5px;
-  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 10px 10px 0px 0px;
+  box-shadow: 1px 0px 0px 0px black;
   text-decoration: none;
+  background: rgb(160, 200, 120, 0.9);
+  
 }
 
 #startButton button {
@@ -850,7 +849,6 @@ button:hover {
   overflow: hidden;
   transition: 0.2s;
 }
-
 
 
 #loggerCategory, #loggerSubcategory {
