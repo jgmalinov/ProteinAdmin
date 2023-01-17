@@ -4,6 +4,7 @@ const { pool } = require("./DB/dbConfig");
 const bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
 const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
 const passport = require('passport');
 const initialize = require('./PassportConfig');
 const cors = require('cors');
@@ -19,10 +20,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(session({
+    store: new pgSession({
+        pool: pool
+    }),
     secret: process.env.REACT_APP_SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    /* cookie: {maxAge: 1000 * 60 * 60 * 24} */
+    cookie: {maxAge: 1000 * 60 * 60 * 24}
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -164,7 +168,7 @@ app.post('/edit', (req, res, next) => {
 app.post('/login', (req, res, next) => {
     const postAuthenticationFunc = passport.authenticate('local', {failureMessage:true, successMessage: true}, (err, user, info) => {
         if (err) {
-            console.log(err);
+            throw(err);
         }
         req.logIn(user, (err) => {
             if (err) {
