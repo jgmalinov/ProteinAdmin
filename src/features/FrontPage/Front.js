@@ -4,13 +4,15 @@ import { Link } from "react-router-dom";
 export function Front (args) {
     const [intervalSet, setIntervalSet] = useState(false);
     const [featureIndices, setFeatureIndices] = useState({first: 0, second: 1});
+    const [intervalRefs, setIntervalRefs] = useState([]);
+    console.log(intervalRefs);
     const features = ['Streamlined, yet comprehensive data', 'Easy to navigate', 'Tracks calories and protein exclusively, including straightforward analytics on how you are doing', 
                       'Visual queues on meeting your daily targets', 'Responsive design - use seamlessly from your pc, mobile phone or tablet'];
     let animationRunning = false;
 
     useEffect(() => {
         if (!intervalSet) {
-            setInterval(() => {
+            const foodIconsInterval = setInterval(() => {
                 const foodIcons = [
                     "fa-solid fa-egg",
                     "fa-solid fa-fish",
@@ -44,14 +46,24 @@ export function Front (args) {
 
             }, 3000);
 
-            setInterval(() => {
+            const featuresInterval = setInterval(() => {
                 const goLeftButton = document.getElementsByClassName('fa-square-caret-left')[0];
                 goLeftButton.click();
             }, 3000);
-    
+            console.log('set 2 intervals')
             setIntervalSet(true);
+            setIntervalRefs(intervals => [...intervals, foodIconsInterval, featuresInterval]);
 
+        } else {
+            console.log(intervalRefs)
+        }
+
+        return function cleanup() {
+            for (let interval in intervalRefs) {
+                clearInterval(interval)
+            }
         };
+
     }, []);
 
     function nextIndex(visibleFeature, hiddenFeature, nextOrPrevious) {
