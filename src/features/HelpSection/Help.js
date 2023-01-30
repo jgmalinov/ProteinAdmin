@@ -1,6 +1,15 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom"
+import { setTimeSeries } from "../Dashboard/DashboardSlice";
 
 export function Help() {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setTimeSeries("default"));
+    });
+
     return (
         <div id="help">
             <div id="helpHeader">

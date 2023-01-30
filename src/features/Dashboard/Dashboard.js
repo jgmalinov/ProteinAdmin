@@ -61,19 +61,19 @@ export function Dashboard(args) {
         const statusLiteCalories = document.querySelector('#currentStatusCalories>.statusLite');
         const differenceCalories = Number(goalCalories) - Number(caloriesToday);
         if (differenceCalories > 50) {
-            statusLiteCalories.style.backgroundColor = 'rgb(241, 244, 196)';
+            statusLiteCalories.style.backgroundColor = 'rgba(255, 228, 72, 1)';
         } else if (differenceCalories < 50 && differenceCalories > -50) {
-            statusLiteCalories.style.backgroundColor = 'aquamarine';
+            statusLiteCalories.style.backgroundColor = 'rgb(105 255 105)';
         } else {
-            statusLiteCalories.style.backgroundColor = 'rgb(240, 134, 134)';
+            statusLiteCalories.style.backgroundColor = 'rgb(244 118 118)';
         };
 
         const statusLiteProtein = document.querySelector('#currentStatusProtein>.statusLite');
         const differenceProtein = Number(goalProtein) - Number(proteinToday);
         if (differenceProtein > 0) {
-            statusLiteProtein.style.backgroundColor = 'rgb(240, 134, 134)';
+            statusLiteProtein.style.backgroundColor = 'rgb(244 118 118)';
         } else {
-            statusLiteProtein.style.backgroundColor = 'aquamarine';
+            statusLiteProtein.style.backgroundColor = 'rgb(105 255 105)';
         };
     });
 

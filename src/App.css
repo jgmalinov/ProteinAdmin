@@ -61,7 +61,7 @@ button:hover {
 }
 
 #daily {
-  background-color: rgb(241, 244, 196);
+  background-color: rgba(255, 228, 72, 1);
 }
 
 #monthly {
@@ -122,7 +122,7 @@ button:hover {
   'name logo UI'
   'headings headings headings';
   margin-bottom: 30px;
-  background: rgba(255, 228, 72, 0.9);
+  background: rgba(255, 228, 72, 1);
   border-radius: 0px 0px 10px 10px;
   width: 85%;
   box-shadow: 1px 1px 0px 0px;
@@ -218,7 +218,7 @@ button:hover {
   align-items: center;
   border-radius: 0px 0px 10px 10px;
   overflow: hidden;
-  background: rgb(160, 200, 120, 0.9);
+  background: rgb(160, 200, 120, 1);
   box-shadow: 1px 1px 0px 0px black;
 }
 
@@ -256,7 +256,7 @@ button:hover {
   width: 85%;
   border-radius: 10px 10px 0px 0px;
   align-items: center;
-  background: rgba(255, 228, 72, 0.9);
+  background: rgba(255, 228, 72, 1);
   box-shadow: 1px -1px 0px 0px;
 }
 
@@ -281,7 +281,7 @@ button:hover {
   border-radius: 10px 10px 0px 0px;
   box-shadow: 1px 0px 0px 0px black;
   text-decoration: none;
-  background: rgb(160, 200, 120, 0.9);
+  background: rgb(160, 200, 120, 1);
   
 }
 
@@ -643,6 +643,7 @@ button:hover {
   "b b"
   "c c";
   box-sizing: border-box;
+  height: 100%;
 }
 
 #dashboard::before {
@@ -806,10 +807,12 @@ button:hover {
   border: 0px;
   text-align: center;
   transition: 0.3s;
+  background: rgb(0, 0, 0, 0);
+  backdrop-filter: blur(10px);
 }
 
 #currentBatchContainer {
-  background:rgb(255, 255, 255);
+  background:rgb(255, 255, 255, 0);
   height: 0px;
   width: 100%;
   overflow: hidden;
@@ -835,6 +838,7 @@ button:hover {
   padding: 0px;
   border: none;
   transition: 0.3s;
+  background: rgb(0, 0, 0, 0);
 }
 
 #autocompleteWeightBar {
@@ -842,6 +846,8 @@ button:hover {
   padding: 0px;
   border: none;
   transition: 0.3s;
+  background:rgb(0, 0, 0, 0);
+  backdrop-filter: blur(10px);
 }
 
 #autocompleteSearchBar:focus {
@@ -865,6 +871,7 @@ button:hover {
   height: 45%;
   box-sizing: border-box;
   transition: 0.3s;
+  background: rgb(0, 0, 0, 0);
 }
 
 #sidebarDim{
@@ -880,7 +887,7 @@ button:hover {
 }
 
 #sidebarBackground {
-  background-color: rgb(241, 244, 196);
+  background-color: rgba(255, 228, 72, 1);
   position: fixed;
   top: 0px;
   right: 0px;
@@ -898,9 +905,14 @@ button:hover {
 }
 
 #sidebar li {
-  font-size: 1.5rem;
-  margin: 10px 0px 10px 40px;
+  font-size: 1.8rem;
+  margin: 20px 10px 40px 40px;
   transition: 0.2s;
+}
+
+#sidebar li a {
+  text-decoration: none;
+  color: black;
 }
 
 #sidebar li:hover {
@@ -1050,7 +1062,7 @@ button:hover {
 
 .statusDetailed {
   transform: rotateY(180deg);
-  background-color: aquamarine;
+  background-color: rgb(40, 255, 40);
 }
 
 #currentStatusCalories {

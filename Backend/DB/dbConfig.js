@@ -9,9 +9,9 @@ const connectionString = `postgresql://${process.env.REACT_APP_DB_USER}:${proces
 
 const pool = new Pool({
     connectionString: isProduction ? process.env.DATABASE_URL : connectionString,
-    ssl: {
+    ssl: isProduction ? {
         rejectUnauthorized: false
-      }
+      } : false
 });
 
 module.exports = { pool };
