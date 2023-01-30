@@ -1,46 +1,40 @@
-# Getting Started with Create React App and Redux
+# (ProteinAdmin)[https://protein-admin.herokuapp.com/]
+The app is currently deployed on Heroku. To open it, please click on the heading or find it at the following URL:  
+**https://protein-admin.herokuapp.com/**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+***
 
-## Available Scripts
+# Project Overview
+ProteinAdmin is a nutritional tracker that is comprised of a React + Redux front-end, an Express.js server and a PostgreSQL database. It is the largest undertaking as part of my efforts to put together a comprehensive portfolio of projects to aid me on my initial search for employment as a web developer. Moreover, this application is being developed continuously as a utility for personal usage. The intention is for it to serve practical purposes beyond the needs of the recruitment process.   
 
-In the project directory, you can run:
+***
 
-### `npm start`
+# Project Development Status
+The app is currently in development. While the features planned have been implemented, it has not been thoroughly tested, only to an extent that would assist in informing prospective employers' idea of my familiarity with automated testing. The UI design is also subject to further iteration. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+***
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Local Installation and Usage
+The most recent version will always be available on Heroku at the link above, but if you would like to run the project locally, it should prove very simple. Please follow the steps below:  
 
-### `npm test`
+1. Clone this repository. *node* and *npm* global installations are required
+2. Install dependencies with *npm install* within the project's root directory ('proteinadmin')
+3. Run the app with *npm start* (it will take care of concurrently running the Express server as well as the one that provides the HTML template along with the React logic on startup)
+4. View the app at *http://localhost:3000/*
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+***
 
-### `npm run build`
+# Current Features
+## The project aims to facilitate keeping track of calorie and protein intake on a daily basis, which can otherwise prove rather time-consuming. Below is a summary of its core features:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Upon receiving the necessary data on sign-up, it estimates recommended target values for daily and monthly protein and calorie intake. These are dependent upon the physical characteristics of the user, such as weight, height, gender etc., as well as their general level of physical activity.
+- The aforementioned target amounts are then set as a reference point against which the user's actual consumed quantities will be compared. Information as to how the user has been doing is presented in two general manners:
+    -The two flip cards on the right-hand side of the screen. By default, they show a simplified view of just how many out of the required calories/protein have been consumed thus far. Clicking on them, however, makes them flip and reveals a more comprehensive breakdown, including data like the current trend, averages for the last week, standard deviation from the expected value.
+    -The two charts positioned at the lower half of the page. They can switch from a monthly to a daily breakdown view.
+- Data about your daily intake can be logged into the database from the searchbar at the top in two different ways:
+    -Directly inputting the raw calories and protein values
+    -Choosing a particular food and quantity consumed from the available options in the database
+    -The data added can be reviewed and edited throughout the day before being commited to the database
+- The user's profile data can be updated at any time, which will prompt the app to recalculate the targets
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### For assistance with navigating the app's UI, please refer to the dedicated 'Help' page in the menu that slides from the right when clicking on the horizontal bars icon
