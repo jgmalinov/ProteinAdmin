@@ -226,15 +226,17 @@ export function calculateCurrentStatus(labels, calories, protein, timeSeries, go
     let currentQuarterIndex = 0;
     let currentQuarterCount = [];
     let sliceRanges = [{start: 0, end: 0}, {start: 0, end: 0}, {start: 0, end: 0}, {start: 0}];
+
     for (let i = 0; i <= labels.length; i++) {
         if (currentQuarterIndex !== 3) {
             if (currentQuarterCount.length === 0) {
                 sliceRanges[currentQuarterIndex].start = i;
                 currentQuarterCount.push('+');
-            } else if (currentQuarterCount.length === (labelsInAQuarter - 1)){
+            } else if (currentQuarterCount.length === (labelsInAQuarter)){
                 sliceRanges[currentQuarterIndex].end = i;
                 currentQuarterIndex += 1;
-                currentQuarterCount = [];
+                sliceRanges[currentQuarterIndex].start = i;
+                currentQuarterCount = ['+'];
             } else {
                 currentQuarterCount.push('+');
             }
@@ -244,8 +246,16 @@ export function calculateCurrentStatus(labels, calories, protein, timeSeries, go
         }  
     };
 
-    const segregatedCalories = {first: {calories: calories.slice(sliceRanges[0].start, sliceRanges[0].end), stat: std(calories.slice(sliceRanges[0].start, sliceRanges[0].end))}, second: {calories: calories.slice(sliceRanges[1].start, sliceRanges[1].end), stat: std(calories.slice(sliceRanges[1].start, sliceRanges[1].end))}, third: {calories: calories.slice(sliceRanges[2].start, sliceRanges[2].end), stat: std(calories.slice(sliceRanges[2].start, sliceRanges[2].end))}, fourth: {calories: calories.slice(sliceRanges[3].start), stat: std(calories.slice(sliceRanges[3].start))}};
-    const segregatedProtein = {first: {protein: protein.slice(sliceRanges[0].start, sliceRanges[0].end), stat: std(protein.slice(sliceRanges[0].start, sliceRanges[0].end))}, second: {protein: protein.slice(sliceRanges[1].start, sliceRanges[1].end), stat: std(protein.slice(sliceRanges[1].start, sliceRanges[1].end))}, third: {protein: protein.slice(sliceRanges[2].start, sliceRanges[2].end), stat: std(protein.slice(sliceRanges[2].start, sliceRanges[2].end))}, fourth: {protein: protein.slice(sliceRanges[3].start), stat: std(protein.slice(sliceRanges[3].start))}};
+    const segregatedCalories = {first: {calories: calories.slice(sliceRanges[0].start, sliceRanges[0].end), stat: std(calories.slice(sliceRanges[0].start, sliceRanges[0].end))}, 
+                                second: {calories: calories.slice(sliceRanges[1].start, sliceRanges[1].end), stat: std(calories.slice(sliceRanges[1].start, sliceRanges[1].end))}, 
+                                third: {calories: calories.slice(sliceRanges[2].start, sliceRanges[2].end), stat: std(calories.slice(sliceRanges[2].start, sliceRanges[2].end))}, 
+                                fourth: {calories: calories.slice(sliceRanges[3].start), stat: std(calories.slice(sliceRanges[3].start))}};
+
+    const segregatedProtein = {first: {protein: protein.slice(sliceRanges[0].start, sliceRanges[0].end), stat: std(protein.slice(sliceRanges[0].start, sliceRanges[0].end))}, 
+                               second: {protein: protein.slice(sliceRanges[1].start, sliceRanges[1].end), stat: std(protein.slice(sliceRanges[1].start, sliceRanges[1].end))}, 
+                               third: {protein: protein.slice(sliceRanges[2].start, sliceRanges[2].end), stat: std(protein.slice(sliceRanges[2].start, sliceRanges[2].end))}, 
+                               fourth: {protein: protein.slice(sliceRanges[3].start), stat: std(protein.slice(sliceRanges[3].start))}};
+
     const deviationFromGoalCalories = [], deviationFromGoalProtein = [];
     let stdCaloriesOverall, stdProteinOverall, meanCaloriesOverall, meanProteinOverall, stdChangeCalories, meanChangeProtein, absTrendCalories, absTrendProtein, caloriesLeftNow, proteinLeftNow; 
     
