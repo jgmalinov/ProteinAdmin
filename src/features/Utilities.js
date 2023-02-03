@@ -392,16 +392,19 @@ export function expandSearchBar(inputMethod) {
 export function expandCurrentBatch(e) {
     const currentBatch = document.getElementById('currentBatchContainer');
     const searchBarContainer = document.getElementById('searchBarContainer');
+    const backgroundImage = document.querySelector('#dashboard', ':before');
     if (currentBatch.style.height === '0px') {
         currentBatch.style.height = '120px';
         searchBarContainer.style.border = '1px solid black';
         searchBarContainer.style.borderRadius = '3px';
         searchBarContainer.style.marginTop = '12px';
+        backgroundImage.style.height = '120%';
     } else {
         currentBatch.style.height = '0px';
         searchBarContainer.style.border = 'none';
         searchBarContainer.style.borderRadius = '0px';
         searchBarContainer.style.marginTop = '6px';
+        backgroundImage.style.height = '100%';
     }
 };
 
