@@ -1092,7 +1092,7 @@ button:hover {
 }
 
 #visualDataUI button {
-  margin: 0px 5px;
+  margin: 10px 5px 0px 5px;
   width: 120px;
 }
 
