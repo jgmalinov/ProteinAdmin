@@ -414,7 +414,7 @@ export function expandCurrentBatch(e) {
         searchBarContainer.style.border = 'none';
         searchBarContainer.style.borderRadius = '0px';
         searchBarContainer.style.marginTop = '6px';
-        backgroundImage.style.height = '105%';
+        backgroundImage.style.height = '110%';
     }
 };
 

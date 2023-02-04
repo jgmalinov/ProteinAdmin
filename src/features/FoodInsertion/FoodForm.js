@@ -45,6 +45,14 @@ export function FoodForm(args) {
         e.preventDefault();
         const url = process.env.REACT_APP_BACKEND_URL;
         const response = await fetch(url + 'foodform', {method: 'POST', headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}, credentials: 'include', body: JSON.stringify(foodForm)});
+        if (response.ok) {
+            const messageBoard = document.querySelector('#foodForm .messageBoard');
+            const message = messageBoard.appendChild(document.createElement('p'));
+            message.textContent = 'Item successfully added!';
+            setTimeout(() => {
+                messageBoard.removeChild(messageBoard.lastChild);
+            }, 3000);
+        };
     }
 
     function handleChange(e) {
@@ -91,6 +99,7 @@ export function FoodForm(args) {
             </Link>
 
             <form onSubmit={handleSubmit} id='foodForm'>
+                <div className="messageBoard"></div>
                 <h2>Nutritional data insertion form</h2>
                 <select name="category" id="foodCategory" onChange={handleChange} required>
                     <option value='none'>--Select food category--</option>

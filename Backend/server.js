@@ -325,7 +325,7 @@ app.post('/foodform', (req, res) => {
                 console.log('successfully added subcategory');
             })
         )
-    }).then((res) => {
+    }).then((result) => {
         pool.query(`INSERT INTO value (calories, protein)
                 SELECT $1 as calories, $2 as protein WHERE NOT EXISTS(SELECT * FROM value WHERE calories=$3 AND protein=$4);`, [form.values.calories, form.values.protein, form.values.calories, form.values.protein], (err, result) => {
                     if (err) {
@@ -333,7 +333,7 @@ app.post('/foodform', (req, res) => {
                     }
                     console.log('successfully added values');
         })
-    }).then((res) => {
+    }).then((result) => {
         pool.query(`INSERT INTO variation(type, brand, subcategory_id, value_id)
                 SELECT $1 as type, $2 as brand, subcategory.id, value.id 
                 FROM subcategory, value
@@ -345,6 +345,7 @@ app.post('/foodform', (req, res) => {
                                     console.log(err)
                                 }
                                 console.log('successfully added variation');
+                                res.status(200).send('Item successfully added!');
                               })
 
     })
