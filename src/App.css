@@ -641,7 +641,7 @@ button:hover {
 #dashboard {
   position: relative;
   display: grid;
-  grid-template: 1fr 330px 420px/ 1fr 1fr;
+  grid-template: 0.8fr 330px 420px/ 1fr 1fr;
   grid-template-areas: 
   "a a"
   "b b"

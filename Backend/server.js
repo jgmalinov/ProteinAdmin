@@ -211,19 +211,23 @@ app.get('/get/chartdata/daily', (req, res) => {
     const priorDate = new Date();
     priorDate.setDate(currentDate.getDate() - 30);
     console.log(priorDate);
-    /* const year = (date.getFullYear()).toString();
-    const month = (date.getMonth() + 1).toString();
-    const day = (date.getDate()).toString();
-    const dateStr = `${year}-${month}-${day}`; */
+    const currentDateStr = `${currentDate.getDate() + 1}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`;
+    const priorDateStr = `${priorDate.getDate() + 1}-${priorDate.getMonth() + 1}-${priorDate.getFullYear()}`;
+    console.log(currentDateStr, priorDateStr);
 
-    pool.query(`SELECT * FROM nutritional_time_series
-                WHERE date >= $1 
-                AND date <= $2
-                AND email = $3
-                ORDER BY date ASC`, [priorDate, currentDate, userEmail], (err, results) => {
+    pool.query(`SELECT l.date, l.email, r.calories, r.protein
+                FROM (
+                    SELECT generate_series::date AS date, $1 AS email
+                    FROM generate_series($2::date, $3::date, '1 day')
+                ) l
+                LEFT JOIN (
+                    SELECT * FROM nutritional_time_series
+                    WHERE email=$4
+                ) r
+                ON l.date = r.date
+                ORDER BY l.date ASC;`, [userEmail, priorDate, currentDate, userEmail], (err, results) => {
                     if(err) {
-                        console.log(err);
-                        return
+                        throw(err);
                     }
                     const matches = results.rows;
                     if (matches.length > 0) {
@@ -250,15 +254,24 @@ app.get('/get/chartdata/monthly', (req, res) => {
     previousDate.setDate(currentDate.getDate() - 365 + currentDate.getDate() + 1);
     console.log(currentDate, previousDate);
 
-    pool.query(`SELECT DATE_TRUNC('month', date) as date, SUM(protein) as protein, SUM(calories) as calories
-                FROM nutritional_time_series
-                WHERE date BETWEEN $1 AND $2
-                GROUP BY DATE_TRUNC('month', date)
-                ORDER BY DATE_TRUNC('month', date) ASC
-    `, [previousDate, currentDate], (err, results) => {
+    pool.query(`SELECT l.date as date, l.email as email, r.calories as calories, r.protein as protein FROM (
+                            SELECT DATE_TRUNC('month', generate_series) as date, $1 as email
+                            FROM generate_series($2::date, $3::date, '1 day')
+                            GROUP BY DATE_TRUNC('month', generate_series)
+                            ORDER BY DATE_TRUNC('month', generate_series) ASC
+                ) l
+                LEFT JOIN (
+                            SELECT DATE_TRUNC('month', date) as date, SUM(protein) as protein, SUM(calories) as calories
+                            FROM nutritional_time_series
+                            WHERE date BETWEEN $4 AND $5
+                            AND email=$6
+                            GROUP BY DATE_TRUNC('month', date)
+                            ORDER BY DATE_TRUNC('month', date) ASC
+                    ) r
+                ON l.date = r.date
+                ORDER BY l.date ASC;`, [userEmail, previousDate, currentDate, previousDate, currentDate, userEmail], (err, results) => {
                     if(err) {
-                        console.log(err);
-                        return
+                        throw(err);
                     }
                     const matches = results.rows;
                     if (matches.length > 0) {
@@ -271,7 +284,8 @@ app.get('/get/chartdata/monthly', (req, res) => {
                             protein.push(match.protein);
                         }
                         const chartData = {labels, calories, protein};
-                        console.log(chartData);
+                        console.log('MOOOOOONTHLYYYYY')
+                        console.log(chartData)
                         res.send({message: 'success', chartData, chartType: 'monthly'});
                     } else {
                         res.send({message: 'no results'});
