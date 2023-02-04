@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectUser, setTimeSeries } from "../Dashboard/DashboardSlice";
+import { setNutritionalTable } from "../Dashboard/LoggerSlice";
 import { setCategory, setSubcategory, setVariation, setValues, setSubcategoryData, selectFoodForm, selectSubcategoryData } from "./FoodSlice";
 
 export function FoodForm(args) {
@@ -53,6 +54,7 @@ export function FoodForm(args) {
                 messageBoard.removeChild(messageBoard.lastChild);
             }, 3000);
         };
+        dispatch(setNutritionalTable([]));
     }
 
     function handleChange(e) {
