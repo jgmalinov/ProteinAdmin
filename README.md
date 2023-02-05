@@ -1,4 +1,4 @@
-# ProteinAdmin (https://protein-admin.herokuapp.com/)
+# [ProteinAdmin](https://protein-admin.herokuapp.com/)
 ## Test credentials:
 - email: **test@gmail.com**
 - password: **Test!23**
