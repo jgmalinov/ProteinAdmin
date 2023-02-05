@@ -14,13 +14,46 @@ The app is currently in development. While the features planned have been implem
 
 ***
 
-# Local Installation and Usage
-The most recent version will always be available on Heroku at the link above, but if you would like to run the project locally, it should prove very simple. Please follow the steps below:  
 
-1. Clone this repository. *node* and *npm* global installations are required
+
+# Database Schema
+
+![Schema](./Backend/DB_Diagram.png)
+
+***
+
+# In-app images
+
+![Dashboard](./public/Exhibition1.png)
+![Login](./public/Exhibition4.png)
+![Sidebar](./public/Exhibition2.png)
+![Daily Menu](./public/Exhibition3.png)
+
+***
+
+# Local Installation and Usage
+The most recent version will always be available on Heroku at the link above, but if you would like to run or review the project locally, please follow the steps below:  
+
+1. Clone this repository. *node*, *npm*, and *postgres* global installations are required
 2. Install dependencies with *npm install* within the project's root directory ('proteinadmin')
-3. Run the app with *npm start* (it will take care of concurrently running the Express server as well as the one that provides the HTML template along with the React logic on startup)
-4. View the app at *http://localhost:3000/*
+3. The database SQL dump can be found under Backend/DB. Run the following command in the terminal to build the schema: *psql -U db_user db_name < dump_name.sql*
+4. Run the app with *npm start* (it will take care of concurrently running the Express server as well as the one that provides the HTML template along with the React logic on startup)
+5. View the app at *http://localhost:3000/*
+
+***
+
+# Environmental Variables
+## The application needs the following environmental variables to function:
+1. ./.env
+    - REACT_APP_BACKEND_URL (by default - 'http://localhost:4000')
+
+2. Backend/.env
+    -REACT_APP_DB_USER (the default 'postgres' is the owner as per the DB dump)
+    -REACT_APP_DB_PASSWORD
+    -REACT_APP_DB_HOST (localhost)
+    -REACT_APP_DB_PORT
+    -REACT_APP_DB_DATABASE (database name)
+    -REACT_APP_SESSION_SECRET
 
 ***
 
