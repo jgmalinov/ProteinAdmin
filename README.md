@@ -1,4 +1,8 @@
 # ProteinAdmin (https://protein-admin.herokuapp.com/)
+## Test credentials:
+- email: **test@gmail.com**
+- password: **Test!23**
+
 The app is currently deployed on Heroku. To open it, please click on the heading or find it at the following URL:  
 **https://protein-admin.herokuapp.com/**
 
