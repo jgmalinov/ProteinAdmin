@@ -1,4 +1,4 @@
-# (ProteinAdmin)[https://protein-admin.herokuapp.com/]
+# ProteinAdmin (https://protein-admin.herokuapp.com/)
 The app is currently deployed on Heroku. To open it, please click on the heading or find it at the following URL:  
 **https://protein-admin.herokuapp.com/**
 
@@ -48,12 +48,12 @@ The most recent version will always be available on Heroku at the link above, bu
     - REACT_APP_BACKEND_URL (by default - 'http://localhost:4000')
 
 2. Backend/.env
-    -REACT_APP_DB_USER (the default 'postgres' is the owner as per the DB dump)
-    -REACT_APP_DB_PASSWORD
-    -REACT_APP_DB_HOST (localhost)
-    -REACT_APP_DB_PORT
-    -REACT_APP_DB_DATABASE (database name)
-    -REACT_APP_SESSION_SECRET
+    - REACT_APP_DB_USER (the default 'postgres' is the owner as per the DB dump)
+    - REACT_APP_DB_PASSWORD
+    - REACT_APP_DB_HOST (localhost)
+    - REACT_APP_DB_PORT
+    - REACT_APP_DB_DATABASE (database name)
+    - REACT_APP_SESSION_SECRET
 
 ***
 
