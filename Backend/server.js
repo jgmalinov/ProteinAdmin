@@ -43,7 +43,6 @@ app.get('/', (req, res) => {
 app.post('/register', async (req, res, next) => {
     let {name, email, password, confirmPassword, weight, weightSystem, height, heightSystem, gender, activityLevel, DOB, goal} = req.body;
     const {calories, protein} = req.query;
-    console.log(req.body);
 
     let errors = {errors: []};
     if (!name || !email || !password || !confirmPassword || !weight || !weightSystem || !height || !heightSystem || !activityLevel || !DOB || !goal || !gender) {
@@ -140,7 +139,7 @@ app.post('/edit', (req, res, next) => {
                                 if (err) {
                                     throw(err)
                                 }
-                                console.log(result.rows);
+
                                 pool.query(`SELECT name, email, dob, height, heightsystem, weight, weightsystem, goal, activitylevel, gender, admin
                                             FROM "user"
                                             WHERE email=$1`, [email], (err, result) => {
@@ -177,7 +176,7 @@ app.post('/login', (req, res, next) => {
         }
         req.logIn(user, (err) => {
             if (err) {
-                console.log(err)
+                throw(err)
             };
             res.send({status: `${info.message}`, user: req.user});
         });
@@ -190,7 +189,7 @@ app.get('/logout', (req, res) => {
     console.log('logged out')
     req.logOut((err) => {
         if (err) {
-            console.log(err)
+            throw(err)
         }
         res.send(`logged out`);    
     });
@@ -210,10 +209,9 @@ app.get('/get/chartdata/daily', (req, res) => {
     const currentDate = new Date();
     const priorDate = new Date();
     priorDate.setDate(currentDate.getDate() - 30);
-    console.log(priorDate);
-    const currentDateStr = `${currentDate.getDate() + 1}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`;
-    const priorDateStr = `${priorDate.getDate() + 1}-${priorDate.getMonth() + 1}-${priorDate.getFullYear()}`;
-    console.log(currentDateStr, priorDateStr);
+    // const currentDateStr = `${currentDate.getDate() + 1}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`;
+    // const priorDateStr = `${priorDate.getDate() + 1}-${priorDate.getMonth() + 1}-${priorDate.getFullYear()}`;
+    
 
     pool.query(`SELECT l.date, l.email, r.calories, r.protein
                 FROM (
@@ -239,7 +237,7 @@ app.get('/get/chartdata/daily', (req, res) => {
                             protein.push(match.protein);
                         }
                         const chartData = {labels, calories, protein};
-                        console.log(chartData);
+
                         res.send({message: 'success', chartData, chartType: 'daily'});
                     } else {
                         res.send({message: 'no results'});
@@ -252,7 +250,7 @@ app.get('/get/chartdata/monthly', (req, res) => {
     const currentDate = new Date();
     const previousDate = new Date();
     previousDate.setDate(currentDate.getDate() - 365 + currentDate.getDate() + 1);
-    console.log(currentDate, previousDate);
+    
 
     pool.query(`SELECT l.date as date, l.email as email, r.calories as calories, r.protein as protein FROM (
                             SELECT DATE_TRUNC('month', generate_series) as date, $1 as email
@@ -284,8 +282,6 @@ app.get('/get/chartdata/monthly', (req, res) => {
                             protein.push(match.protein);
                         }
                         const chartData = {labels, calories, protein};
-                        console.log('MOOOOOONTHLYYYYY')
-                        console.log(chartData)
                         res.send({message: 'success', chartData, chartType: 'monthly'});
                     } else {
                         res.send({message: 'no results'});
@@ -299,7 +295,7 @@ app.get('/foodform/:category', (req, res) => {
                 JOIN subcategory ON category.id = subcategory.category_id
                 WHERE category.name = $1`, [category], (err, result) => {
         if (err) {
-            console.log(err)
+            throw(err)
         }
         const rows = result.rows;
         if (rows.length > 0) {
@@ -312,7 +308,6 @@ app.get('/foodform/:category', (req, res) => {
 
 app.post('/foodform', (req, res) => {
     const form = req.body;
-    console.log(form);
 
     new Promise((resolve) => {
         resolve(
@@ -320,7 +315,7 @@ app.post('/foodform', (req, res) => {
             SELECT $1 as subcategoryName, id FROM category WHERE name=$2
             AND NOT EXISTS(SELECT name FROM subcategory WHERE name=$3);`, [form.subcategory, form.category, form.subcategory], (err, results) => {
                 if (err) {
-                    console.log(err);
+                    throw(err);
                 }
                 console.log('successfully added subcategory');
             })
@@ -329,7 +324,7 @@ app.post('/foodform', (req, res) => {
         pool.query(`INSERT INTO value (calories, protein)
                 SELECT $1 as calories, $2 as protein WHERE NOT EXISTS(SELECT * FROM value WHERE calories=$3 AND protein=$4);`, [form.values.calories, form.values.protein, form.values.calories, form.values.protein], (err, result) => {
                     if (err) {
-                        console.log(err)
+                        throw(err)
                     }
                     console.log('successfully added values');
         })
@@ -342,7 +337,7 @@ app.post('/foodform', (req, res) => {
                               WHERE type=$6 AND brand=$7)`, [form.variation.type, form.variation.brand, form.subcategory, form.values.protein, form.values.calories, form.variation.type, form.variation.brand],
                               (err, result) => {
                                 if (err) {
-                                    console.log(err)
+                                    throw(err)
                                 }
                                 console.log('successfully added variation');
                                 res.status(200).send('Item successfully added!');
@@ -359,7 +354,7 @@ app.get('/table', (req, res) => {
                 JOIN value ON variation.value_id=value.id
                 ORDER by id`, (err, result) => {
                     if (err) {
-                        console.log(err)
+                        throw(err)
                     }
                     const table = result.rows;
                     res.send({table});
@@ -377,7 +372,7 @@ app.get('/menu', (req, res) => {
                 WHERE email=$1 AND date=$2 AND committed = false
                 GROUP BY DESCRIPTION`, [email, date], (err, result) => {
                     if (err) {
-                        console.log(err);
+                        throw(err);
                     } 
                     if (result.rows.length === 0) {
                         res.send({message: 'No logged data'})
@@ -403,8 +398,7 @@ app.post('/menu', (req, res) => {
     pool.query(format(`INSERT INTO daily_nutrition (date, email, description, calories, protein, weight, committed)
                 VALUES %L`, currentBatch), (err, result) => {
                     if (err) {
-                        console.log(err)
-                        res.send({message: err})
+                        throw(err);
                     }
                     res.send('Successfully inserted data')
                 });

@@ -48,7 +48,6 @@ export function Front (args) {
                 const goLeftButton = document.getElementsByClassName('fa-square-caret-left')[0];
                 goLeftButton.click();
             }, 3000);
-            console.log('set 2 intervals')
             setIntervalSet(true);
             
             return function cleanup() {

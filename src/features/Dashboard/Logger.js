@@ -13,8 +13,6 @@ export function Logger(args) {
     } else if (autocompleteOptions.length === 0) {
         dispatch(setAutocomplete(nutritionalTable.map((row) => `${row.subcategory}-${row.description}`)));
     }
-    
-    console.log(autocompleteOptions);
 
 
 

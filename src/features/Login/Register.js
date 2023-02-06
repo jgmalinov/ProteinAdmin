@@ -23,7 +23,6 @@ export function Register(args) {
 
         const response = await fetch(url + `?calories=${caloriesTarget}&protein=${proteinTarget}`, {method: 'POST', body: JSON.stringify(registrationForm), headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}});
         const responseJS = response.json();
-        console.log(responseJS);
         responseJS.then((res) => {
             if (res.errors) {
                 dispatch(updateErrors(res.errors));

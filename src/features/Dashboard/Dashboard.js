@@ -108,7 +108,6 @@ export function Dashboard(args) {
             <li>Recommended calorie intake: {Math.round(calorieTargets.goalCalories)} kcal/day</li>
             <li>Recommended protein intake: {Math.round(proteinTarget)} g/day</li>
         </ul>);
-        console.log(userTargets);
         return userTargets;
     };
 
@@ -227,7 +226,6 @@ export function Dashboard(args) {
             headers: {'Content-Type': 'application/json'},
             credentials: 'include'
         });
-        console.log(response);
         const responseMessage = await response.text();
         if (responseMessage === 'logged out') {
             dispatch(setLoggedIn(false));
@@ -267,7 +265,6 @@ export function Dashboard(args) {
     };
 
     function flipCardInteractivityQue(e) {
-        console.log(e.currentTarget);
         if (e.currentTarget.style.transform === 'rotateY(0deg)') {
             e.currentTarget.style.transform = 'rotateY(25deg)';
         } else if (e.currentTarget.style.transform === 'rotateY(180deg)') {
@@ -276,7 +273,6 @@ export function Dashboard(args) {
     };
 
     function flipCardInteractivityQueUndo(e) {
-        console.log(e.currentTarget);
         if (e.currentTarget.style.transform === 'rotateY(25deg)') {
             e.currentTarget.style.transform = 'rotateY(0deg)';
         } else if (e.currentTarget.style.transform === 'rotateY(205deg)') {

@@ -327,8 +327,6 @@ export function calculateCurrentStatus(labels, calories, protein, timeSeries, go
 
     stdChangeCalories = ((segregatedCalories.second.percentageChange + segregatedCalories.third.percentageChange + segregatedCalories.fourth.percentageChange) / 3).toFixed(2);
     meanChangeProtein = ((segregatedProtein.second.percentageChange + segregatedProtein.third.percentageChange + segregatedProtein.fourth.percentageChange) / 3).toFixed(2);
-    console.log(segregatedCalories, segregatedProtein);
-    console.log(caloriesLeftNow, proteinLeftNow);
 
     return {segregatedCalories, absTrendCalories, stdCaloriesOverall, stdChangeCalories, caloriesLeftNow, meanCaloriesOverall, stdProteinOverall,  segregatedProtein, absTrendProtein, meanProteinOverall, meanChangeProtein, proteinLeftNow};
      
